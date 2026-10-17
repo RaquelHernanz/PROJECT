@@ -274,7 +274,7 @@ def readFastaFile(file:str, data_folder: str, prefix: str)-> list[Sequence]:
 
 def main() -> None:        
         #STEP 1. Program reads the enzymes files. 
-        enzymes: dict[str, str] = readEnzymeFile(ENZYMES_FILE, DATA_FOLDER)  #Checked
+        enzymes: dict[str, Enzymes] = readEnzymeFile(ENZYMES_FILE, DATA_FOLDER)  #Checked
         loaded_fasta_files: set [str] = set()
         sequences: dict [str, Sequence] = {}
         
