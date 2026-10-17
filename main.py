@@ -146,16 +146,13 @@ class Fragment:
 import os
 
 
-"""
-readString return a String from the input() function
-    Arguments:
-    - message: A string message used for the input function
-"""
+# readString return a String from the input() function
+    #Arguments: - message: A string message used for the input function
 def readString(message: str)-> str:
     return input(message)
 
 
-##################################### STEP 3. check the sequence ID ##################################################
+##################################### READ THE ENZYMES (start-up) ##################################################
 
 # In thi step the program going to read the enzymes file, enzymes.txt (always valid) in the order they were given, 
 #   reporting only the first unknown one
@@ -181,15 +178,13 @@ def readEnzymeFile (file: str, data_folder: str)-> dict[str, Enzyme]:
         return enzymes
 
 
-###################################  STEP 4. (4.2) LOADING AND VERIFYING A FASTA FILE ###############################################
+###################################  STEP(4.2) LOADING AND VERIFYING A FASTA FILE (load) ###############################################
 
-# The pram going to read and add a FASTA file to a dict. 
-# 1.  Create a dict of the available enzymes inside the file. 
-#     Each line follows the next pattern: name + site + cutoff_site
-#     BamHI GGATCC 1
-# command LOAD_SEQUENCES (used to load the sequences of a FASTA file)
-
-# if sequence not in LOAD_SEQUENCES: -print(f"The sequence {SEQUENCE_ID} is not loaded.")
+# LOAD_SEQUENCE COMMAND (used to load the sequences of a FASTA file)
+# The program going to read and add a FASTA file to a dict. 
+     # - Create a dict of the available enzymes inside the file. 
+     # - Each line follows the next pattern: name + site + cutoff_site
+             #- BamHI GGATCC 1
 
 
 def readFastaFile(file:str, data_folder: str, prefix: str)-> list[Sequence]:
@@ -220,38 +215,33 @@ def readFastaFile(file:str, data_folder: str, prefix: str)-> list[Sequence]:
 # loading the files demo.fasta and constructs.fasta
 
 
-###################################  STEP 5. (4.3) LIST ALL LOADED SEQUENCES #################################################
+###################################  STEP (4.3) LIST ALL LOADED SEQUENCES (inspect) #################################################
+
+# LIST_SEQUENCES COMMAND 
 
 # 1. In this part the command LIST_SEQUENCES needs to list all currently loaded sequences, sorted alphabetically by ID, 
 #    in ascending order, so we going to use the function "sorted()"
 
-def get_sorted_sequences(sequences: dict[str, Sequence] -> list[sequence]: 
+#def get_sorted_sequences(sequences: dict[str, Sequence] -> list[sequence]: 
      #Returns a list of sequences ordered alphabetically by ID.
-        return sorted(sequences.values(), extrair_seq.id(Sequence): 
+        #return sorted(sequences.values(), extrair_seq.id(Sequence): 
 
                       
 # 2. prints the number of sequences loaded and lists all sequences, with their length
 #This function will execute the LIST_SEQUENCES command, displaying the sequences in the terminal.
-def list_sequences_io(sequences: dict[str, Sequence]) -> None:
-
-        if not sequences
+#def list_sequences_io(sequences: dict[str, Sequence]) -> None:
 
 
-@dataclass
-class Sequence: 
-    # It represents a charged biological sequence.
-    seq_id: str
-    bases: str
+###################################  STEP (4.4) SEQUENCE INFORMATION (inspect) #####################################################
 
-###################################  STEP 6. (4.4) SEQUENCE INFORMATION  #####################################################
+# SEQUENCE_INFO COMMAND
 
+###################################  STEP (4.5) FINDING RECOGNITIONM SITES (analyse) ###############################################
 
+#FIND_SITES COMMAND 
+#DIGEST COMMAND
 
-###################################  STEP 7. (4.5) FINDING RECOGNITIONM SITES  ###############################################
-
-
-
-######################################  STEP 8. (4.6) SIMULATING A DIGEST  ##################################################
+######################################  STEP (4.6) SIMULATING A DIGEST  ##################################################
 # The prorgam going to FIND_SITES AND DIGEST FUNCTIONS
 # The command "DIGEST" lists the The command DIGEST fragments in this same order, from the top to the bottom of the 
 # gel
@@ -275,9 +265,16 @@ class Sequence:
 
 
 ##############################################   MAIN Function  ##########################################################
+# Main function that acts as a command interpreter.
+        #Features are organized in 3 groups:
+          #1. Load - read FASTA files (LOAD_SEQUENCES)
+          #2. Inspect - list the loaded filne and show information about each one (LIST_SEQUENCES, SEQUENCE_INFO)
+          #3. Analyse - use enzyme to recognition sites and simulate digests (FIND_SITES, DIGEST)
+
+
 def main() -> None:        
         #STEP 1. Program reads the enzymes files. 
-        enzymes: dict[str, Enzyme] = readEnzymeFile(ENZYMES_FILE, DATA_FOLDER) #Checked
+        enzymes: dict[str, str] = readEnzymeFile(ENZYMES_FILE, DATA_FOLDER)  #Checked
         loaded_fasta_files: set [str] = set()
         sequences: dict [str, Sequence] = {}
         
@@ -316,7 +313,8 @@ def main() -> None:
 
                 #4. Execution of valid commands
                 if command_name == "LOAD_SEQUENCES":
-                        print("Function complete")
+                        # if sequence not in LOAD_SEQUENCES: print(f"The sequence {SEQUENCE_ID} is not loaded.")
+                        #print (f"File {command_parts[1]?} validated and loaded!")     
                 elif command_name == "LIST_SEQUENCES":
                         print("Function complete")
                 elif command_name == "SEQUENCE_INFO":
@@ -325,6 +323,7 @@ def main() -> None:
                         print("Function complete")
                 elif command_name == "DIGEST":
                         print("Function complete")
+                        #print(f"Digestion of the sequence {sequence?} with {command_parts[3]?} produced the following fragments: {DIGEST}")   
                 else:
                         #The command EXIT terminates the execution saying "Goodbye".
                         print(GOODBYE_MESSAGE)                                          
