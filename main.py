@@ -48,11 +48,6 @@ Rules for holding the two strands together by hydrogen bonds between base pairs:
 
 """
 
-#######################################################################################################################################
-
- """" 
-                                                           ALREADY CHECK 
- """
 
 ######################################################### INFORMATION #############################################################
 """
@@ -74,7 +69,7 @@ It loads and validates DNA sequences from FASTA files, reports basic statistics 
 finds enzyme recognition sites (including overlapping ones) and lists the fragments produced by digesting a sequence 
 with one or more enzymes, ordered as they would appear on an agarose gel (Western Blot).
 
-@author: Beactrice and Raquel Hernanz
+@author: Beatriz Fernansdes and Raquel Hernanz
 
 """
 
