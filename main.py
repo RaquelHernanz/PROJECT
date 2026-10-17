@@ -83,7 +83,7 @@ GOODBYE_MESSAGE: str = "Goodbye!"
 UNKNOWN_COMMAND: str = "Unknown command" 
 REPEATED_FASTA: str = ""
 
-# HACIAS ASÍ? List of valid commands in the system (Case-Sensitive)
+# List of valid commands in the system (Case-Sensitive)
 VALID_COMMANDS = ["LOAD_SEQUENCES", "LIST_SEQUENCES", "SEQUENCE_INFO", "FIND_SITES", "DIGEST", "EXIT"]
 
 
