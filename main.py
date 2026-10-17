@@ -266,6 +266,16 @@ def main() -> None:
     sequences: dict [str, Sequence] = {}
     #This is useful to avoid uploading the same file again.
 
+# 4.3. LIST_SEQUENCE 
+        #1. Ask user for sequence 
+        #2. Count number of sequences loaded
+        count_number_of_sequence_loaded 
+        print(f"Number of sequences loaded: {count_number_of_sequence_loaded}")
+        
+        #3. Print number of sequences loaded 
+        #4. Call the function to give us the list of uploaded sequences
+    
+
     """
     Considering the commmands follow this structur:
     - SEQUENCE_INFO demo
