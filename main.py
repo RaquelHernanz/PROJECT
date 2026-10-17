@@ -155,16 +155,16 @@ BamHI GGATCC 1
 
 """
 def readEnzymeFile (file: str, data_folder: str)-> dict[str, Enzyme]:
-    enzymes: dict[str,Enzyme] = {}
-    file_path = os.path.join(data_folder, file)
-    print(file_path)
-    with open(file_path) as enzyme_txt:
-        for line in enzyme_txt:
-            complete_line = line.strip() #Read each line
-            name, site, cutoff_site = complete_line.split() #Split into the following variables: name, site and cutoff_site
-            enzymes[name] = Enzyme(name,site,int(cutoff_site))      
-            
-    return enzymes
+        enzymes: dict[str,Enzyme] = {}
+        file_path = os.path.join(data_folder, file)
+        print(file_path)
+        
+        with open(file_path) as enzyme_txt:
+                for line in enzyme_txt:
+                        complete_line = line.strip() #Read each line 
+                        name, site, cutoff_site = complete_line.split() #Split into the following variables: name, site and cutoff_site
+                        enzymes[name] = Enzyme(name,site,int(cutoff_site))
+        return enzymes
 
 
 ###################################  STEP 4. (4.2) LOADING AND VERIFYING A FASTA FILE ###############################################
