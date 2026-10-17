@@ -285,7 +285,7 @@ def main() -> None:
         command_name: str = ""
 
         #STEP2. repeatedly asks the user for a command (using while), executes it, and prints the corresponding messages, until the user types EXIT
-                 # - WE SHOULD PROVID INFORMATION:- command EXIT terminates the execution
+                 # - WE SHOULD PROVID INFORMATION- command EXIT terminates the execution
                 
         while command_name != "EXIT":
 
