@@ -93,8 +93,11 @@ A DNA sequence loaded from a FASTA record.
     - seq_id: Sequence identifier: the text after ">" up to the first space.
     - bases: Full sequence, with all FASTA lines joined.
 """
+
+# It will be used in step 4.3. LIST ALL LOADED SEQUENCES
 @dataclass
-class Sequence:
+class Sequence: 
+    # It represents a charged biological sequence.
     seq_id: str
     bases: str
 
@@ -214,18 +217,26 @@ def readFastaFile(file:str, data_folder: str, prefix: str)-> list[Sequence]:
 
 ###################################  STEP 5. (4.3) LIST ALL LOADED SEQUENCES #################################################
 
-# Command LIST_SEQUENCES- : This command lists all currently loaded sequences, sorted alphabetically by ID, in ascending
-# order
+# 1. In this part the command LIST_SEQUENCES needs to list all currently loaded sequences, sorted alphabetically by ID, 
+#    in ascending order, so we going to use the function "sorted()"
 
-# 1.prints the number of sequences loaded and lists all sequences, with their length
-# 2. if LIST_SEQUENCE = 0 : print(No loaded sequences.)
+def get_sorted_sequences(sequences: dict[str, Sequence] -> list[sequence]: 
+     #Returns a list of sequences ordered alphabetically by ID.
+        return sorted(sequences.values(), extrair_seq.id(Sequence): 
 
-def list_sequence(load_sequence: str) -> list[str, str]: 
+                      
+# 2. prints the number of sequences loaded and lists all sequences, with their length
+#This function will execute the LIST_SEQUENCES command, displaying the sequences in the terminal.
+def list_sequences_io(sequences: dict[str, Sequence]) -> None:
 
-        
-        
+        if not sequences
 
 
+@dataclass
+class Sequence: 
+    # It represents a charged biological sequence.
+    seq_id: str
+    bases: str
 
 ###################################  STEP 6. (4.4) SEQUENCE INFORMATION  #####################################################
 
@@ -262,19 +273,22 @@ def list_sequence(load_sequence: str) -> list[str, str]:
 
 
 def main() -> None:
-        
-    enzymes: dict[str, Enzyme] = readEnzymeFile(ENZYMES_FILE, DATA_FOLDER) #Checked
-    loaded_fasta_files: set [str] = set()
-    sequences: dict [str, Sequence] = {}
-    #This is useful to avoid uploading the same file again.
+        enzymes: dict[str, Enzyme] = readEnzymeFile(ENZYMES_FILE, DATA_FOLDER) #Checked
+        loaded_fasta_files: set [str] = set()
+        sequences: dict [str, Sequence] = {}
 
+#This is useful to avoid uploading the same file again.
 # 4.3. LIST_SEQUENCE 
         #1. Ask user for sequence 
         #2. Count number of sequences loaded
         count_number_of_sequence_loaded 
-        print(f"Number of sequences loaded: {count_number_of_sequence_loaded}")
-        
+        if count_number_of_sequence_loaded = 0 : 
+                print("No loaded sequences.")
+
         #3. Print number of sequences loaded 
+        else: 
+                print(f"Number of sequences loaded: {count_number_of_sequence_loaded}")
+        
         #4. Call the function to give us the list of uploaded sequences
     
 
