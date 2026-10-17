@@ -126,7 +126,6 @@ class Fragment:
 1. PROVID INFORMATION:- command EXIT terminates the execution
 2. COMMAND NOT FOUND? 
      - print ("Command to execute")
-
 """
 
 import os
@@ -140,6 +139,10 @@ def readString(message: str)-> str:
     return input(message)
 
 
+##################################### STEP 3. check the sequence ID ##################################################
+
+read enzyme names- Program read the enzymes file, enzymes.txt (always valid) (in the order they were given, 
+reporting only the first unknown one)
 """
 Allows to read the enzyme.txt file and create a dict of 
 the available enzymes inside the file. Each line follows
@@ -163,6 +166,8 @@ def readEnzymeFile (file: str, data_folder: str)-> dict[str, Enzyme]:
             
     return enzymes
 
+
+###################################################################################################
 """
 Allows to read and add a FASTA file to a dict
 
