@@ -322,8 +322,13 @@ def main() -> None:
                 elif command_name == "FIND_SITES":
                         print("Function complete")
                 elif command_name == "DIGEST":
+                        if len(command_parts) < 3: 
+                                print("Error: The DIGEST command requires a sequence ID and at least one enzyme.")
+                        # SHOULD WE CREATE A LIST WITH ALL THE ENZIMES?        
                         print("Function complete")
-                        #print(f"Digestion of the sequence {sequence?} with {command_parts[3]?} produced the following fragments: {DIGEST}")   
+                        #print(f"Digestion of the sequence {sequence.ID?} with {enzime_used} produced the following fragments: {DIGEST}") 
+                                 #- WE NEED TO DEFINE sequence.ID
+                                 #- We need to define the enzime_used
                 else:
                         #The command EXIT terminates the execution saying "Goodbye".
                         print(GOODBYE_MESSAGE)                                          
