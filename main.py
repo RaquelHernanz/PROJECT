@@ -73,7 +73,17 @@ with one or more enzymes, ordered as they would appear on an agarose gel (Wester
 
 """
 
-###DATACLASSES AND THEIR METHODS###
+################################################# CONSTANTS  #############################################################
+DATA_FOLDER: str = "data"
+ENZYMES_FILE: str = "enzymes.txt"
+PROMPT: str = "Command to execute:"
+FASTA_HEADER_PREFIX: str = ">"
+GOODBYE_MESSAGE: str = "Goodbye!"
+UNKNOWN_COMMAND: str = "Unknown command."
+REPEATED_FASTA: str = ""
+
+
+################################################# DATACLASSES AND THEIR METHODS   ######################################
 from dataclasses import dataclass
 
 """
@@ -121,7 +131,7 @@ class Fragment:
     end: int
 
 
-##########################################INPUT/OUTPUT and FILE READING FUNCTIONS#######################
+##########################################  INPUT/OUTPUT and FILE READING FUNCTIONS  ################################
 """
 1. PROVID INFORMATION:- command EXIT terminates the execution
 2. COMMAND NOT FOUND? 
@@ -141,20 +151,13 @@ def readString(message: str)-> str:
 
 ##################################### STEP 3. check the sequence ID ##################################################
 
-#Why do we do this step?
-"""read enzyme names- Program read the enzymes file, enzymes.txt (always valid) (in the order they were given,  
-reporting only the first unknown one)
+# In thi step the program going to read the enzymes file, enzymes.txt (always valid) in the order they were given, 
+#   reporting only the first unknown one
 
-Allows to read the enzyme.txt file and create a dict of 
-the available enzymes inside the file. Each line follows
-the next pattern: name + site + cutoff_site
+#Attributes: 
+#    - file_path: the enzyme.txt file path
 
-BamHI GGATCC 1
 
-    Attributes:
-    - file_path: the enzyme.txt file path
-
-"""
 
 def readEnzymeFile (file: str, data_folder: str)-> dict[str, Enzyme]:
         enzymes: dict[str,Enzyme] = {}
@@ -170,10 +173,13 @@ def readEnzymeFile (file: str, data_folder: str)-> dict[str, Enzyme]:
 
 
 ###################################  STEP 4. (4.2) LOADING AND VERIFYING A FASTA FILE ###############################################
-"""
-Allows to read and add a FASTA file to a dict
 
-"""
+# The pram going to read and add a FASTA file to a dict. 
+# 1.  Create a dict of the available enzymes inside the file. 
+#     Each line follows the next pattern: name + site + cutoff_site
+#     BamHI GGATCC 1
+
+
 
 def readFastaFile(file:str, data_folder: str, prefix: str)-> list[Sequence]:
     sequences: list[Sequence] = []
@@ -201,22 +207,26 @@ def readFastaFile(file:str, data_folder: str, prefix: str)-> list[Sequence]:
                         nucl_seq = nucl_seq + complete_line
 
 
-###################################  STEP 5. (4.3) LIST ALL LOADED SEQUENCES ###############################################
+###################################  STEP 5. (4.3) LIST ALL LOADED SEQUENCES #################################################
+
+# command LOAD_SEQUENCES (used to load the sequences of a FASTA file)
 
 
 
 
-###FIND_SITES AND DIGEST FUNCTIONS###
+###################################  STEP 6. (4.4) SEQUENCE INFORMATION  #####################################################
 
 
-################################################# CONSTANTS  #############################################################
-DATA_FOLDER: str = "data"
-ENZYMES_FILE: str = "enzymes.txt"
-PROMPT: str = "Command to execute:"
-FASTA_HEADER_PREFIX: str = ">"
-GOODBYE_MESSAGE: str = "Goodbye!"
-UNKNOWN_COMMAND: str = "Unknown command."
-REPEATED_FASTA: str = ""
+
+###################################  STEP 7. (4.5) FINDING RECOGNITIONM SITES  ###############################################
+
+
+
+######################################  STEP 8. (4.6) SIMULATING A DIGEST  ##################################################
+# The prorgam going to FIND_SITES AND DIGEST FUNCTIONS
+
+
+
 
 ##############################################   MAIN Function  ##########################################################
 def main() -> None:
