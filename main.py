@@ -287,7 +287,7 @@ def main() -> None:
         command_name: str = ""
 
         # if the user provides an unknown command: 
-        if command not in comand: 
+        if command not in comand_name: 
                 print ("UNKNOWN_COMMAND")
 
         # This part is useful to avoid uploading the same file again.
