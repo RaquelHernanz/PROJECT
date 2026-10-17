@@ -157,6 +157,7 @@ def readString(message: str)-> str:
 #Attributes: 
 #    - file_path: the enzyme.txt file path
 
+#if ENZIME not in ENZIME_NAME:  -print (f"The enzyme {ENZIME_NAME} is not available.")
 
 
 def readEnzymeFile (file: str, data_folder: str)-> dict[str, Enzyme]:
@@ -211,6 +212,9 @@ def readFastaFile(file:str, data_folder: str, prefix: str)-> list[Sequence]:
 
 # command LOAD_SEQUENCES (used to load the sequences of a FASTA file)
 
+# if sequence not in LOAD_SEQUENCES: -print(f"The sequence {SEQUENCE_ID} is not loaded.")
+
+
 
 
 
@@ -229,8 +233,27 @@ def readFastaFile(file:str, data_folder: str, prefix: str)-> list[Sequence]:
 
 
 ##############################################   MAIN Function  ##########################################################
-def main() -> None:
+# 1. TOP STRAND (forward DNA sequence)
+# 2. Create BOTTOM SEQUENCE (reverse sequence): 
+         # REVERSE COMPLEMENT SEQUENCE: e.g ATGAATTCGG is CCGAATTCAT
+                  #1. Complementary
+                  #2. read backwards
 
+#- 3. The user requests an ENZYME. 
+    # - CUT LOCATION: always palindromic (it is read backwards)
+    # - WE give the CUT OFFSET (0< int > length of its site | number of bases of the site that come before the cut)
+    #- WE give  the CLEAVAGE SEQUENCE  and the site (file enzimes.text)
+
+
+# 4. Restriction Digest 
+#    - Find the sites and cut (CHECK)
+#    - Fragments
+#    - Agarose Gel - the fragments are separated by size
+#          - command DIGEST lists:  order, from the top (larger the fragment) to the bottom of the gel (smallest one).
+
+
+def main() -> None:
+        
     enzymes: dict[str, Enzyme] = readEnzymeFile(ENZYMES_FILE, DATA_FOLDER) #Checked
     loaded_fasta_files: set [str] = set()
     sequences: dict [str, Sequence] = {}
@@ -255,8 +278,13 @@ def main() -> None:
     command_name: str = ""
     if (command):
         command_name = command[0]
+            
 
-   #The command EXIT terminates the execution saying "Goodbye".
+    # if user provides an unknown command: - print ("Unknown command.")
+        
+
+
+    #The command EXIT terminates the execution saying "Goodbye".
     while command_name != "EXIT":
 
         if command_name == "LOAD_SEQUENCES":
