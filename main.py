@@ -301,9 +301,13 @@ def main() -> None:
                      # - readString reads all characters received on the serial port and groups them into a single string
                      # - The command_parts variable becomes a list with two elements: ["LOAD_SEQUENCES", "demo.fasta"]
                 command_parts = readString(PROMPT).split()
+
+                #2. stores the first element of the list (the main command) in the command_name variable and check if the user has not entered anything 
                 if command_parts:
-                        #It stores the first element of the list (the main command) in the command_name variable
                         command_name = command_parts[0]    
+                else:
+                        command_name = " " 
+                        continue 
 
                                 
                 #3. Check if the user provides an unknown command: 
