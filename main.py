@@ -77,11 +77,14 @@ with one or more enzymes, ordered as they would appear on an agarose gel (Wester
 ################################################# CONSTANTS  #############################################################
 DATA_FOLDER: str = "data"
 ENZYMES_FILE: str = "enzymes.txt"
-PROMPT: str = "Command to execute:"
+PROMPT: str = "Command to execute: "
 FASTA_HEADER_PREFIX: str = ">"
 GOODBYE_MESSAGE: str = "Goodbye!"
 UNKNOWN_COMMAND: str = "Unknown command" 
 REPEATED_FASTA: str = ""
+
+# HACIAS ASÍ? List of valid commands in the system (Case-Sensitive)
+VALID_COMMANDS = ["LOAD_SEQUENCES", "LIST_SEQUENCES", "SEQUENCE_INFO", "FIND_SITES", "DIGEST", "EXIT"]
 
 
 ################################################# DATACLASSES AND THEIR METHODS   ######################################
@@ -272,30 +275,41 @@ class Sequence:
 
 
 ##############################################   MAIN Function  ##########################################################
-PROMPT: str = "Command to execute:"
-
 def main() -> None:        
         #STEP 1. Program reads the enzymes files. 
         enzymes: dict[str, Enzyme] = readEnzymeFile(ENZYMES_FILE, DATA_FOLDER) #Checked
         loaded_fasta_files: set [str] = set()
         sequences: dict [str, Sequence] = {}
         
-        #STEP2. repeatedly asks the user for a command (using while), executes it, and prints the corresponding messages, until the user types EXIT
-        #       - WE SHOULD PROVID INFORMATION:- command EXIT terminates the execution
-        #        - We should do a io function for this part. Specially if we want to control the input of  the user
-        command = readString(PROMPT).split()
+        #Loop control variable used to determine whether the loop should continue executing or stop
         command_name: str = ""
 
-        # if the user provides an unknown command: 
-        if command not in comand_name: 
-                print ("UNKNOWN_COMMAND")
+        #STEP2. repeatedly asks the user for a command (using while), executes it, and prints the corresponding messages, until the user types EXIT
+                 # - WE SHOULD PROVID INFORMATION:- command EXIT terminates the execution
 
-        # This part is useful to avoid uploading the same file again.
-        if (command):
-                command_name = command[0]
-
-
+                 #NOTE: Considering the commmands follow this structur: 
+                 #          - SEQUENCE_INFO demo
+                 #          - DIGEST pGFP_insert EcoRI HindIII
+                 # We must separate the whole command line into smaller strings by the split()- Also take into account if the user accidently introduce an enter 
+                 # without introducing a letter (in that case, unkwon message)
+    
         while command_name != "EXIT":
+                
+                #1. Read user input and split it by spaces. 
+                     # - readString reads all characters received on the serial port and groups them into a single string
+                command_parts = readString(PROMPT).split()
+
+                #2. WE NEED TO CHECK THIS PART! 
+                #This part is useful to avoid uploading the same file again.
+                if command_parts:
+                        command_name = command_parts[0]
+                
+                #3. Check if the user provides an unknown command: 
+                if command_name not in VALID_COMMANDS: 
+                        print ("UNKNOWN_COMMAND")
+                        continue 
+
+                #4. Execution of valid commands
                 if command_name == "LOAD_SEQUENCES":
                         print("Function complete")
                 elif command_name == "LIST_SEQUENCES":
@@ -312,16 +326,7 @@ def main() -> None:
 
 
 
-    """
-    Considering the commmands follow this structur:
-    - SEQUENCE_INFO demo
-    - DIGEST pGFP_insert EcoRI HindIII
-
-    We must separate the whole command line into smaller strings by the split()
-
-    Also take into account if the user accidently introduce an enter without introducing a letter (in that case, unkwon message)
-    """
-
+#- We should do a io function for this part. Specially if we want to control the input of  the user
        
 # 4.3. LIST_SEQUENCE 
         #1. Ask user for sequence 
