@@ -220,7 +220,9 @@ def readFastaFile(file:str, data_folder: str, prefix: str)-> list[Sequence]:
 # 1.prints the number of sequences loaded and lists all sequences, with their length
 # 2. if LIST_SEQUENCE = 0 : print(No loaded sequences.)
 
-def list_sequence() -> None: 
+def list_sequence(load_sequence: str) -> list[str, str]: 
+
+        
         
 
 
