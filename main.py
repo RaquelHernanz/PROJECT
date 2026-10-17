@@ -179,7 +179,9 @@ def readEnzymeFile (file: str, data_folder: str)-> dict[str, Enzyme]:
 # 1.  Create a dict of the available enzymes inside the file. 
 #     Each line follows the next pattern: name + site + cutoff_site
 #     BamHI GGATCC 1
+# command LOAD_SEQUENCES (used to load the sequences of a FASTA file)
 
+# if sequence not in LOAD_SEQUENCES: -print(f"The sequence {SEQUENCE_ID} is not loaded.")
 
 
 def readFastaFile(file:str, data_folder: str, prefix: str)-> list[Sequence]:
@@ -207,14 +209,19 @@ def readFastaFile(file:str, data_folder: str, prefix: str)-> list[Sequence]:
                     else:
                         nucl_seq = nucl_seq + complete_line
 
+# loading the files demo.fasta and constructs.fasta
+
 
 ###################################  STEP 5. (4.3) LIST ALL LOADED SEQUENCES #################################################
 
-# command LOAD_SEQUENCES (used to load the sequences of a FASTA file)
+# Command LIST_SEQUENCES- : This command lists all currently loaded sequences, sorted alphabetically by ID, in ascending
+# order
 
-# if sequence not in LOAD_SEQUENCES: -print(f"The sequence {SEQUENCE_ID} is not loaded.")
+# 1.prints the number of sequences loaded and lists all sequences, with their length
+# 2. if LIST_SEQUENCE = 0 : print(No loaded sequences.)
 
-
+def list_sequence() -> None: 
+        
 
 
 
