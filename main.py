@@ -141,9 +141,10 @@ def readString(message: str)-> str:
 
 ##################################### STEP 3. check the sequence ID ##################################################
 
-read enzyme names- Program read the enzymes file, enzymes.txt (always valid) (in the order they were given, 
+#Why do we do this step?
+"""read enzyme names- Program read the enzymes file, enzymes.txt (always valid) (in the order they were given,  
 reporting only the first unknown one)
-"""
+
 Allows to read the enzyme.txt file and create a dict of 
 the available enzymes inside the file. Each line follows
 the next pattern: name + site + cutoff_site
@@ -154,6 +155,7 @@ BamHI GGATCC 1
     - file_path: the enzyme.txt file path
 
 """
+
 def readEnzymeFile (file: str, data_folder: str)-> dict[str, Enzyme]:
         enzymes: dict[str,Enzyme] = {}
         file_path = os.path.join(data_folder, file)
@@ -197,6 +199,10 @@ def readFastaFile(file:str, data_folder: str, prefix: str)-> list[Sequence]:
                     
                     else:
                         nucl_seq = nucl_seq + complete_line
+
+
+###################################  STEP 5. (4.3) LIST ALL LOADED SEQUENCES ###############################################
+
 
 
 
