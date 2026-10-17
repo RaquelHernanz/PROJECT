@@ -248,6 +248,23 @@ class Sequence:
 
 ######################################  STEP 8. (4.6) SIMULATING A DIGEST  ##################################################
 # The prorgam going to FIND_SITES AND DIGEST FUNCTIONS
+# The command "DIGEST" lists the The command DIGEST fragments in this same order, from the top to the bottom of the 
+# gel
+
+
+# TO SIMULATED A DIGEST OF A SEQUENCE s in sequence: 
+#       1. we find all occurrences of the recognition sites of the enzymes in s.
+
+#       2. Each time it finds a pattern, it records the starting position of that pattern as p (starting the count at 1).
+
+#       Enzymes do not necessarily cut at the beginning of the pattern; they have an offset (referred to as offset/ or o) 
+
+#       The cut is made exactly between position (p + o - 1) and position p + o)
+
+#NOTE: A linear sequence with n distinct cuts is thus split into n + 1 fragments.
+
+
+#COMMENT: SHOULD WE ASK FOR THE OFFSET (o)?
 
 
 
