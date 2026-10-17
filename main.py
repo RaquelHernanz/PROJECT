@@ -167,7 +167,7 @@ def readEnzymeFile (file: str, data_folder: str)-> dict[str, Enzyme]:
     return enzymes
 
 
-###################################################################################################
+###################################  STEP 4. (4.2) LOADING AND VERIFYING A FASTA FILE ###############################################
 """
 Allows to read and add a FASTA file to a dict
 
@@ -203,7 +203,7 @@ def readFastaFile(file:str, data_folder: str, prefix: str)-> list[Sequence]:
 ###FIND_SITES AND DIGEST FUNCTIONS###
 
 
-###CONSTANTS###
+################################################# CONSTANTS  #############################################################
 DATA_FOLDER: str = "data"
 ENZYMES_FILE: str = "enzymes.txt"
 PROMPT: str = "Command to execute:"
@@ -212,7 +212,7 @@ GOODBYE_MESSAGE: str = "Goodbye!"
 UNKNOWN_COMMAND: str = "Unknown command."
 REPEATED_FASTA: str = ""
 
-###MAIN###
+##############################################   MAIN Function  ##########################################################
 def main() -> None:
 
     enzymes: dict[str, Enzyme] = readEnzymeFile(ENZYMES_FILE, DATA_FOLDER) #Checked
@@ -239,7 +239,8 @@ def main() -> None:
     command_name: str = ""
     if (command):
         command_name = command[0]
-    
+
+   #The command EXIT terminates the execution saying "Goodbye".
     while command_name != "EXIT":
 
         if command_name == "LOAD_SEQUENCES":
@@ -254,7 +255,7 @@ def main() -> None:
             print("Function complete")
 
         else:
-            print(UNKNOWN_COMMAND)
+            print("Goodbye!")                                          #4.1. Terminating the Program 
 
         command = readString(PROMPT).split()
         command_name = ""
