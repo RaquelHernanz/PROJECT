@@ -135,9 +135,13 @@ class Fragment:
     end: int
 
 
-########################################## FILE READING FUNCTIONS  ################################
+########################################## FILE READING FUNCTIONS  #################################################################################
 
+# To avoid problems with files across different Operating Systems, we use the os.path.join function to create each file path. 
+# WHy? Because each operating system joins folders and files differently to create a path, some with \ and others with / in the file path.
+# What does the function do? It detects which operating system the program is running on and joins the words using the correct slash for that system
 import os
+
 
 """
 readString return a String from the input() function
@@ -161,7 +165,9 @@ def readString(message: str)-> str:
 
 def readEnzymeFile (file: str, data_folder: str)-> dict[str, Enzyme]:
         enzymes: dict[str,Enzyme] = {}
-        file_path = os.path.join(data_folder, file)
+        
+        #The file_path variable holds the path that we provide to the open function
+        file_path = os.path.join(DATA_FOLDER, file)                            
         print(file_path)
         
         with open(file_path) as enzyme_txt:
