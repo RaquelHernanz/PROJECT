@@ -265,100 +265,100 @@ class Sequence:
 
 #NOTE: A linear sequence with n distinct cuts is thus split into n + 1 fragments
 #     the lengths of the fragments always add up to the length of the sequence.
+#In the end, if we have time, we can use the NEBcutter online tool to find out exactly what the actual digestion results would be.
 
 
 #COMMENT: SHOULD WE ASK FOR THE OFFSET (o)?
 
 
 ##############################################   MAIN Function  ##########################################################
-# 1. TOP STRAND (forward DNA sequence)
-# 2. Create BOTTOM SEQUENCE (reverse sequence): 
-         # REVERSE COMPLEMENT SEQUENCE: e.g ATGAATTCGG is CCGAATTCAT
-                  #1. Complementary
-                  #2. read backwards
+PROMPT: str = "Command to execute:"
 
-#- 3. The user requests an ENZYME. 
-    # - CUT LOCATION: always palindromic (it is read backwards)
-    # - WE give the CUT OFFSET (0< int > length of its site | number of bases of the site that come before the cut)
-    #- WE give  the CLEAVAGE SEQUENCE  and the site (file enzimes.text)
-
-
-# 4. Restriction Digest 
-#    - Find the sites and cut (CHECK)
-#    - Fragments
-#    - Agarose Gel - the fragments are separated by size
-#          - command DIGEST lists:  order, from the top (larger the fragment) to the bottom of the gel (smallest one).
-
-
-def main() -> None:
-        #1. WE SHOULD PROVID INFORMATION:- command EXIT terminates the execution
+def main() -> None:        
+        #STEP 1. Program reads the enzymes files. 
         enzymes: dict[str, Enzyme] = readEnzymeFile(ENZYMES_FILE, DATA_FOLDER) #Checked
         loaded_fasta_files: set [str] = set()
         sequences: dict [str, Sequence] = {}
-
-#This is useful to avoid uploading the same file again.
-# 4.3. LIST_SEQUENCE 
-        #1. Ask user for sequence 
-        #2. Count number of sequences loaded
-        count_number_of_sequence_loaded 
-        if count_number_of_sequence_loaded = 0 : 
-                print("No loaded sequences.")
-
-        #3. Print number of sequences loaded 
-        else: 
-                print(f"Number of sequences loaded: {count_number_of_sequence_loaded}")
         
-        #4. Call the function to give us the list of uploaded sequences
-    
+        #STEP2. repeatedly asks the user for a command (using while), executes it, and prints the corresponding messages, until the user types EXIT
+        #       - WE SHOULD PROVID INFORMATION:- command EXIT terminates the execution
+        #        - We should do a io function for this part. Specially if we want to control the input of  the user
+        command = readString(PROMPT).split()
+        command_name: str = ""
+
+        # if the user provides an unknown command: 
+        if command not in comand: 
+                print ("UNKNOWN_COMMAND")
+
+        # This part is useful to avoid uploading the same file again.
+        if (command):
+                command_name = command[0]
+
+
+        while command_name != "EXIT":
+                if command_name == "LOAD_SEQUENCES":
+                        print("Function complete")
+                elif command_name == "LIST_SEQUENCES":
+                        print("Function complete")
+                elif command_name == "SEQUENCE_INFO":
+                        print("Function complete")
+                elif command_name == "FIND_SITES":
+                        print("Function complete")
+                elif command_name == "DIGEST":
+                        print("Function complete")
+                else:
+                        #The command EXIT terminates the execution saying "Goodbye".
+                        print(GOODBYE_MESSAGE)                                          
+
+
 
     """
     Considering the commmands follow this structur:
     - SEQUENCE_INFO demo
     - DIGEST pGFP_insert EcoRI HindIII
 
-    We must separate the whole command line into 
-    smaller strings by the split()
+    We must separate the whole command line into smaller strings by the split()
 
-    Also take into account if the user accidently introduce an 
-    enter without introducing a letter (in that case, unkwon message)
+    Also take into account if the user accidently introduce an enter without introducing a letter (in that case, unkwon message)
     """
 
-    # We should do a io function for this part
-    # Specially if we want to control the input of 
-    # the user
-    command = readString(PROMPT).split()
-    command_name: str = ""
-    if (command):
-        command_name = command[0]
-            
-    # if user provides an unknown command: 
-    # print ("UNKNOWN_COMMAND")
+       
+# 4.3. LIST_SEQUENCE 
+        #1. Ask user for sequence 
+        #2. Count number of sequences loaded
+        #count_number_of_sequence_loaded 
+        #if count_number_of_sequence_loaded = 0 : 
+                #print("No loaded sequences.")
+
+        #3. Print number of sequences loaded 
+        #else: 
+                #print(f"Number of sequences loaded: {count_number_of_sequence_loaded}")
         
-
-    #The command EXIT terminates the execution saying "Goodbye".
-    while command_name != "EXIT":
-
-        if command_name == "LOAD_SEQUENCES":
-            print("Function complete")
-        elif command_name == "LIST_SEQUENCES":
-            print("Function complete")
-        elif command_name == "SEQUENCE_INFO":
-            print("Function complete")
-        elif command_name == "FIND_SITES":
-            print("Function complete")
-        elif command_name == "DIGEST":
-            print("Function complete")
-
-        else:
-            print("Goodbye!")                                          #4.1. Terminating the Program 
-
-        command = readString(PROMPT).split()
-        command_name = ""
-        if (command):
-            command_name = command[0]
-
+        #4. Call the function to give us the list of uploaded sequences
+    
     print(GOODBYE_MESSAGE)
 
 
 if __name__ == "__main__":
     main()
+
+#-----------------------------------------------------
+# INFORMATIONS THAT CAN BE USEFULL
+#Program reads the enzyme 
+    # - CUT LOCATION: always palindromic (it is read backwards)
+    # - WE give the CUT OFFSET (0< int > length of its site | number of bases of the site that come before the cut)
+    #- WE give  the CLEAVAGE SEQUENCE  and the site (file enzimes.text)
+
+# TOP STRAND (forward DNA sequence)
+# Create BOTTOM SEQUENCE (reverse sequence): 
+         # REVERSE COMPLEMENT SEQUENCE: e.g ATGAATTCGG is CCGAATTCAT
+                  #1. Complementary
+                  #2. read backwards
+
+# Restriction Digest 
+#    - Find the sites and cut (CHECK)
+#    - Fragments
+#    - Agarose Gel - the fragments are separated by size
+#          - command DIGEST lists:  order, from the top (larger the fragment) to the bottom of the gel (smallest one).
+
+#----------------------------------
