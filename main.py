@@ -185,6 +185,18 @@ def readFastaFile(file:str, data_folder: str, prefix: str)-> list[Sequence]:
 #This function will execute the LIST_SEQUENCES command, displaying the sequences in the terminal.
 #def list_sequences_io(sequences: dict[str, Sequence]) -> None:
 
+# 4.3. LIST_SEQUENCE 
+        #1. Ask user for sequence 
+        #2. Count number of sequences loaded
+        #count_number_of_sequence_loaded 
+        #if count_number_of_sequence_loaded = 0 : 
+                #print("No loaded sequences.")
+
+        #3. Print number of sequences loaded 
+        #else: 
+                #print(f"Number of sequences loaded: {count_number_of_sequence_loaded}")
+        
+        #4. Call the function to give us the list of uploaded sequences
 
 ###################################  STEP (4.4) SEQUENCE INFORMATION (inspect) #####################################################
 
@@ -288,21 +300,6 @@ def main() -> None:
                         print(GOODBYE_MESSAGE)                                          
 
 #The rest of the list (command_parts[1:]) contains the arguments that we will need to pass to the functions       
-# 4.3. LIST_SEQUENCE 
-        #1. Ask user for sequence 
-        #2. Count number of sequences loaded
-        #count_number_of_sequence_loaded 
-        #if count_number_of_sequence_loaded = 0 : 
-                #print("No loaded sequences.")
-
-        #3. Print number of sequences loaded 
-        #else: 
-                #print(f"Number of sequences loaded: {count_number_of_sequence_loaded}")
-        
-        #4. Call the function to give us the list of uploaded sequences
-    
-    print(GOODBYE_MESSAGE)
-
 
 if __name__ == "__main__":
     main()
