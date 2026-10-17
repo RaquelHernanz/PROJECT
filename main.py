@@ -286,15 +286,11 @@ def main() -> None:
 
         #STEP2. repeatedly asks the user for a command (using while), executes it, and prints the corresponding messages, until the user types EXIT
                  # - WE SHOULD PROVID INFORMATION:- command EXIT terminates the execution
-
-                 #NOTE: Considering the commmands follow this structur: 
-                 #          - SEQUENCE_INFO demo
-                 #          - DIGEST pGFP_insert EcoRI HindIII
                 
         while command_name != "EXIT":
 
                 #The commands entered by the user do not come alone, they bring additional arguments. 
-                      # - eg. If the user wants to upload a FASTA file:  LOAD_SEQUENCES demo.fasta
+                      # - eg. If the user wants to upload a FASTA file:  LOAD_SEQUENCES demo.fasta ; SEQUENCE_INFO demo ; DIGEST pGFP_insert EcoRI HindIII
                 
                 #1. Read user input and split it by spaces-  We must separate the whole command line into smaller strings by the split()
                      # - readString reads all characters received on the serial port and groups them into a single string
@@ -307,7 +303,11 @@ def main() -> None:
                 else:
                         command_name = " " 
                         continue 
+                        
+                # This part is useful to avoid uploading the same file again. (WHICH PART?)
+                # We should do a io function for this part. Specially if we want to control the input of  the user  ??
 
+                
                                 
                 #3. Check if the user provides an unknown command: 
                 if command_name not in VALID_COMMANDS: 
@@ -329,12 +329,7 @@ def main() -> None:
                         #The command EXIT terminates the execution saying "Goodbye".
                         print(GOODBYE_MESSAGE)                                          
 
-#The rest of the list (command_parts[1:]) contains the arguments that we will need to pass to the functions
-
-#- We should do a io function for this part. Specially if we want to control the input of  the user
-# This part is useful to avoid uploading the same file again. (WHICH PART?)
-
-       
+#The rest of the list (command_parts[1:]) contains the arguments that we will need to pass to the functions       
 # 4.3. LIST_SEQUENCE 
         #1. Ask user for sequence 
         #2. Count number of sequences loaded
