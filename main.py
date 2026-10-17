@@ -19,8 +19,9 @@
 
 # !! Positions in a sequence are 1-based, as is standard in biology: the first base of a sequence is at position 1 (careful: in Python, it is at index 0!).
 
-
+# AT THE END: 
 # Check the entire code with AI, ask for corrections, and see how we can improve its appearance
+# The folder named data should be in the same folder as your main.py file.
 
 
 ############################################## MAIN GOAL ###########################################################################################
@@ -79,7 +80,7 @@ ENZYMES_FILE: str = "enzymes.txt"
 PROMPT: str = "Command to execute:"
 FASTA_HEADER_PREFIX: str = ">"
 GOODBYE_MESSAGE: str = "Goodbye!"
-UNKNOWN_COMMAND: str = "Unknown command."
+UNKNOWN_COMMAND: str = "Unknown command" 
 REPEATED_FASTA: str = ""
 
 
@@ -134,12 +135,7 @@ class Fragment:
     end: int
 
 
-##########################################  INPUT/OUTPUT and FILE READING FUNCTIONS  ################################
-"""
-1. PROVID INFORMATION:- command EXIT terminates the execution
-2. COMMAND NOT FOUND? 
-     - print ("Command to execute")
-"""
+########################################## FILE READING FUNCTIONS  ################################
 
 import os
 
@@ -261,12 +257,11 @@ class Sequence:
 
 #       The cut is made exactly between position (p + o - 1) and position p + o)
 
-#NOTE: A linear sequence with n distinct cuts is thus split into n + 1 fragments.
+#NOTE: A linear sequence with n distinct cuts is thus split into n + 1 fragments
+#     the lengths of the fragments always add up to the length of the sequence.
 
 
 #COMMENT: SHOULD WE ASK FOR THE OFFSET (o)?
-
-
 
 
 ##############################################   MAIN Function  ##########################################################
@@ -290,6 +285,7 @@ class Sequence:
 
 
 def main() -> None:
+        #1. WE SHOULD PROVID INFORMATION:- command EXIT terminates the execution
         enzymes: dict[str, Enzyme] = readEnzymeFile(ENZYMES_FILE, DATA_FOLDER) #Checked
         loaded_fasta_files: set [str] = set()
         sequences: dict [str, Sequence] = {}
@@ -329,10 +325,9 @@ def main() -> None:
     if (command):
         command_name = command[0]
             
-
-    # if user provides an unknown command: - print ("Unknown command.")
+    # if user provides an unknown command: 
+    # print ("UNKNOWN_COMMAND")
         
-
 
     #The command EXIT terminates the execution saying "Goodbye".
     while command_name != "EXIT":
