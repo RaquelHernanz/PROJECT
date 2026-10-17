@@ -290,14 +290,13 @@ def main() -> None:
                  #NOTE: Considering the commmands follow this structur: 
                  #          - SEQUENCE_INFO demo
                  #          - DIGEST pGFP_insert EcoRI HindIII
-                 # We must separate the whole command line into smaller strings by the split()- Also take into account if the user accidently introduce an enter 
-                 # without introducing a letter (in that case, unkwon message)
-    
+                
         while command_name != "EXIT":
 
                 #The commands entered by the user do not come alone, they bring additional arguments. 
                       # - eg. If the user wants to upload a FASTA file:  LOAD_SEQUENCES demo.fasta
-                #1. Read user input and split it by spaces. 
+                
+                #1. Read user input and split it by spaces-  We must separate the whole command line into smaller strings by the split()
                      # - readString reads all characters received on the serial port and groups them into a single string
                      # - The command_parts variable becomes a list with two elements: ["LOAD_SEQUENCES", "demo.fasta"]
                 command_parts = readString(PROMPT).split()
