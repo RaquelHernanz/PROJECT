@@ -22,10 +22,51 @@
 
 # Check the entire code with AI, ask for corrections, and see how we can improve its appearance
 
-#######################################################################################################################################
+
+############################################## MAIN GOAL ###########################################################################################
+
+# How does it work?
+""" 
+  1. loads DNA sequences from files; 
+  2. supports a set of operations over individual sequences or over the whole collection of loaded sequences; 
+  3. Find where enzymes cut and simulating a digest.
+""" 
+
+#Essential concepts
 
 """
-PAB Project 2026-2027
+  - NULCEOTIDES- carries one of four bases: A (adenine), C (cytosine), G (guanine) and T (thymine).
+
+
+Rules for holding the two strands together by hydrogen bonds between base pairs: 
+- COMPLEMENTARY - Each base only pairs with its complementary base: A-T, C-G
+      Each such pair is a base pair (bp)- the length of DNA is measured in base pairs.
+
+- ANTIPARALLELISM - Each strand has a direction. The two strands run in opposite directions: 5' → 3'; 3' → 5'
+       A strand is always read and written in the 5' → 3' (direction in which cells read and copy DNA)
+
+
+"""
+
+#######################################################################################################################################
+
+ """" 
+                                                           ALREADY CHECK 
+ """
+
+######################################################### INFORMATION #############################################################
+"""
+#What is a restriction digest?
+A restriction digest, consists in cutting a DNA sample with one or more enzymes and then running the resulting fragments on an agarose gel, 
+which separates them by size.
+"""
+
+# Program that simulates RESTRICTION DIGEST experiments in silico. 
+"""This program helps the user PLANNING and INTERPRETING restriction digests. """
+
+
+################################################################ PROJECTS ###########################################################
+""" PAB Project 2026-2027
 
 Programme description: 
 A command-line program that simulates restriction enzyme digests in silico. 
