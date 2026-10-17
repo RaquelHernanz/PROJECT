@@ -121,7 +121,14 @@ class Fragment:
     end: int
 
 
-###INPUT/OUTPUT and FILE READING FUNCTIONS###
+##########################################INPUT/OUTPUT and FILE READING FUNCTIONS#######################
+"""
+1. PROVID INFORMATION:- command EXIT terminates the execution
+2. COMMAND NOT FOUND? 
+     - print ("Command to execute")
+
+"""
+
 import os
 
 """
