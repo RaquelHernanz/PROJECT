@@ -1,3 +1,29 @@
+###################################################### TO DO ##################################################################################
+#document data classes and function
+        # explaining what they mean 
+        # what they dO 
+        # defining preconditions for their usage
+        # use type hints in every function
+
+# implement the different features in the same order as presented in Section 4
+
+#RULES 
+"""
+     - the user will always be correct and consistent with the command definition
+     - every FASTA file provided by the user exists and is correctly formatted
+     - All commands can be invoked at any time, in particular, the user should be able to load another file at any time. 
+
+"""
+
+# every function written with the help of an AI assistant (e.g., ChatGPT, Copilot, Claude) must explicitly include the statement " AI-assisted function ""
+
+# !! Positions in a sequence are 1-based, as is standard in biology: the first base of a sequence is at position 1 (careful: in Python, it is at index 0!).
+
+
+# Check the entire code with AI, ask for corrections, and see how we can improve its appearance
+
+#######################################################################################################################################
+
 """
 PAB Project 2026-2027
 
