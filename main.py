@@ -1,55 +1,3 @@
-###################################################### TO DO ##################################################################################
-#document data classes and function
-        # explaining what they mean 
-        # what they dO 
-        # defining preconditions for their usage
-        # use type hints in every function
-
-# implement the different features in the same order as presented in Section 4
-
-#RULES 
-"""
-     - the user will always be correct and consistent with the command definition
-     - every FASTA file provided by the user exists and is correctly formatted
-     - All commands can be invoked at any time, in particular, the user should be able to load another file at any time. 
-
-"""
-
-# every function written with the help of an AI assistant (e.g., ChatGPT, Copilot, Claude) must explicitly include the statement " AI-assisted function ""
-
-# !! Positions in a sequence are 1-based, as is standard in biology: the first base of a sequence is at position 1 (careful: in Python, it is at index 0!).
-
-# AT THE END: 
-# Check the entire code with AI, ask for corrections, and see how we can improve its appearance
-# The folder named data should be in the same folder as your main.py file.
-
-
-############################################## MAIN GOAL ###########################################################################################
-
-# How does it work?
-""" 
-  1. loads DNA sequences from files; 
-  2. supports a set of operations over individual sequences or over the whole collection of loaded sequences; 
-  3. Find where enzymes cut and simulating a digest.
-""" 
-
-#Essential concepts
-
-"""
-  - NULCEOTIDES- carries one of four bases: A (adenine), C (cytosine), G (guanine) and T (thymine).
-
-
-Rules for holding the two strands together by hydrogen bonds between base pairs: 
-- COMPLEMENTARY - Each base only pairs with its complementary base: A-T, C-G
-      Each such pair is a base pair (bp)- the length of DNA is measured in base pairs.
-
-- ANTIPARALLELISM - Each strand has a direction. The two strands run in opposite directions: 5' → 3'; 3' → 5'
-       A strand is always read and written in the 5' → 3' (direction in which cells read and copy DNA)
-
-
-"""
-
-
 ######################################################### INFORMATION #############################################################
 """
 #What is a restriction digest?
@@ -57,20 +5,25 @@ A restriction digest, consists in cutting a DNA sample with one or more enzymes 
 which separates them by size.
 """
 
-# Program that simulates RESTRICTION DIGEST experiments in silico. 
-"""This program helps the user PLANNING and INTERPRETING restriction digests. """
-
-
 ################################################################ PROJECTS ###########################################################
 """ PAB Project 2026-2027
 
 Programme description: 
 A command-line program that simulates restriction enzyme digests in silico. 
-It loads and validates DNA sequences from FASTA files, reports basic statistics (length, base counts, GC content), 
+It loads and validates DNA sequences from FASTA files, reports basic statistics (length, base counts, GC content),  
 finds enzyme recognition sites (including overlapping ones) and lists the fragments produced by digesting a sequence 
 with one or more enzymes, ordered as they would appear on an agarose gel (Western Blot).
 
-@author: Beatriz Fernansdes and Raquel Hernanz
+Purpose of the program: 
+This program helps the user PLANNING and INTERPRETING restriction digests. 
+
+# How does it work?
+  1. loads DNA sequences from files; 
+  2. supports a set of operations over individual sequences or over the whole collection of loaded sequences; 
+  3. Find where enzymes cut and simulating a digest.
+
+
+@author: Beatriz Fernansdes and Raquel Hernanz 
 
 """
 
@@ -85,6 +38,7 @@ REPEATED_FASTA: str = ""
 
 # List of valid commands in the system (Case-Sensitive)
 VALID_COMMANDS = ["LOAD_SEQUENCES", "LIST_SEQUENCES", "SEQUENCE_INFO", "FIND_SITES", "DIGEST", "EXIT"]
+
 
 
 ################################################# DATACLASSES AND THEIR METHODS   ######################################
@@ -372,4 +326,45 @@ if __name__ == "__main__":
 #    - Agarose Gel - the fragments are separated by size
 #          - command DIGEST lists:  order, from the top (larger the fragment) to the bottom of the gel (smallest one).
 
+
+###################################################### TO DO ##################################################################################
+#document data classes and function
+        # explaining what they mean 
+        # what they dO 
+        # defining preconditions for their usage
+        # use type hints in every function
+
+# implement the different features in the same order as presented in Section 4
+
+#RULES 
+"""
+     - the user will always be correct and consistent with the command definition
+     - every FASTA file provided by the user exists and is correctly formatted
+     - All commands can be invoked at any time, in particular, the user should be able to load another file at any time. 
+
+"""
+
+# every function written with the help of an AI assistant (e.g., ChatGPT, Copilot, Claude) must explicitly include the statement " AI-assisted function ""
+
+# !! Positions in a sequence are 1-based, as is standard in biology: the first base of a sequence is at position 1 (careful: in Python, it is at index 0!).
+
+# AT THE END: 
+# Check the entire code with AI, ask for corrections, and see how we can improve its appearance
+# The folder named data should be in the same folder as your main.py file.
+
+#Essential concepts
+
+"""
+  - NULCEOTIDES- carries one of four bases: A (adenine), C (cytosine), G (guanine) and T (thymine).
+
+
+Rules for holding the two strands together by hydrogen bonds between base pairs: 
+- COMPLEMENTARY - Each base only pairs with its complementary base: A-T, C-G
+      Each such pair is a base pair (bp)- the length of DNA is measured in base pairs.
+
+- ANTIPARALLELISM - Each strand has a direction. The two strands run in opposite directions: 5' → 3'; 3' → 5'
+       A strand is always read and written in the 5' → 3' (direction in which cells read and copy DNA)
+
+
+"""
 #----------------------------------
