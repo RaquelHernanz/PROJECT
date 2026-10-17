@@ -294,16 +294,18 @@ def main() -> None:
                  # without introducing a letter (in that case, unkwon message)
     
         while command_name != "EXIT":
-                
+
+                #The commands entered by the user do not come alone, they bring additional arguments. 
+                      # - eg. If the user wants to upload a FASTA file:  LOAD_SEQUENCES demo.fasta
                 #1. Read user input and split it by spaces. 
                      # - readString reads all characters received on the serial port and groups them into a single string
+                     # - The command_parts variable becomes a list with two elements: ["LOAD_SEQUENCES", "demo.fasta"]
                 command_parts = readString(PROMPT).split()
-
-                #2. WE NEED TO CHECK THIS PART! 
-                #This part is useful to avoid uploading the same file again.
                 if command_parts:
-                        command_name = command_parts[0]
-                
+                        #It stores the first element of the list (the main command) in the command_name variable
+                        command_name = command_parts[0]    
+
+                                
                 #3. Check if the user provides an unknown command: 
                 if command_name not in VALID_COMMANDS: 
                         print ("UNKNOWN_COMMAND")
@@ -324,9 +326,11 @@ def main() -> None:
                         #The command EXIT terminates the execution saying "Goodbye".
                         print(GOODBYE_MESSAGE)                                          
 
-
+#The rest of the list (command_parts[1:]) contains the arguments that we will need to pass to the functions
 
 #- We should do a io function for this part. Specially if we want to control the input of  the user
+# This part is useful to avoid uploading the same file again. (WHICH PART?)
+
        
 # 4.3. LIST_SEQUENCE 
         #1. Ask user for sequence 
