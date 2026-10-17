@@ -1,0 +1,41 @@
+Command to execute: File bad_and_dup.fasta could not be loaded. Sequence sampleE contains invalid nucleotides.
+Command to execute: File demo.fasta validated and loaded!
+Command to execute: File constructs.fasta validated and loaded!
+Command to execute: File bad_and_dup.fasta could not be loaded. Sequence sampleE contains invalid nucleotides.
+Command to execute: File clones.fasta validated and loaded!
+Command to execute: File duplicate_ids.fasta could not be loaded. Sequence ID pLac_frag is already in use.
+Command to execute: File plasmid.fasta validated and loaded!
+Command to execute: File dup_within.fasta could not be loaded. Sequence ID sampleF is already in use.
+Command to execute: File M13mp18.fasta validated and loaded!
+Command to execute: File phiX174.fasta validated and loaded!
+Command to execute: File SV40.fasta validated and loaded!
+Command to execute: File lambda.fasta validated and loaded!
+Command to execute: Number of sequences loaded: 11
+- J02459.1 (48502 bp)
+- NC_001422.1 (5386 bp)
+- NC_001669.1 (5243 bp)
+- X02513.1 (7249 bp)
+- amp_cassette (150 bp)
+- clone1 (120 bp)
+- clone2 (130 bp)
+- demo (20 bp)
+- pDEMO (300 bp)
+- pGFP_insert (240 bp)
+- pLac_frag (180 bp)
+Command to execute: Information about the sequence X02513.1:
+- Length: 7249 bp.
+- Base counts: A=1768, C=1538, G=1533, T=2410.
+- GC content: 42.36%.
+Command to execute: Information about the sequence NC_001669.1:
+- Length: 5243 bp.
+- Base counts: A=1518, C=1100, G=1039, T=1586.
+- GC content: 40.8%.
+Command to execute: Recognition sites of HhaI (GCGC) in the sequence X02513.1:
+- Number of sites: 26.
+- Positions: 44, 1010, 1084, 1176, 1469, 2194, 2466, 2710, 3039, 3095, 3407, 3597, 4311, 4994, 5489, 5502, 5511, 5533, 5559, 5567, 6001, 6029, 6094, 6425, 6446, 6561.
+Command to execute: The enzyme EcoRI does not cut the sequence pDEMO.
+Command to execute: The enzyme PstI does not cut the sequence NC_001422.1.
+Command to execute: Recognition sites of SmaI (CCCGGG) in the sequence pDEMO:
+- Number of sites: 2.
+- Positions: 151, 251.
+Command to execute: Goodbye!

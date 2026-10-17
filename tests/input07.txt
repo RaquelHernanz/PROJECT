@@ -1,0 +1,10 @@
+LOAD_SEQUENCES bad_bases.fasta
+LIST_SEQUENCES
+LOAD_SEQUENCES dup_within.fasta
+LIST_SEQUENCES
+LOAD_SEQUENCES constructs.fasta
+LOAD_SEQUENCES bad_and_dup.fasta
+LOAD_SEQUENCES pBR322.fasta
+LOAD_SEQUENCES globins.fasta
+LIST_SEQUENCES
+EXIT

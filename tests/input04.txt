@@ -1,0 +1,9 @@
+LOAD_SEQUENCES demo.fasta
+LOAD_SEQUENCES demo.fasta
+LOAD_SEQUENCES bad_bases.fasta
+LOAD_SEQUENCES constructs.fasta
+LOAD_SEQUENCES duplicate_ids.fasta
+LOAD_SEQUENCES bad_and_dup.fasta
+LOAD_SEQUENCES dup_within.fasta
+LOAD_SEQUENCES constructs.fasta
+EXIT

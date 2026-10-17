@@ -1,0 +1,43 @@
+Command to execute: No sequences loaded.
+Command to execute: File pUC19.fasta validated and loaded!
+Command to execute: File constructs.fasta validated and loaded!
+Command to execute: File duplicate_ids.fasta could not be loaded. Sequence ID pLac_frag is already in use.
+Command to execute: File globins.fasta validated and loaded!
+Command to execute: Number of sequences loaded: 7
+- L09137.2 (2686 bp)
+- NM_000518.5 (628 bp)
+- NM_000519.4 (620 bp)
+- NM_000558.5 (577 bp)
+- amp_cassette (150 bp)
+- pGFP_insert (240 bp)
+- pLac_frag (180 bp)
+Command to execute: Information about the sequence NM_000558.5:
+- Length: 577 bp.
+- Base counts: A=99, C=216, G=156, T=106.
+- GC content: 64.47%.
+Command to execute: Recognition sites of EcoRI (GAATTC) in the sequence L09137.2:
+- Number of sites: 1.
+- Positions: 396.
+Command to execute: Recognition sites of BamHI (GGATCC) in the sequence NM_000518.5:
+- Number of sites: 1.
+- Positions: 347.
+Command to execute: The enzyme NotI does not cut the sequence NM_000518.5.
+Command to execute: Recognition sites of HhaI (GCGC) in the sequence L09137.2:
+- Number of sites: 17.
+- Positions: 3, 106, 236, 257, 588, 653, 681, 714, 984, 1051, 1151, 1325, 1434, 1827, 1920, 2257, 2589.
+Command to execute: Unknown command.
+Command to execute: The sequence demo is not loaded.
+Command to execute: File demo.fasta validated and loaded!
+Command to execute: Recognition sites of EcoRI (GAATTC) in the sequence demo:
+- Number of sites: 2.
+- Positions: 3, 13.
+Command to execute: Number of sequences loaded: 8
+- L09137.2 (2686 bp)
+- NM_000518.5 (628 bp)
+- NM_000519.4 (620 bp)
+- NM_000558.5 (577 bp)
+- amp_cassette (150 bp)
+- demo (20 bp)
+- pGFP_insert (240 bp)
+- pLac_frag (180 bp)
+Command to execute: Goodbye!

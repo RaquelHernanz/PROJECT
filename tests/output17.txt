@@ -1,0 +1,36 @@
+Command to execute: File lambda.fasta validated and loaded!
+Command to execute: Unknown command.
+Command to execute: Information about the sequence J02459.1:
+- Length: 48502 bp.
+- Base counts: A=12334, C=11362, G=12820, T=11986.
+- GC content: 49.86%.
+Command to execute: Recognition sites of EcoRI (GAATTC) in the sequence J02459.1:
+- Number of sites: 5.
+- Positions: 21226, 26104, 31747, 39168, 44972.
+Command to execute: Recognition sites of BamHI (GGATCC) in the sequence J02459.1:
+- Number of sites: 5.
+- Positions: 5505, 22346, 27972, 34499, 41732.
+Command to execute: File clones.fasta validated and loaded!
+Command to execute: File bad_bases.fasta could not be loaded. Sequence sampleB contains invalid nucleotides.
+Command to execute: Number of sequences loaded: 3
+- J02459.1 (48502 bp)
+- clone1 (120 bp)
+- clone2 (130 bp)
+Command to execute: Recognition sites of HindIII (AAGCTT) in the sequence clone2:
+- Number of sites: 1.
+- Positions: 91.
+Command to execute: The enzyme EcoRI does not cut the sequence clone1.
+Command to execute: Information about the sequence clone1:
+- Length: 120 bp.
+- Base counts: A=33, C=28, G=29, T=30.
+- GC content: 47.5%.
+Command to execute: File lambda.fasta already loaded!
+Command to execute: Recognition sites of XbaI (TCTAGA) in the sequence J02459.1:
+- Number of sites: 1.
+- Positions: 24508.
+Command to execute: Unknown command.
+Command to execute: Number of sequences loaded: 3
+- J02459.1 (48502 bp)
+- clone1 (120 bp)
+- clone2 (130 bp)
+Command to execute: Goodbye!

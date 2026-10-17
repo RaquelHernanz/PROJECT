@@ -1,0 +1,27 @@
+Command to execute: File lambda.fasta validated and loaded!
+Command to execute: File pUC19.fasta validated and loaded!
+Command to execute: File globins.fasta validated and loaded!
+Command to execute: Information about the sequence J02459.1:
+- Length: 48502 bp.
+- Base counts: A=12334, C=11362, G=12820, T=11986.
+- GC content: 49.86%.
+Command to execute: Information about the sequence L09137.2:
+- Length: 2686 bp.
+- Base counts: A=667, C=675, G=685, T=659.
+- GC content: 50.63%.
+Command to execute: Information about the sequence NM_000518.5:
+- Length: 628 bp.
+- Base counts: A=139, C=157, G=165, T=167.
+- GC content: 51.27%.
+Command to execute: Information about the sequence NM_000558.5:
+- Length: 577 bp.
+- Base counts: A=99, C=216, G=156, T=106.
+- GC content: 64.47%.
+Command to execute: The sequence J02459 is not loaded.
+Command to execute: Number of sequences loaded: 5
+- J02459.1 (48502 bp)
+- L09137.2 (2686 bp)
+- NM_000518.5 (628 bp)
+- NM_000519.4 (620 bp)
+- NM_000558.5 (577 bp)
+Command to execute: Goodbye!

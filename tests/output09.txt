@@ -1,0 +1,21 @@
+Command to execute: The sequence demo is not loaded.
+Command to execute: File demo.fasta validated and loaded!
+Command to execute: Information about the sequence demo:
+- Length: 20 bp.
+- Base counts: A=6, C=4, G=4, T=6.
+- GC content: 40.0%.
+Command to execute: File constructs.fasta validated and loaded!
+Command to execute: Information about the sequence pGFP_insert:
+- Length: 240 bp.
+- Base counts: A=73, C=63, G=51, T=53.
+- GC content: 47.5%.
+Command to execute: Information about the sequence amp_cassette:
+- Length: 150 bp.
+- Base counts: A=32, C=44, G=44, T=30.
+- GC content: 58.67%.
+Command to execute: Information about the sequence pLac_frag:
+- Length: 180 bp.
+- Base counts: A=53, C=44, G=41, T=42.
+- GC content: 47.22%.
+Command to execute: The sequence sampleA is not loaded.
+Command to execute: Goodbye!

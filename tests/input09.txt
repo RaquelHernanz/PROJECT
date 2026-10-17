@@ -1,0 +1,9 @@
+SEQUENCE_INFO demo
+LOAD_SEQUENCES demo.fasta
+SEQUENCE_INFO demo
+LOAD_SEQUENCES constructs.fasta
+SEQUENCE_INFO pGFP_insert
+SEQUENCE_INFO amp_cassette
+SEQUENCE_INFO pLac_frag
+SEQUENCE_INFO sampleA
+EXIT

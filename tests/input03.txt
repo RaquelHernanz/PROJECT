@@ -1,0 +1,5 @@
+LOAD_SEQUENCES demo.fasta
+LOAD_SEQUENCES constructs.fasta
+LOAD_SEQUENCES pUC19.fasta
+LOAD_SEQUENCES globins.fasta
+EXIT

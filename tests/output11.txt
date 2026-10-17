@@ -1,0 +1,13 @@
+Command to execute: The sequence demo is not loaded.
+Command to execute: File demo.fasta validated and loaded!
+Command to execute: File constructs.fasta validated and loaded!
+Command to execute: Recognition sites of EcoRI (GAATTC) in the sequence demo:
+- Number of sites: 2.
+- Positions: 3, 13.
+Command to execute: Recognition sites of NotI (GCGGCCGC) in the sequence pGFP_insert:
+- Number of sites: 1.
+- Positions: 71.
+Command to execute: The enzyme BamHI does not cut the sequence pLac_frag.
+Command to execute: The enzyme EcoRX is not available.
+Command to execute: The sequence sampleA is not loaded.
+Command to execute: Goodbye!

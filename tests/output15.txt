@@ -1,0 +1,30 @@
+Command to execute: File lambda.fasta validated and loaded!
+Command to execute: File M13mp18.fasta validated and loaded!
+Command to execute: File SV40.fasta validated and loaded!
+Command to execute: File phiX174.fasta validated and loaded!
+Command to execute: Recognition sites of EcoRI (GAATTC) in the sequence J02459.1:
+- Number of sites: 5.
+- Positions: 21226, 26104, 31747, 39168, 44972.
+Command to execute: Recognition sites of BamHI (GGATCC) in the sequence J02459.1:
+- Number of sites: 5.
+- Positions: 5505, 22346, 27972, 34499, 41732.
+Command to execute: Recognition sites of SmaI (CCCGGG) in the sequence J02459.1:
+- Number of sites: 3.
+- Positions: 19397, 31617, 39888.
+Command to execute: Recognition sites of HhaI (GCGC) in the sequence X02513.1:
+- Number of sites: 26.
+- Positions: 44, 1010, 1084, 1176, 1469, 2194, 2466, 2710, 3039, 3095, 3407, 3597, 4311, 4994, 5489, 5502, 5511, 5533, 5559, 5567, 6001, 6029, 6094, 6425, 6446, 6561.
+Command to execute: Recognition sites of PstI (CTGCAG) in the sequence X02513.1:
+- Number of sites: 1.
+- Positions: 6269.
+Command to execute: Recognition sites of HindIII (AAGCTT) in the sequence NC_001669.1:
+- Number of sites: 6.
+- Positions: 1046, 1493, 1708, 3476, 4002, 5171.
+Command to execute: The enzyme NotI does not cut the sequence NC_001669.1.
+Command to execute: The enzyme PstI does not cut the sequence NC_001422.1.
+Command to execute: Recognition sites of XhoI (CTCGAG) in the sequence NC_001422.1:
+- Number of sites: 1.
+- Positions: 162.
+Command to execute: The enzyme EcoRX is not available.
+Command to execute: The sequence J02459 is not loaded.
+Command to execute: Goodbye!

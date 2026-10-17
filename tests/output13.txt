@@ -1,0 +1,24 @@
+Command to execute: File pBR322.fasta validated and loaded!
+Command to execute: Recognition sites of BamHI (GGATCC) in the sequence J01749.1:
+- Number of sites: 1.
+- Positions: 375.
+Command to execute: The enzyme EcoRI does not cut the sequence J01749.1.
+Command to execute: Recognition sites of EcoRV (GATATC) in the sequence J01749.1:
+- Number of sites: 1.
+- Positions: 185.
+Command to execute: Recognition sites of HhaI (GCGC) in the sequence J01749.1:
+- Number of sites: 31.
+- Positions: 101, 233, 261, 414, 435, 495, 549, 701, 776, 816, 947, 1206, 1357, 1419, 1455, 1645, 1728, 2074, 2177, 2207, 2348, 2381, 2651, 2718, 2818, 2992, 3101, 3494, 3587, 3924, 4256.
+Command to execute: Recognition sites of HindIII (AAGCTT) in the sequence J01749.1:
+- Number of sites: 1.
+- Positions: 29.
+Command to execute: The enzyme KpnI does not cut the sequence J01749.1.
+Command to execute: The enzyme NotI does not cut the sequence J01749.1.
+Command to execute: Recognition sites of PstI (CTGCAG) in the sequence J01749.1:
+- Number of sites: 1.
+- Positions: 3607.
+Command to execute: The enzyme SmaI does not cut the sequence J01749.1.
+Command to execute: The enzyme XbaI does not cut the sequence J01749.1.
+Command to execute: The enzyme XhoI does not cut the sequence J01749.1.
+Command to execute: The enzyme ecori is not available.
+Command to execute: Goodbye!

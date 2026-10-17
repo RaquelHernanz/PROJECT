@@ -1,0 +1,9 @@
+FIND_SITES demo EcoRI
+LOAD_SEQUENCES demo.fasta
+LOAD_SEQUENCES constructs.fasta
+FIND_SITES demo EcoRI
+FIND_SITES pGFP_insert NotI
+FIND_SITES pLac_frag BamHI
+FIND_SITES pLac_frag EcoRX
+FIND_SITES sampleA EcoRX
+EXIT

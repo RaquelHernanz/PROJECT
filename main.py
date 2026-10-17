@@ -1,0 +1,194 @@
+"""
+PAB Project 2026-2027
+
+Programme description: 
+A command-line program that simulates restriction enzyme digests in silico. 
+It loads and validates DNA sequences from FASTA files, reports basic statistics (length, base counts, GC content), 
+finds enzyme recognition sites (including overlapping ones) and lists the fragments produced by digesting a sequence 
+with one or more enzymes, ordered as they would appear on an agarose gel (Western Blot).
+
+@author: Beactrice and Raquel Hernanz
+
+"""
+
+###DATACLASSES AND THEIR METHODS###
+from dataclasses import dataclass
+
+"""
+A DNA sequence loaded from a FASTA record.
+    
+    Attributes:
+    - seq_id: Sequence identifier: the text after ">" up to the first space.
+    - bases: Full sequence, with all FASTA lines joined.
+"""
+@dataclass
+class Sequence:
+    seq_id: str
+    bases: str
+
+
+"""
+A restriction enzyme, as described in the enzymes file.
+
+    Attributes:
+    - name: Enzyme name (e.g. "EcoRI"); case-sensitive.
+    - site: Recognition site, as a string over A, C, G, T.
+    - cut_offset: Number of bases of the site that come before the cut
+            on the top strand (e.g. 1 for G^AATTC).
+"""
+@dataclass
+class Enzyme:
+    name: str
+    site: str
+    cut_offset: int 
+
+
+"""
+A fragment produced by a digested Sequence.
+
+    Attributes:
+    - start: First position of the fragment (1-based, inclusive).
+    - end: Last position of the fragment (1-based, inclusive).
+
+    Preconditions:
+        1 <= start <= end <= length of the original sequence.
+"""
+@dataclass
+class Fragment:
+    start: int
+    end: int
+
+
+###INPUT/OUTPUT and FILE READING FUNCTIONS###
+import os
+
+"""
+readString return a String from the input() function
+    Arguments:
+    - message: A string message used for the input function
+"""
+def readString(message: str)-> str:
+    return input(message)
+
+
+"""
+Allows to read the enzyme.txt file and create a dict of 
+the available enzymes inside the file. Each line follows
+the next pattern: name + site + cutoff_site
+
+BamHI GGATCC 1
+
+    Attributes:
+    - file_path: the enzyme.txt file path
+
+"""
+def readEnzymeFile (file: str, data_folder: str)-> dict[str, Enzyme]:
+    enzymes: dict[str,Enzyme] = {}
+    file_path = os.path.join(data_folder, file)
+    print(file_path)
+    with open(file_path) as enzyme_txt:
+        for line in enzyme_txt:
+            complete_line = line.strip() #Read each line
+            name, site, cutoff_site = complete_line.split() #Split into the following variables: name, site and cutoff_site
+            enzymes[name] = Enzyme(name,site,int(cutoff_site))      
+            
+    return enzymes
+
+"""
+Allows to read and add a FASTA file to a dict
+
+"""
+
+def readFastaFile(file:str, data_folder: str, prefix: str)-> list[Sequence]:
+    sequences: list[Sequence] = []
+    file_path = os.path.join(data_folder, file)
+    name_seq: str = ""
+    nucl_seq: str = ""
+    with open(file_path) as fasta:
+        for line in fasta:
+            complete_line = line.strip()
+            if (line == ""):
+                continue
+            else:
+                if (complete_line[0] == prefix): #If equal to >
+                    complete_line = complete_line.replace(prefix,"")# > must be remove
+                    complete_line = complete_line.split()
+                    current_seq_name = complete_line[0] #Obtain the name sequence
+                    
+                    #If it wasnt then we store the old one in the list and add the new opne
+                    if (current_seq_name not in sequences):
+                        sequences.append(Sequence(previous_seq_name,nucl_seq))
+                        previous_seq_name = current_seq_name
+                        nucl_seq = ""
+                    
+                    else:
+                        nucl_seq = nucl_seq + complete_line
+
+
+
+###FIND_SITES AND DIGEST FUNCTIONS###
+
+
+###CONSTANTS###
+DATA_FOLDER: str = "data"
+ENZYMES_FILE: str = "enzymes.txt"
+PROMPT: str = "Command to execute:"
+FASTA_HEADER_PREFIX: str = ">"
+GOODBYE_MESSAGE: str = "Goodbye!"
+UNKNOWN_COMMAND: str = "Unknown command."
+REPEATED_FASTA: str = ""
+
+###MAIN###
+def main() -> None:
+
+    enzymes: dict[str, Enzyme] = readEnzymeFile(ENZYMES_FILE, DATA_FOLDER) #Checked
+    loaded_fasta_files: set [str] = set()
+    sequences: dict [str, Sequence] = {}
+    #This is useful to avoid uploading the same file again.
+
+    """
+    Considering the commmands follow this structur:
+    - SEQUENCE_INFO demo
+    - DIGEST pGFP_insert EcoRI HindIII
+
+    We must separate the whole command line into 
+    smaller strings by the split()
+
+    Also take into account if the user accidently introduce an 
+    enter without introducing a letter (in that case, unkwon message)
+    """
+
+    # We should do a io function for this part
+    # Specially if we want to control the input of 
+    # the user
+    command = readString(PROMPT).split()
+    command_name: str = ""
+    if (command):
+        command_name = command[0]
+    
+    while command_name != "EXIT":
+
+        if command_name == "LOAD_SEQUENCES":
+            print("Function complete")
+        elif command_name == "LIST_SEQUENCES":
+            print("Function complete")
+        elif command_name == "SEQUENCE_INFO":
+            print("Function complete")
+        elif command_name == "FIND_SITES":
+            print("Function complete")
+        elif command_name == "DIGEST":
+            print("Function complete")
+
+        else:
+            print(UNKNOWN_COMMAND)
+
+        command = readString(PROMPT).split()
+        command_name = ""
+        if (command):
+            command_name = command[0]
+
+    print(GOODBYE_MESSAGE)
+
+
+if __name__ == "__main__":
+    main()

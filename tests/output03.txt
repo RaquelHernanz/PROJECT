@@ -1,0 +1,5 @@
+Command to execute: File demo.fasta validated and loaded!
+Command to execute: File constructs.fasta validated and loaded!
+Command to execute: File pUC19.fasta validated and loaded!
+Command to execute: File globins.fasta validated and loaded!
+Command to execute: Goodbye!

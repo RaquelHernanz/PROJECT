@@ -1,0 +1,20 @@
+DIGEST demo EcoRI
+LOAD_SEQUENCES demo.fasta
+LOAD_SEQUENCES constructs.fasta
+LIST_SEQUENCES
+SEQUENCE_INFO pGFP_insert
+FIND_SITES demo EcoRI
+DIGEST demo EcoRI
+DIGEST pGFP_insert BamHI
+DIGEST pLac_frag EcoRI
+DIGEST pLac_frag BamHI
+DIGEST pLac_frag EcoRX
+DIGEST pGFP_insert EcoRI HindIII
+DIGEST pLac_frag EcoRI HhaI XhoI
+DIGEST amp_cassette PstI SmaI PstI
+DIGEST amp_cassette EcoRI BamHI
+DIGEST pLac_frag EcoRI EcoRX
+DIGEST amp_cassette KpnI XbaI EcoRX
+DIGEST pGFP_insert EcoRI HindIII BamHI NotI
+digest demo EcoRI
+EXIT

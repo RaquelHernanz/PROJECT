@@ -1,0 +1,16 @@
+Command to execute: No sequences loaded.
+Command to execute: File constructs.fasta validated and loaded!
+Command to execute: Number of sequences loaded: 3
+- amp_cassette (150 bp)
+- pGFP_insert (240 bp)
+- pLac_frag (180 bp)
+Command to execute: File demo.fasta validated and loaded!
+Command to execute: File clones.fasta validated and loaded!
+Command to execute: Number of sequences loaded: 6
+- amp_cassette (150 bp)
+- clone1 (120 bp)
+- clone2 (130 bp)
+- demo (20 bp)
+- pGFP_insert (240 bp)
+- pLac_frag (180 bp)
+Command to execute: Goodbye!

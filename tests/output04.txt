@@ -1,0 +1,9 @@
+Command to execute: File demo.fasta validated and loaded!
+Command to execute: File demo.fasta already loaded!
+Command to execute: File bad_bases.fasta could not be loaded. Sequence sampleB contains invalid nucleotides.
+Command to execute: File constructs.fasta validated and loaded!
+Command to execute: File duplicate_ids.fasta could not be loaded. Sequence ID pLac_frag is already in use.
+Command to execute: File bad_and_dup.fasta could not be loaded. Sequence sampleE contains invalid nucleotides.
+Command to execute: File dup_within.fasta could not be loaded. Sequence ID sampleF is already in use.
+Command to execute: File constructs.fasta already loaded!
+Command to execute: Goodbye!

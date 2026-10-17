@@ -1,0 +1,18 @@
+Command to execute: File constructs.fasta validated and loaded!
+Command to execute: Recognition sites of HhaI (GCGC) in the sequence pLac_frag:
+- Number of sites: 2.
+- Positions: 101, 103.
+Command to execute: File pUC19.fasta validated and loaded!
+Command to execute: Recognition sites of HhaI (GCGC) in the sequence L09137.2:
+- Number of sites: 17.
+- Positions: 3, 106, 236, 257, 588, 653, 681, 714, 984, 1051, 1151, 1325, 1434, 1827, 1920, 2257, 2589.
+Command to execute: File lambda.fasta validated and loaded!
+Command to execute: Recognition sites of HindIII (AAGCTT) in the sequence J02459.1:
+- Number of sites: 6.
+- Positions: 23130, 25157, 27479, 36895, 37459, 44141.
+Command to execute: The enzyme NotI does not cut the sequence J02459.1.
+Command to execute: File phiX174.fasta validated and loaded!
+Command to execute: Recognition sites of XhoI (CTCGAG) in the sequence NC_001422.1:
+- Number of sites: 1.
+- Positions: 162.
+Command to execute: Goodbye!

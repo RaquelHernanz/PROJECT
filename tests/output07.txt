@@ -1,0 +1,17 @@
+Command to execute: File bad_bases.fasta could not be loaded. Sequence sampleB contains invalid nucleotides.
+Command to execute: No sequences loaded.
+Command to execute: File dup_within.fasta could not be loaded. Sequence ID sampleF is already in use.
+Command to execute: No sequences loaded.
+Command to execute: File constructs.fasta validated and loaded!
+Command to execute: File bad_and_dup.fasta could not be loaded. Sequence sampleE contains invalid nucleotides.
+Command to execute: File pBR322.fasta validated and loaded!
+Command to execute: File globins.fasta validated and loaded!
+Command to execute: Number of sequences loaded: 7
+- J01749.1 (4361 bp)
+- NM_000518.5 (628 bp)
+- NM_000519.4 (620 bp)
+- NM_000558.5 (577 bp)
+- amp_cassette (150 bp)
+- pGFP_insert (240 bp)
+- pLac_frag (180 bp)
+Command to execute: Goodbye!
