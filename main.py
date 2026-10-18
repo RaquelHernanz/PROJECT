@@ -1,21 +1,21 @@
-######################################################### INFORMATION #############################################################
+########################################## INFORMATION ##########################################
 """
 #What is a restriction digest?
 A restriction digest, consists in cutting a DNA sample with one or more enzymes and then running the resulting fragments on an agarose gel, 
 which separates them by size.
 """
 
-################################################################ PROJECTS ###########################################################
+########################################### PROJECTS ############################################
 """ PAB Project 2026-2027
+
+Purpose of the program: 
+This program helps the user PLANNING and INTERPRETING restriction digests. 
 
 Programme description: 
 A command-line program that simulates restriction enzyme digests in silico. 
 It loads and validates DNA sequences from FASTA files, reports basic statistics (length, base counts, GC content),  
 finds enzyme recognition sites (including overlapping ones) and lists the fragments produced by digesting a sequence 
 with one or more enzymes, ordered as they would appear on an agarose gel (Western Blot).
-
-Purpose of the program: 
-This program helps the user PLANNING and INTERPRETING restriction digests. 
 
 # How does it work?
   1. loads DNA sequences from files; 
@@ -27,7 +27,16 @@ This program helps the user PLANNING and INTERPRETING restriction digests.
 
 """
 
-################################################# CONSTANTS  #############################################################
+########################################## CONSTANTS AND LIBRARIES  ################################################
+"""
+To avoid problems with files across different Operating Systems (Windows, MacOS, Linux), we use the os.path.join function to create each file path. 
+Each operating system joins folders and files differently to create a path, some with \ and others with / in the file path.
+
+What does the function do? It detects which operating system the program is running on and joins the words using the correct slash for that system
+"""
+import os
+from dataclasses import dataclass
+
 DATA_FOLDER: str = "data"
 ENZYMES_FILE: str = "enzymes.txt"
 PROMPT: str = "Command to execute: "
@@ -35,15 +44,14 @@ FASTA_HEADER_PREFIX: str = ">"
 GOODBYE_MESSAGE: str = "Goodbye!"
 UNKNOWN_COMMAND: str = "Unknown command" 
 REPEATED_FASTA: str = ""
+NUCLEOTIDES: set[str] = {'A','C','G','T'}
 
 # List of valid commands in the system (Case-Sensitive)
 VALID_COMMANDS = ["LOAD_SEQUENCES", "LIST_SEQUENCES", "SEQUENCE_INFO", "FIND_SITES", "DIGEST", "EXIT"]
 
 
 
-################################################# DATACLASSES AND THEIR METHODS   ######################################
-from dataclasses import dataclass
-
+################################# DATACLASSES AND THEIR METHODS ######################################
 """
 A DNA sequence loaded from a FASTA record.
     
@@ -92,81 +100,143 @@ class Fragment:
     end: int
 
 
-########################################## FILE READING FUNCTIONS  #################################################################################
+#################### INPUT FUNCTIONS ###########################
 
-# To avoid problems with files across different Operating Systems, we use the os.path.join function to create each file path. 
-# WHy? Because each operating system joins folders and files differently to create a path, some with \ and others with / in the file path.
-# What does the function do? It detects which operating system the program is running on and joins the words using the correct slash for that system
-import os
+"""
+readString return a String from the input() function
 
-
-# readString return a String from the input() function
-    #Arguments: - message: A string message used for the input function
+    Arguments: - message: A string message used for the input function
+"""
 def readString(message: str)-> str:
     return input(message)
 
 
-##################################### READ THE ENZYMES (start-up) ##################################################
+############################## READ THE ENZYMES (start-up) ##########################################
 
-# In thi step the program going to read the enzymes file, enzymes.txt (always valid) in the order they were given, 
-#   reporting only the first unknown one
+"""
+This function allows to read the enzymes file, enzymes.txt (always valid) in 
+the order they were given
 
-#Attributes: 
-#    - file_path: the enzyme.txt file path
+        Return: dict[str, Enzyme]
 
-#if ENZIME not in ENZIME_NAME:  -print (f"The enzyme {ENZIME_NAME} is not available.")
-
+        Arguments: 
+       - file: the name of the file
+       - data_folder: the folder where the file is contained
+"""
 
 def readEnzymeFile (file: str, data_folder: str)-> dict[str, Enzyme]:
-        enzymes: dict[str,Enzyme] = {}
+    enzymes: dict[str,Enzyme] = {}
         
-        #The file_path variable holds the path that we provide to the open function
-        file_path = os.path.join(DATA_FOLDER, file)                            
-        print(file_path)
+    #The file_path variable holds the path that we provide to the open function
+    file_path = os.path.join(data_folder, file)                            
         
-        with open(file_path) as enzyme_txt:
-                for line in enzyme_txt:
-                        complete_line = line.strip() #Read each line 
-                        name, site, cutoff_site = complete_line.split() #Split into the following variables: name, site and cutoff_site
-                        enzymes[name] = Enzyme(name,site,int(cutoff_site))
-        return enzymes
+    with open(file_path) as enzyme_txt:
+        for line in enzyme_txt:
+            complete_line = line.strip() #Read each line 
+            name, site, cutoff_site = complete_line.split() #Split into the following variables: name, site and cutoff_site
+            enzymes[name] = Enzyme(name,site,int(cutoff_site))
+
+    return enzymes
 
 
-###################################  STEP(4.2) LOADING AND VERIFYING A FASTA FILE (load) ###############################################
+##########################  STEP(4.2) LOADING AND VERIFYING A FASTA FILE (load) ####################################
 
-# LOAD_SEQUENCE COMMAND (used to load the sequences of a FASTA file)
-# The program going to read and add a FASTA file to a dict. 
-     # - Create a dict of the available enzymes inside the file. 
-     # - Each line follows the next pattern: name + site + cutoff_site
-             #- BamHI GGATCC 1
+"""
+The program going to read and add the sequences from a FASTA file to a list[]. 
 
+    AI-assited function: In this case, we ask for some minor corrections structure
+
+    Return: list[Sequence]
+
+     Arguments:
+     - file: the name of the file
+     - data_folder: the folder where the file is contained
+     - prefix: helps to identify the fasta file
+"""
 
 def readFastaFile(file:str, data_folder: str, prefix: str)-> list[Sequence]:
     sequences: list[Sequence] = []
     file_path = os.path.join(data_folder, file)
-    name_seq: str = ""
-    nucl_seq: str = ""
+
     with open(file_path) as fasta:
         for line in fasta:
             complete_line = line.strip()
-            if (line == ""):
-                continue
-            else:
-                if (complete_line[0] == prefix): #If equal to >
-                    complete_line = complete_line.replace(prefix,"")# > must be remove
-                    complete_line = complete_line.split()
-                    current_seq_name = complete_line[0] #Obtain the name sequence
-                    
-                    #If it wasnt then we store the old one in the list and add the new opne
-                    if (current_seq_name not in sequences):
-                        sequences.append(Sequence(previous_seq_name,nucl_seq))
-                        previous_seq_name = current_seq_name
-                        nucl_seq = ""
-                    
-                    else:
-                        nucl_seq = nucl_seq + complete_line
 
-# loading the files demo.fasta and constructs.fasta
+            #If there is no words in that line
+            if (complete_line == ""):
+                continue #In this case we use continue 
+
+            #If we have a new sequence
+            if (complete_line[0] == prefix): #If equal to >
+                complete_line = complete_line[1:] #We can use the scling to remove the ">"
+                words = complete_line.split() #We are separating the words from each line
+                seq_id = words[0] #The name/id of the sequence
+                sequences.append(Sequence(seq_id, "")) #Add to the list the new sequence
+
+            #If we have bases from a sequence
+            else:
+                #We are using the last sequence added to the list
+                current_sequence = sequences[-1]
+                # And we modify the bases from that sequence
+                current_sequence.bases = current_sequence.bases + complete_line
+    
+    return sequences
+
+"""
+Identifies if there is a sequence from the fasta file that contains invalid nucleotides
+
+        Return: str (name of the sequence). If empty, there is no sequence that has invalid nuclotides
+
+        Arguments:
+        - sequences: the list of sequences obtained from a fasta file
+        - nucleotides: the verified nucleotides that we can used for our verification
+"""
+
+def nucleotideVerification (sequences: list[Sequence], nucleotides: set[str])-> str:
+    sequence_id: str = ""
+    for sequence in sequences:
+        for i in range(len(sequence.bases)):
+            if (sequence.bases[i] not in nucleotides):
+                sequence_id = sequence.seq_id
+                break
+
+    return sequence_id
+
+"""
+Identifies if there is a sequence from the fasta file that is already in our loaded sequences
+
+        Return: str (name of the sequence). If empty, there is no sequence that is repeated
+
+        Arguments:
+        - sequences: the list of sequences obtained from a fasta file
+        - loaded_sequences: we have to see if they already uploaded
+"""
+
+def sequenceRepeated (sequences: list[Sequence], loaded_sequences: dict[str,Sequence]):
+    sequence_id: str = ""
+    for sequence in sequences:
+            if(sequence.seq_id in loaded_sequences): #We are comparing the keys, which is the name/id of the sequences
+                sequence_id = sequence.seq_id
+                break
+    
+    return sequence_id
+
+"""
+Add the valid sequences from a fasta file to the dictionary  
+
+        Return: dict[str,Sequence]
+
+        Arguments:
+        - sequences: the list of sequences obtained from a fasta file
+        - loaded_sequences: we have to upload the new sequences to the dictionary
+"""
+
+def addSequencesToDic (sequences: list[Sequence], loaded_sequences: dict[str,Sequence])-> dict[str,Sequence]:
+    for sequence in sequences:
+        loaded_sequences[sequence.seq_id] = sequence
+
+    return loaded_sequences
+
 
 
 ###################################  STEP (4.3) LIST ALL LOADED SEQUENCES (inspect) #################################################
@@ -197,6 +267,30 @@ def readFastaFile(file:str, data_folder: str, prefix: str)-> list[Sequence]:
                 #print(f"Number of sequences loaded: {count_number_of_sequence_loaded}")
         
         #4. Call the function to give us the list of uploaded sequences
+
+"""
+Orders the list of sequences in ascending order and prints each sequence basepair length
+
+        return: None
+
+        Arguments:
+        sequences: the sequences that will be ordered and printed later
+"""
+
+def list_Sequences(sequences: dict[str, Sequence])-> None:
+
+    #We could organized in ascending order the sequences directly
+    # using the sorted methods
+    # ensure it is created as a dict, not as a list
+    sequences = dict(sorted(sequences.items()))
+
+    #Print the number of total sequences 
+    print (f"Number of sequences loaded: {len(sequences)}")
+
+    #Print each one of the ordered sequences bases pairs lenght
+    for sequence in sequences.values():
+        print(f"- {sequence.seq_id} ({len(sequence.bases)} bp)")
+
 
 ###################################  STEP (4.4) SEQUENCE INFORMATION (inspect) #####################################################
 
@@ -230,6 +324,7 @@ def readFastaFile(file:str, data_folder: str, prefix: str)-> list[Sequence]:
 #COMMENT: SHOULD WE ASK FOR THE OFFSET (o)?
 
 
+
 ##############################################   MAIN Function  ##########################################################
 # Main function that acts as a command interpreter.
         #Features are organized in 3 groups:
@@ -239,70 +334,105 @@ def readFastaFile(file:str, data_folder: str, prefix: str)-> list[Sequence]:
 
 
 def main() -> None:        
-        #STEP 1. Program reads the enzymes files. 
-        enzymes: dict[str, Enzymes] = readEnzymeFile(ENZYMES_FILE, DATA_FOLDER)  #Checked
-        loaded_fasta_files: set [str] = set()
-        sequences: dict [str, Sequence] = {}
         
-        #Loop control variable used to determine whether the loop should continue executing or stop
-        command_name: str = ""
+    #STEP 1. Program reads the enzymes files. 
+    # if ENZIME not in ENZIME_NAME:  -print (f"The enzyme {ENZIME_NAME} is not available.")
+    enzymes: dict[str, Enzyme] = readEnzymeFile(ENZYMES_FILE, DATA_FOLDER)  #Checked
+        
+    loaded_fasta_files: set [str] = set()
+    sequences: dict [str, Sequence] = {}
+        
+    #Loop control variable used to determine whether the loop should continue executing or stop
+    command_name: str = ""
+    command_parts: list[str]
 
-        #STEP2. repeatedly asks the user for a command (using while), executes it, and prints the corresponding messages, until the user types EXIT
-                 # - WE SHOULD PROVID INFORMATION- command EXIT terminates the execution
-                
-        while command_name != "EXIT":
-
-                #The commands entered by the user do not come alone, they bring additional arguments. 
-                      # - eg. If the user wants to upload a FASTA file:  LOAD_SEQUENCES demo.fasta ; SEQUENCE_INFO demo ; DIGEST pGFP_insert EcoRI HindIII
-                
-                #1. Read user input and split it by spaces-  We must separate the whole command line into smaller strings by the split()
-                     # - readString reads all characters received on the serial port and groups them into a single string
-                     # - The command_parts variable becomes a list with two elements: ["LOAD_SEQUENCES", "demo.fasta"]
-                command_parts = readString(PROMPT).split()
-
-                #2. stores the first element of the list (the main command) in the command_name variable and check if the user has not entered anything 
-                if command_parts:
-                        command_name = command_parts[0]    
-                else:
-                        command_name = " " 
-                        continue 
-                        
-                # This part is useful to avoid uploading the same file again. (WHICH PART?)
-                # We should do a io function for this part. Specially if we want to control the input of  the user  ??
+    #STEP2. repeatedly asks the user for a command (using while), executes it, and prints the corresponding messages, until the user types EXIT
+    # - WE SHOULD PROVIDE INFORMATION- command EXIT terminates the execution
 
                 
+    while command_name != "EXIT":
+
+    #The commands entered by the user do not come alone, they bring additional arguments. 
+    # - eg. If the user wants to upload a FASTA file:  LOAD_SEQUENCES demo.fasta ; SEQUENCE_INFO demo ; DIGEST pGFP_insert EcoRI HindIII
+                            
+    #1. Read user input and split it by spaces-  We must separate the whole command line into smaller strings by the split()
+    # - readString reads all characters received on the serial port and groups them into a single string
+    # - The command_parts variable becomes a list with two elements: ["LOAD_SEQUENCES", "demo.fasta"]
+    
+    #2. stores the first element of the list (the main command) in the command_name variable and check if the user has not entered anything
+
+        command_parts = readString(PROMPT).split()
+
+        if command_parts:
+            command_name = command_parts[0]    
+        else:
+            command_name = "" 
+            continue 
+ 
                                 
-                #3. Check if the user provides an unknown command: 
-                if command_name not in VALID_COMMANDS: 
-                        print ("UNKNOWN_COMMAND")
-                        continue 
+        #3. Check if the user provides an unknown command: 
+        if command_name not in VALID_COMMANDS: 
+            print ("UNKNOWN_COMMAND")
+            continue 
 
-                #4. Execution of valid commands
-                if command_name == "LOAD_SEQUENCES":
-                        # if sequence not in LOAD_SEQUENCES: print(f"The sequence {SEQUENCE_ID} is not loaded.")
-                        #print (f"File {command_parts[1]?} validated and loaded!")     
-                elif command_name == "LIST_SEQUENCES":
-                        print("Function complete")
-                elif command_name == "SEQUENCE_INFO":
-                        print("Function complete")
-                elif command_name == "FIND_SITES":
-                        print("Function complete")
-                elif command_name == "DIGEST":
-                        if len(command_parts) < 3: 
-                                print("Error: The DIGEST command requires a sequence ID and at least one enzyme.")
-                        # SHOULD WE CREATE A LIST WITH ALL THE ENZIMES?        
-                        print("Function complete")
-                        #print(f"Digestion of the sequence {sequence.ID?} with {enzime_used} produced the following fragments: {DIGEST}") 
-                                 #- WE NEED TO DEFINE sequence.ID
-                                 #- We need to define the enzime_used
+        if command_name == "LOAD_SEQUENCES":
+
+            #To avoid issuss with command_parts, put the value inside file variable
+            file = command_parts[1]
+
+            # If the file was already uploaded previously 
+            if (file not in loaded_fasta_files):
+
+                #Read all of the sequences in the file
+                sequences_in_fasta: list[Sequence] = readFastaFile(file, DATA_FOLDER, FASTA_HEADER_PREFIX)
+
+                #Verify if the nuclotides in the sequences are correct
+                if(nucleotideVerification(sequences_in_fasta, NUCLEOTIDES) != ""):
+                    invalid_sequence = nucleotideVerification(sequences_in_fasta, NUCLEOTIDES)
+                    print(f"File {file} could not be loaded. Sequence {invalid_sequence} contains invalid nucleotides.")
+
+                #Also verify if they are repeated sequences   
+                elif (sequenceRepeated(sequences_in_fasta,sequences) != ""):
+                    repeated_sequence = sequenceRepeated(sequences_in_fasta,sequences)
+                    print (f"File {file} could not be loaded. Sequence ID {repeated_sequence} is already in use.")
+
+                #If everything is correct, then we can upload the sequences to the dictionary
                 else:
-                        #The command EXIT terminates the execution saying "Goodbye".
-                        print(GOODBYE_MESSAGE)                                          
+                    loaded_fasta_files.add(file)
+                    sequences = addSequencesToDic(sequences_in_fasta,sequences)
+                    print(f"File {file} validated and loaded!")
+
+            else:
+                print(f"File {file} already loaded!")
+                         
+        elif command_name == "LIST_SEQUENCES":
+            # It the dictionarry of sequences is empty
+            if (len(sequences) == 0):
+                print("No sequences loaded.")
+            else:
+                list_Sequences(sequences)
+
+        elif command_name == "SEQUENCE_INFO":
+            print("Function complete")
+        elif command_name == "FIND_SITES":
+            print("Function complete")
+
+        elif command_name == "DIGEST":
+            if len(command_parts[2:]) < 3: 
+                print("Error: The DIGEST command requires a sequence ID and at least one enzyme.")        
+                print("Function complete")
+                #print(f"Digestion of the sequence {sequence.ID?} with {enzime_used} produced the following fragments: {DIGEST}") 
+                #- WE NEED TO DEFINE sequence.ID
+                #- We need to define the enzime_used
+        else:
+            #The command EXIT terminates the execution saying "Goodbye".
+            print(GOODBYE_MESSAGE)                                          
 
 #The rest of the list (command_parts[1:]) contains the arguments that we will need to pass to the functions       
 
 if __name__ == "__main__":
     main()
+
 
 #-----------------------------------------------------
 # INFORMATIONS THAT CAN BE USEFULL
