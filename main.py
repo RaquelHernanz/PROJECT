@@ -455,6 +455,7 @@ if __name__ == "__main__":
 # AT THE END: 
 # Check the entire code with AI, ask for corrections, and see how we can improve its appearance
 # The folder named data should be in the same folder as your main.py file.
+#!!!!!!!!!! order: imports, constants, data classes, domain functions, _io functions, the main function, and the if __name__ == "__main__": guard.
 
 #Essential concepts
 
