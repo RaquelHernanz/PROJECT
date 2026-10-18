@@ -111,16 +111,14 @@ def readString(message: str)-> str:
 
 ############################## READ THE ENZYMES (start-up) ##########################################
 
-"""
-This function allows to read the enzymes file, enzymes.txt (always valid) in 
-the order they were given
+#This function allows to read the enzymes file, enzymes.txt (always valid) in the order they were given
+# - Return: dict[str, Enzyme]
+#      The keys is the enzyme name
 
-        Return: dict[str, Enzyme]
+# - Arguments: 
+       #- file: the name of the file
+       #- data_folder: the folder where the file is contained
 
-        Arguments: 
-       - file: the name of the file
-       - data_folder: the folder where the file is contained
-"""
 
 def readEnzymeFile (file: str, data_folder: str)-> dict[str, Enzyme]:
     enzymes: dict[str,Enzyme] = {}
