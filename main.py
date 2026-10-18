@@ -130,8 +130,8 @@ def readEnzymeFile (file: str, data_folder: str)-> dict[str, Enzyme]:
         
     with open(file_path) as enzyme_txt:
         for line in enzyme_txt:
-            complete_line = line.strip() #Read each line 
-            name, site, cutoff_site = complete_line.split() #Split into the following variables: name, site and cutoff_site
+            complete_line = line.strip()                          #Read each line 
+            name, site, cutoff_site = complete_line.split()       #Split into the following variables: name, site and cutoff_site
             enzymes[name] = Enzyme(name,site,int(cutoff_site))
 
     return enzymes
@@ -246,6 +246,7 @@ def addSequencesToDic (sequences: list[Sequence], loaded_sequences: dict[str,Seq
 
 # Arguments: 
 #      - sequences: the sequences that will be ordered and printed later
+#      - the dictionary key is the seq_id
 
 
 def list_Sequences(sequences: dict[str, Sequence])-> None:
