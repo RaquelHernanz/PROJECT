@@ -135,7 +135,7 @@ def readEnzymeFile (file: str, data_folder: str)-> dict[str, Enzyme]:
     return enzymes
 
 
-##########################  STEP(4.2) LOADING AND VERIFYING A FASTA FILE (load) ####################################
+##########################  STEP(4.2) LOADING SEQUENCE (VERIFYING A FASTA FILE) ####################################
 
 """
 The program going to read and add the sequences from a FASTA file to a list[]. 
