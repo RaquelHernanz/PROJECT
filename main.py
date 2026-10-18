@@ -289,6 +289,23 @@ def gcContent(sequence: Sequence) -> str:
     # Retorna uma string formatada
     return f"{porcentagem:.2f}"
 
+
+"""----------------------------
+          FRAGMENT LENGTH
+-------------------------------
+Returns the length (in bp) of a DNA fragment of a fragment."""
+#Preconditions: 1 <= start <= end (length of the original sequence).
+# Argument: fragment; 
+# Classe (type hint): Fragment
+# Return: integer number
+
+def fragmentLength(fragment: Fragment) -> int:
+  return fragment.end - fragment.start + 1 
+
+# If a fragment begins at position 1 and ends at position 3, it contains 3 bases (bases 1, 2, and 3). By adding 1 (3 - 1 + 1 = 3), 
+# we ensure that the initial base is also included in the total count.
+
+
 ###################################  STEP (4.5) FINDING RECOGNITIONM SITES (analyse) ###############################################
 
 #FIND_SITES COMMAND 
