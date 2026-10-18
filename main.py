@@ -45,11 +45,10 @@ DATA_FOLDER: str = "data"
 ENZYMES_FILE: str = "enzymes.txt"
 PROMPT: str = "Command to execute: "
 FASTA_HEADER_PREFIX: str = ">"
+NUCLEOTIDES: set[str] = {'A','C','G','T'}
 
 #não entendi 
 REPEATED_FASTA: str = ""
-#porque não colocar NUCLEOTIDES: str = "ACGT"? 
-NUCLEOTIDES: set[str] = {'A','C','G','T'}
 
 # List of valid commands in the system (Case-Sensitive)
 VALID_COMMANDS: lits[str]= ["LOAD_SEQUENCES", "LIST_SEQUENCES", "SEQUENCE_INFO", "FIND_SITES", "DIGEST", "EXIT"]
