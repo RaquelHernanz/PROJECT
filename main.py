@@ -257,7 +257,7 @@ def list_Sequences(sequences: dict[str, Sequence])-> None:
     print(f" {sequence.seq_id} ({len(sequence.bases)} bp)")
 
 
-# LOADED SEQUENCES 
+# LOADED SEQUENCES (with 3 validation rules)
 #This function will execute the LIST_SEQUENCES command, displaying the sequences in the terminal
 # 1. Count number of sequences loaded
         #if count_number_of_sequence_loaded = 0 : 
@@ -276,7 +276,7 @@ def list_Sequences(sequences: dict[str, Sequence])-> None:
 ###################################  STEP (4.5) FINDING RECOGNITIONM SITES (analyse) ###############################################
 
 #FIND_SITES COMMAND 
-#DIGEST COMMAND
+#DIGEST COMMAND (We must pay special attention to the custom sorting logic in case of a tie)
 
 ######################################  STEP (4.6) SIMULATING A DIGEST  ##################################################
 # The prorgam going to FIND_SITES AND DIGEST FUNCTIONS
