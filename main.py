@@ -277,7 +277,7 @@ def list_Sequences(sequences: dict[str, Sequence])-> None:
 ###################################  STEP (4.4) SEQUENCE INFORMATION (inspect) #####################################################
 
 """----------------------------
-      SEQUENCE_INFO COMMAND
+          GC PERCENTAGE
 -------------------------------
 Returns the percentage of G and C in the sequence, rounded to 2 decimal places."""
 #Precondition: the sequence has at least one base."""
