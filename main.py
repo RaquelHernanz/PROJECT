@@ -282,7 +282,7 @@ def list_Sequences(sequences: dict[str, Sequence])-> None:
 Returns the percentage of G and C in the sequence, rounded to 2 decimal places."""
 #Precondition: the sequence has at least one base."""
 
-def gcContent(sequence: Sequence) -> str: 
+def gc_content(sequence: Sequence) -> str: 
     count_gc = sequence.bases.count("G") + sequence.bases.count("C")
     porcentage= (count_gc / len(sequence.bases)) * 100
     
@@ -299,7 +299,7 @@ Returns the length (in bp) of a DNA fragment of a fragment."""
 # Classe (type hint): Fragment
 # Return: integer number
 
-def fragmentLength(fragment: Fragment) -> int:
+def fragment_length(fragment: Fragment) -> int:
   return fragment.end - fragment.start + 1 
 
 # If a fragment begins at position 1 and ends at position 3, it contains 3 bases (bases 1, 2, and 3). By adding 1 (3 - 1 + 1 = 3), 
@@ -309,13 +309,32 @@ def fragmentLength(fragment: Fragment) -> int:
 ###################################  STEP (4.5) FINDING RECOGNITIONM SITES (analyse) ###############################################
 
 #FIND_SITES COMMAND 
-#DIGEST COMMAND (We must pay special attention to the custom sorting logic in case of a tie)
+"""--------------------------------------
+          FINDING TE SITE POSITION 
+-----------------------------------------
+The function will return a list containing the position numbers where the enzyme recognition site was found."""
+#IMPORTANT: In biology, positions are counted starting from 1 (the first base is position 1). Since lists in Python 
+#           begin at index 0, so we added 1 (positions.append(i + 1)) to convert the Python index into the correct biological position.
+
+#Arguments:
+# - sequence: Sequence(dataclass) which contains the DNA strand where we will perform the operations
+# - enzyme: Enzyme (dataclass) which contains information about the enzyme, specifically its recognition site (enzyme.site)
+
+def find_site_positions(sequence: Sequence, enzyme: Enzyme) -> list[int]:
+    positions: list[int] = []
+    size = len(enzyme.site)
+  
+    for i in range(len(sequence.bases) - size + 1):
+        if sequence.bases[i: i + size] == enzyme.site:
+            positions.append(i + 1)                                           # i starts at 0 but the positions start at 1
+    return positions
+
 
 ######################################  STEP (4.6) SIMULATING A DIGEST  ##################################################
 # The prorgam going to FIND_SITES AND DIGEST FUNCTIONS
 # The command "DIGEST" lists the The command DIGEST fragments in this same order, from the top to the bottom of the 
 # gel
-
+#DIGEST COMMAND (We must pay special attention to the custom sorting logic in case of a tie)
 
 # TO SIMULATED A DIGEST OF A SEQUENCE s in sequence: 
 #       1. we find all occurrences of the recognition sites of the enzymes in s.
