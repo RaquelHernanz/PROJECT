@@ -45,11 +45,14 @@ DATA_FOLDER: str = "data"
 ENZYMES_FILE: str = "enzymes.txt"
 PROMPT: str = "Command to execute: "
 FASTA_HEADER_PREFIX: str = ">"
+
+#não entendi 
 REPEATED_FASTA: str = ""
+#porque não colocar NUCLEOTIDES: str = "ACGT"? 
 NUCLEOTIDES: set[str] = {'A','C','G','T'}
 
 # List of valid commands in the system (Case-Sensitive)
-VALID_COMMANDS = ["LOAD_SEQUENCES", "LIST_SEQUENCES", "SEQUENCE_INFO", "FIND_SITES", "DIGEST", "EXIT"]
+VALID_COMMANDS: lits[str]= ["LOAD_SEQUENCES", "LIST_SEQUENCES", "SEQUENCE_INFO", "FIND_SITES", "DIGEST", "EXIT"]
 
 
 ######################################### DATACLASSES AND THEIR METHODS ################################################################
@@ -73,8 +76,9 @@ class Sequence:
     as molecular 'scissors' for the sequence undergoing digestion"""
     #Attributes:
        #- name: Enzyme name (e.g. "EcoRI"); case-sensitive.
-       #- site: Recognition site, as a string over A, C, G, T.
+       #- site: Recognition site, as a string over A, C, G, T (e.g. GAATTC);
        #- cut_offset: Number of bases of the site that come before the cut on the top strand (e.g. 1 for G^AATTC).
+             # - Precondition: 0 < cut_offset < len(site).
 
 @dataclass
 class Enzyme:
@@ -89,36 +93,25 @@ class Enzyme:
     #- start: First position of the fragment (1-based, inclusive).
     #- end: Last position of the fragment (1-based, inclusive).
     #Preconditions:
-        # 1 <= start <= end <= length of the original sequence.
+        # 1 <= start <= end (length of the original sequence).
 
 @dataclass
 class Fragment:
     start: int
     end: int
-    #length: int
+    
 
 
-#################### INPUT FUNCTIONS ###########################
+################################################# DOMAIN FUNCTIONS #################################################################
 
-"""
-readString return a String from the input() function
-
-    Arguments: - message: A string message used for the input function
-"""
-def readString(message: str)-> str:
-    return input(message)
-
-
-############################## READ THE ENZYMES (start-up) ##########################################
-
-#This function allows to read the enzymes file, enzymes.txt (always valid) in the order they were given
-# - Return: dict[str, Enzyme]
-#      The keys is the enzyme name
-
+"""--------------------------------
+     READ THE ENZYMES (start-up) 
+----------------------------------- 
+This function allows to read the enzyme restriction file, enzymes.txt (always valid) """
+#load the file and returns a dictionary where the key is the enzyme name:  dict[str, Enzyme]
 # - Arguments: 
        #- file: the name of the file
        #- data_folder: the folder where the file is contained
-
 
 def readEnzymeFile (file: str, data_folder: str)-> dict[str, Enzyme]:
     enzymes: dict[str,Enzyme] = {}
@@ -134,23 +127,19 @@ def readEnzymeFile (file: str, data_folder: str)-> dict[str, Enzyme]:
 
     return enzymes
 
-
-##########################  STEP(4.2) LOADING SEQUENCE (VERIFYING A FASTA FILE) ####################################
-
-"""
-The program going to read and add the sequences from a FASTA file to a list[]. 
-
-    AI-assited function: In this case, we ask for some minor corrections structure
-
-    Return: list[Sequence]
-
-     Arguments:
-     - file: the name of the file
-     - data_folder: the folder where the file is contained
-     - prefix: helps to identify the fasta file
-"""
-
+"""--------------------------------------------------------
+                      READ FASTA FILE 
+     STEP(4.2) LOADING SEQUENCE (VERIFYING A FASTA FILE) 
+-----------------------------------------------------------
+The program going to read and add the sequences from a FASTA file to a list[] in the order they appear. """
+# Return: list[Sequence]
+# Arguments:
+     #- file: the name of the file
+     #- data_folder: the folder where the file is contained
+     #- prefix: helps to identify the fasta file
+ 
 def readFastaFile(file:str, data_folder: str, prefix: str)-> list[Sequence]:
+  # AI-assited function: In this case, we ask for some minor corrections structure
     sequences: list[Sequence] = []
     file_path = os.path.join(data_folder, file)
 
@@ -160,14 +149,14 @@ def readFastaFile(file:str, data_folder: str, prefix: str)-> list[Sequence]:
 
             #If there is no words in that line
             if (complete_line == ""):
-                continue #In this case we use continue 
-
+                continue                                                       #In this case we use continue 
+              
             #If we have a new sequence
-            if (complete_line[0] == prefix): #If equal to >
-                complete_line = complete_line[1:] #We can use the scling to remove the ">"
-                words = complete_line.split() #We are separating the words from each line
-                seq_id = words[0] #The name/id of the sequence
-                sequences.append(Sequence(seq_id, "")) #Add to the list the new sequence
+            if (complete_line[0] == prefix):                                                  #If equal to >
+                complete_line = complete_line[1:]                   #We can use the scling to remove the ">"
+                words = complete_line.split()                    #We are separating the words from each line
+                seq_id = words[0]                                               #The name/id of the sequence
+                sequences.append(Sequence(seq_id, ""))                     #Add to the list the new sequence
 
             #If we have bases from a sequence
             else:
@@ -178,6 +167,14 @@ def readFastaFile(file:str, data_folder: str, prefix: str)-> list[Sequence]:
     
     return sequences
 
+
+"""
+readString return a String from the input() function
+
+    Arguments: - message: A string message used for the input function
+"""
+def readString(message: str)-> str:
+    return input(message)
 """
 Identifies if there is a sequence from the fasta file that contains invalid nucleotides
 
