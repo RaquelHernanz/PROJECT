@@ -112,7 +112,7 @@ This function allows to read the enzyme restriction file, enzymes.txt (always va
        #- file: the name of the file
        #- data_folder: the folder where the file is contained
 
-def readEnzymeFile (file: str, data_folder: str)-> dict[str, Enzyme]:
+def read_Enzyme_File (file: str, data_folder: str)-> dict[str, Enzyme]:
     enzymes: dict[str,Enzyme] = {}
         
     #The file_path variable holds the path that we provide to the open function
@@ -137,7 +137,7 @@ The program going to read and add the sequences from a FASTA file to a list[] in
      #- data_folder: the folder where the file is contained
      #- prefix: helps to identify the fasta file
  
-def readFastaFile(file:str, data_folder: str, prefix: str)-> list[Sequence]:
+def read_Fasta_File(file:str, data_folder: str, prefix: str)-> list[Sequence]:
   # AI-assited function: In this case, we ask for some minor corrections structure
     sequences: list[Sequence] = []
     file_path = os.path.join(data_folder, file)
