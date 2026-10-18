@@ -1,11 +1,11 @@
-########################################## INFORMATION ##########################################
+#################################################### INFORMATION ########################################################
 """
 #What is a restriction digest?
-A restriction digest, consists in cutting a DNA sample with one or more enzymes and then running the resulting fragments on an agarose gel, 
-which separates them by size.
+A restriction digest, consists in cutting a DNA sample with one or more enzymes and then running the resulting fragments 
+on an agarose gel, which separates them by size.
 """
 
-########################################### PROJECTS ############################################
+###################################################### PROJECT ##########################################################
 """ PAB Project 2026-2027
 
 Purpose of the program: 
@@ -27,14 +27,12 @@ with one or more enzymes, ordered as they would appear on an agarose gel (Wester
 
 """
 
-############################################################# CONSTANTS AND LIBRARIES  #########################################################
+################################################# CONSTANTS AND LIBRARIES  #############"################################
 #CONSTANTS 
 DATA_FOLDER: str = "data"
 ENZYMES_FILE: str = "enzymes.txt"
 PROMPT: str = "Command to execute: "
 FASTA_HEADER_PREFIX: str = ">"
-GOODBYE_MESSAGE: str = "Goodbye!"
-UNKNOWN_COMMAND: str = "Unknown command" 
 REPEATED_FASTA: str = ""
 NUCLEOTIDES: set[str] = {'A','C','G','T'}
 
@@ -42,17 +40,19 @@ NUCLEOTIDES: set[str] = {'A','C','G','T'}
 VALID_COMMANDS = ["LOAD_SEQUENCES", "LIST_SEQUENCES", "SEQUENCE_INFO", "FIND_SITES", "DIGEST", "EXIT"]
 
 
-#To avoid problems with files across different Operating Systems (Windows, MacOS, Linux), we use the os.path.join function to create each file path. 
+#To avoid problems with files across different Operating Systems (Windows, MacOS, Linux), we use the os.path.join function to create
+#each file path. 
 #Each operating system joins folders and files differently to create a path, some with \ and others with / in the file path.
 
-#What does the function do? It detects which operating system the program is running on and joins the words using the correct slash for that system
+#What does the function do? It detects which operating system the program is running on and joins the words using the correct slash 
+#for that system
 
 import os
 from dataclasses import dataclass
 
 
 
-################################# DATACLASSES AND THEIR METHODS ######################################
+######################################### DATACLASSES AND THEIR METHODS ################################################################
 
 #A @dataclass is a simplified and automated way to create classes in Python focused exclusively on storing 
 #data, allowing you to save information for a specific field.In this project, we have 3 fields:
@@ -240,23 +240,27 @@ def addSequencesToDic (sequences: list[Sequence], loaded_sequences: dict[str,Seq
 ###################################  STEP (4.3) LIST ALL LOADED SEQUENCES (inspect) #################################################
 
 # LIST_SEQUENCES COMMAND 
+# 1. list all currently loaded sequences, sorted alphabetically by ID, in ascending order using function "sorted()"
+# 2. prints the number of total sequences loaded 
+# 3. prints each sequence ordered by bases pairs lenght
 
-# 1. In this part the command LIST_SEQUENCES needs to list all currently loaded sequences, sorted alphabetically by ID, 
-#    in ascending order, so we going to use the function "sorted()"
+# Arguments: 
+#      - sequences: the sequences that will be ordered and printed later
 
-#def get_sorted_sequences(sequences: dict[str, Sequence] -> list[sequence]: 
-     #Returns a list of sequences ordered alphabetically by ID.
-        #return sorted(sequences.values(), extrair_seq.id(Sequence): 
 
-                      
-# 2. prints the number of sequences loaded and lists all sequences, with their length
-#This function will execute the LIST_SEQUENCES command, displaying the sequences in the terminal.
-#def list_sequences_io(sequences: dict[str, Sequence]) -> None:
+def list_Sequences(sequences: dict[str, Sequence])-> None:
+  # ensure it is created as a dict, not as a list
+  sequences = dict(sorted(sequences.items()))
+  
+  print (f"Number of sequences loaded: {len(sequences)}")      #2. 
+  
+  for sequence in sequences.values():                          #3. 
+    print(f" {sequence.seq_id} ({len(sequence.bases)} bp)")
 
-# 4.3. LIST_SEQUENCE 
-        #1. Ask user for sequence 
-        #2. Count number of sequences loaded
-        #count_number_of_sequence_loaded 
+
+# LOADED SEQUENCES 
+#This function will execute the LIST_SEQUENCES command, displaying the sequences in the terminal
+# 1. Count number of sequences loaded
         #if count_number_of_sequence_loaded = 0 : 
                 #print("No loaded sequences.")
 
@@ -264,30 +268,6 @@ def addSequencesToDic (sequences: list[Sequence], loaded_sequences: dict[str,Seq
         #else: 
                 #print(f"Number of sequences loaded: {count_number_of_sequence_loaded}")
         
-        #4. Call the function to give us the list of uploaded sequences
-
-"""
-Orders the list of sequences in ascending order and prints each sequence basepair length
-
-        return: None
-
-        Arguments:
-        sequences: the sequences that will be ordered and printed later
-"""
-
-def list_Sequences(sequences: dict[str, Sequence])-> None:
-
-    #We could organized in ascending order the sequences directly
-    # using the sorted methods
-    # ensure it is created as a dict, not as a list
-    sequences = dict(sorted(sequences.items()))
-
-    #Print the number of total sequences 
-    print (f"Number of sequences loaded: {len(sequences)}")
-
-    #Print each one of the ordered sequences bases pairs lenght
-    for sequence in sequences.values():
-        print(f"- {sequence.seq_id} ({len(sequence.bases)} bp)")
 
 
 ###################################  STEP (4.4) SEQUENCE INFORMATION (inspect) #####################################################
@@ -370,7 +350,7 @@ def main() -> None:
                                 
         #3. Check if the user provides an unknown command: 
         if command_name not in VALID_COMMANDS: 
-            print ("UNKNOWN_COMMAND")
+            print ("Unknown command" )
             continue 
 
         if command_name == "LOAD_SEQUENCES":
@@ -424,7 +404,7 @@ def main() -> None:
                 #- We need to define the enzime_used
         else:
             #The command EXIT terminates the execution saying "Goodbye".
-            print(GOODBYE_MESSAGE)                                          
+            print("Goodbye!")                                          
 
 #The rest of the list (command_parts[1:]) contains the arguments that we will need to pass to the functions       
 
