@@ -27,16 +27,8 @@ with one or more enzymes, ordered as they would appear on an agarose gel (Wester
 
 """
 
-########################################## CONSTANTS AND LIBRARIES  ################################################
-"""
-To avoid problems with files across different Operating Systems (Windows, MacOS, Linux), we use the os.path.join function to create each file path. 
-Each operating system joins folders and files differently to create a path, some with \ and others with / in the file path.
-
-What does the function do? It detects which operating system the program is running on and joins the words using the correct slash for that system
-"""
-import os
-from dataclasses import dataclass
-
+############################################################# CONSTANTS AND LIBRARIES  #########################################################
+#CONSTANTS 
 DATA_FOLDER: str = "data"
 ENZYMES_FILE: str = "enzymes.txt"
 PROMPT: str = "Command to execute: "
@@ -50,33 +42,40 @@ NUCLEOTIDES: set[str] = {'A','C','G','T'}
 VALID_COMMANDS = ["LOAD_SEQUENCES", "LIST_SEQUENCES", "SEQUENCE_INFO", "FIND_SITES", "DIGEST", "EXIT"]
 
 
+#To avoid problems with files across different Operating Systems (Windows, MacOS, Linux), we use the os.path.join function to create each file path. 
+#Each operating system joins folders and files differently to create a path, some with \ and others with / in the file path.
+
+#What does the function do? It detects which operating system the program is running on and joins the words using the correct slash for that system
+
+import os
+from dataclasses import dataclass
+
+
 
 ################################# DATACLASSES AND THEIR METHODS ######################################
-"""
-A DNA sequence loaded from a FASTA record.
-    
-    Attributes:
-    - seq_id: Sequence identifier: the text after ">" up to the first space.
-    - bases: Full sequence, with all FASTA lines joined.
-"""
 
-# It will be used in step 4.3. LIST ALL LOADED SEQUENCES
+#A @dataclass is a simplified and automated way to create classes in Python focused exclusively on storing 
+#data, allowing you to save information for a specific field.In this project, we have 3 fields:
+
+"""1. A DNA sequence loaded from a FASTA record (It will be used in step 4.3. LIST ALL LOADED SEQUENCES)."""
+    #Attributes:
+      # - seq_id: Sequence identifier: the text after ">" up to the first space.
+      # - bases: Full sequence, with all FASTA lines joined.
+
 @dataclass
 class Sequence: 
-    # It represents a charged biological sequence.
     seq_id: str
     bases: str
 
 
-"""
-A restriction enzyme, as described in the enzymes file.
 
-    Attributes:
-    - name: Enzyme name (e.g. "EcoRI"); case-sensitive.
-    - site: Recognition site, as a string over A, C, G, T.
-    - cut_offset: Number of bases of the site that come before the cut
-            on the top strand (e.g. 1 for G^AATTC).
-"""
+""" 2. This dataclass represents restriction enzymes as described in the enzymes file, which function 
+    as molecular 'scissors' for the sequence undergoing digestion"""
+    #Attributes:
+       #- name: Enzyme name (e.g. "EcoRI"); case-sensitive.
+       #- site: Recognition site, as a string over A, C, G, T.
+       #- cut_offset: Number of bases of the site that come before the cut on the top strand (e.g. 1 for G^AATTC).
+
 @dataclass
 class Enzyme:
     name: str
@@ -84,20 +83,19 @@ class Enzyme:
     cut_offset: int 
 
 
-"""
-A fragment produced by a digested Sequence.
 
-    Attributes:
-    - start: First position of the fragment (1-based, inclusive).
-    - end: Last position of the fragment (1-based, inclusive).
+"""3. A fragment produced by a digested Sequence."""
+    #Attributes:
+    #- start: First position of the fragment (1-based, inclusive).
+    #- end: Last position of the fragment (1-based, inclusive).
+    #Preconditions:
+        # 1 <= start <= end <= length of the original sequence.
 
-    Preconditions:
-        1 <= start <= end <= length of the original sequence.
-"""
 @dataclass
 class Fragment:
     start: int
     end: int
+    #length: int
 
 
 #################### INPUT FUNCTIONS ###########################
@@ -329,7 +327,7 @@ def list_Sequences(sequences: dict[str, Sequence])-> None:
 # Main function that acts as a command interpreter.
         #Features are organized in 3 groups:
           #1. Load - read FASTA files (LOAD_SEQUENCES)
-          #2. Inspect - list the loaded filne and show information about each one (LIST_SEQUENCES, SEQUENCE_INFO)
+          #2. Inspect - list the loaded file and show information about each one (LIST_SEQUENCES, SEQUENCE_INFO)
           #3. Analyse - use enzyme to recognition sites and simulate digests (FIND_SITES, DIGEST)
 
 
