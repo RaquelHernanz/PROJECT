@@ -235,6 +235,19 @@ def addSequencesToDic (sequences: list[Sequence], loaded_sequences: dict[str,Seq
 ###################################  STEP (4.3) LIST ALL LOADED SEQUENCES (inspect) #################################################
 
 # LIST_SEQUENCES COMMAND 
+
+"""1. Returns the ID of the first sequence with invalid nucleotides, or "" if all are valid."""
+# Argument: sequences list with objects type Sequence (list[Sequence])
+
+def findInvalidSequence(sequences: list[Sequence]) -> str:
+    #AI-assisted function. 
+    for sequence in sequences:
+        for base in sequence.bases:
+            if base not in NUCLEOTIDES:
+                return sequence.seq_id
+    return ""
+
+
 # 1. list all currently loaded sequences, sorted alphabetically by ID, in ascending order using function "sorted()"
 # 2. prints the number of total sequences loaded 
 # 3. prints each sequence ordered by bases pairs lenght
@@ -242,7 +255,6 @@ def addSequencesToDic (sequences: list[Sequence], loaded_sequences: dict[str,Seq
 # Arguments: 
 #      - sequences: the sequences that will be ordered and printed later
 #      - the dictionary key is the seq_id
-
 
 def list_Sequences(sequences: dict[str, Sequence])-> None:
   # ensure it is created as a dict, not as a list
@@ -254,21 +266,28 @@ def list_Sequences(sequences: dict[str, Sequence])-> None:
     print(f" {sequence.seq_id} ({len(sequence.bases)} bp)")
 
 
+
 # LOADED SEQUENCES (with 3 validation rules)
 #This function will execute the LIST_SEQUENCES command, displaying the sequences in the terminal
 # 1. Count number of sequences loaded
         #if count_number_of_sequence_loaded = 0 : 
                 #print("No loaded sequences.")
-
-        #3. Print number of sequences loaded 
-        #else: 
-                #print(f"Number of sequences loaded: {count_number_of_sequence_loaded}")
         
-
 
 ###################################  STEP (4.4) SEQUENCE INFORMATION (inspect) #####################################################
 
-# SEQUENCE_INFO COMMAND
+"""----------------------------
+      SEQUENCE_INFO COMMAND
+-------------------------------
+Returns the percentage of G and C in the sequence, rounded to 2 decimal places."""
+#Precondition: the sequence has at least one base."""
+
+def gcContent(sequence: Sequence) -> str: 
+    count_gc = sequence.bases.count("G") + sequence.bases.count("C")
+    porcentage= (count_gc / len(sequence.bases)) * 100
+    
+    # Retorna uma string formatada
+    return f"{porcentagem:.2f}"
 
 ###################################  STEP (4.5) FINDING RECOGNITIONM SITES (analyse) ###############################################
 
