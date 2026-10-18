@@ -328,28 +328,49 @@ def find_site_positions(sequence: Sequence, enzyme: Enzyme) -> list[int]:
             positions.append(i + 1)                                           # i starts at 0 but the positions start at 1
     return positions
 
-
-######################################  STEP (4.6) SIMULATING A DIGEST  ##################################################
-# The prorgam going to FIND_SITES AND DIGEST FUNCTIONS
-# The command "DIGEST" lists the The command DIGEST fragments in this same order, from the top to the bottom of the 
-# gel
-#DIGEST COMMAND (We must pay special attention to the custom sorting logic in case of a tie)
-
-# TO SIMULATED A DIGEST OF A SEQUENCE s in sequence: 
-#       1. we find all occurrences of the recognition sites of the enzymes in s.
-
-#       2. Each time it finds a pattern, it records the starting position of that pattern as p (starting the count at 1).
-
-#       Enzymes do not necessarily cut at the beginning of the pattern; they have an offset (referred to as offset/ or o) 
-
-#       The cut is made exactly between position (p + o - 1) and position p + o)
-
 #NOTE: A linear sequence with n distinct cuts is thus split into n + 1 fragments
 #     the lengths of the fragments always add up to the length of the sequence.
 #In the end, if we have time, we can use the NEBcutter online tool to find out exactly what the actual digestion results would be.
 
 
-#COMMENT: SHOULD WE ASK FOR THE OFFSET (o)?
+######################################  STEP (4.6) SIMULATING A DIGEST  ##################################################
+# The command "DIGEST" lists the The command DIGEST fragments in this same order, from the top to the bottom of the gel
+#DIGEST COMMAND (We must pay special attention to the custom sorting logic in case of a tie)
+
+# PIENSO QUE TENEMOS QUE DEFINIR ALGUNA FUNCTION DE GEL
+"""--------------------------------------
+          SEQUENCE DIGEST
+-----------------------------------------
+This function will return the fragments of the digest, in order that they appear in the gel or an empty list if there are no cuts."""
+#Arguments: 
+# - sequence: Sequence (dataclass) contains the linear DNA sequence that will be digested.
+# - enzymes_used: objetcs list within Enzyme (list[Enzyme]), contains the restriction enzymes selected by the user to perform cuts in the sequence
+
+def digest_Sequence(sequence: Sequence, enzymes_used: list[Enzyme]) -> list[Fragment]:
+    cuts: list[int] = []
+    for enzyme in enzymes_used:
+        for position in find_site_positions(sequence, enzyme):
+          #calculate the exact position (considered 0 in Python) where the DNA strand will be cut, based on the site where the enzyme bound.
+            cut = position + enzyme.cut_offset - 1
+            if cut not in cuts:                                                                         # the same cut is only counted once
+                cuts.append(cut)
+    if len(cuts) == 0:
+        return []
+
+    cuts.sort()                                        #Sort the cleavage sites in ascending order so that we can cleave the DNA sequentially.
+    
+    fragments: list[Fragment] = []
+    start = 1
+
+    #AI-assisted function in this part
+    for cut in cuts:
+        fragments.append(Fragment(start, cut))            #Creates a new fragment that extends from the current start point to the cut position.
+        start = cut + 1                                                                                                          # Updated step
+        # When the cycle ends, the final piece of DNA—the segment between the last cut and the absolute end of the sequence—still needs to be 
+        # processed. This line ensures that this last fragment, which extends to the full length of the sequence (len(sequence.bases)), is also saved.
+        fragments.append(Fragment(start, len(sequence.bases)))                                                                      # last fragment
+        return sorted fragments  # TENGO DUDAS AQUÍ
+
 
 
 
