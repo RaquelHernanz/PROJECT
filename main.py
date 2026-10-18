@@ -26,8 +26,20 @@ with one or more enzymes, ordered as they would appear on an agarose gel (Wester
 @author: Beatriz Fernansdes and Raquel Hernanz 
 
 """
+############################################# IMPORTS ###################################################################
 
-################################################# CONSTANTS AND LIBRARIES  #############"################################
+import os
+#To avoid problems with files across different Operating Systems (Windows, MacOS, Linux), we use the os.path.join function to create
+#each file path. 
+#Each operating system joins folders and files differently to create a path, some with \ and others with / in the file path.
+
+#What does the function do? It detects which operating system the program is running on and joins the words using the correct slash 
+#for that system
+
+
+from dataclasses import dataclass
+
+#################################################  CONSTANTS  #############################################
 #CONSTANTS 
 DATA_FOLDER: str = "data"
 ENZYMES_FILE: str = "enzymes.txt"
@@ -38,18 +50,6 @@ NUCLEOTIDES: set[str] = {'A','C','G','T'}
 
 # List of valid commands in the system (Case-Sensitive)
 VALID_COMMANDS = ["LOAD_SEQUENCES", "LIST_SEQUENCES", "SEQUENCE_INFO", "FIND_SITES", "DIGEST", "EXIT"]
-
-
-#To avoid problems with files across different Operating Systems (Windows, MacOS, Linux), we use the os.path.join function to create
-#each file path. 
-#Each operating system joins folders and files differently to create a path, some with \ and others with / in the file path.
-
-#What does the function do? It detects which operating system the program is running on and joins the words using the correct slash 
-#for that system
-
-import os
-from dataclasses import dataclass
-
 
 
 ######################################### DATACLASSES AND THEIR METHODS ################################################################
@@ -390,7 +390,10 @@ def main() -> None:
                 list_Sequences(sequences)
 
         elif command_name == "SEQUENCE_INFO":
+          # This command presents basic information about a loaded sequence: its length, the number of occurrences of each base, and
+          # its GC content
             print("Function complete")
+          
         elif command_name == "FIND_SITES":
             print("Function complete")
 
