@@ -1,4 +1,3 @@
-#bia"
 #################################################### INFORMATION ########################################################
 """
 #What is a restriction digest?
@@ -36,8 +35,6 @@ import os
 
 #What does the function do? It detects which operating system the program is running on and joins the words using the correct slash 
 #for that system
-
-import numpy as np
 
 
 from dataclasses import dataclass
