@@ -30,9 +30,7 @@ with one or more enzymes, ordered as they would appear on an agarose gel (Wester
 
 import os
 #To avoid problems with files across different Operating Systems (Windows, MacOS, Linux), we use the os.path.join function to create
-#each file path. 
-#Each operating system joins folders and files differently to create a path, some with \ and others with / in the file path.
-
+#each file path. Each operating system joins folders and files differently to create a path, some with \ and others with / in the file path.
 #What does the function do? It detects which operating system the program is running on and joins the words using the correct slash 
 #for that system
 
@@ -56,60 +54,63 @@ VALID_COMMANDS: list[str]= ["LOAD_SEQUENCES", "LIST_SEQUENCES", "SEQUENCE_INFO",
 #A @dataclass is a simplified and automated way to create classes in Python focused exclusively on storing 
 #data, allowing you to save information for a specific field.In this project, we have 3 fields:
 
-"""1. A DNA sequence loaded from a FASTA record (It will be used in step 4.3. LIST ALL LOADED SEQUENCES)."""
-    #Attributes:
-      # - seq_id: Sequence identifier: the text after ">" up to the first space.
-      # - bases: Full sequence, with all FASTA lines joined.
 
 @dataclass
-class Sequence: 
+class Sequence:
+    """
+    A DNA sequence loaded from a FASTA record (It will be used in step 4.3. LIST ALL LOADED SEQUENCES).
+        Attributes:
+        - seq_id: Sequence identifier: the text after ">" up to the first space.
+        - bases: Full sequence, with all FASTA lines joined.
+    """ 
     seq_id: str
     bases: str
 
 
-
-""" 2. This dataclass represents restriction enzymes as described in the enzymes file, which function 
-    as molecular 'scissors' for the sequence undergoing digestion"""
-    #Attributes:
-       #- name: Enzyme name (e.g. "EcoRI"); case-sensitive.
-       #- site: Recognition site, as a string over A, C, G, T (e.g. GAATTC);
-       #- cut_offset: Number of bases of the site that come before the cut on the top strand (e.g. 1 for G^AATTC).
-             # - Precondition: 0 < cut_offset < len(site).
-
 @dataclass
 class Enzyme:
+    """
+    This dataclass represents restriction enzymes as described in the enzymes file, which function 
+    as molecular 'scissors' for the sequence undergoing digestion
+    
+    Attributes:
+        - name: Enzyme name (e.g. "EcoRI"); case-sensitive.
+        - site: Recognition site, as a string over A, C, G, T (e.g. GAATTC);
+        - cut_offset: Number of bases of the site that come before the cut on the top strand (e.g. 1 for G^AATTC).
+        - Precondition: 0 < cut_offset < len(site).
+    """
     name: str
     site: str
     cut_offset: int 
 
-
-
-"""3. A fragment produced by a digested Sequence."""
-    #Attributes:
-    #- start: First position of the fragment (1-based, inclusive).
-    #- end: Last position of the fragment (1-based, inclusive).
-    #Preconditions:
-        # 1 <= start <= end (length of the original sequence).
-
 @dataclass
 class Fragment:
+    """A fragment produced by a digested Sequence.
+
+        Attributes:
+            - start: First position of the fragment (1-based, inclusive).
+            - end: Last position of the fragment (1-based, inclusive).
+        Preconditions:
+         1 <= start <= end (length of the original sequence).
+    """
     start: int
     end: int
-    
 
 
 ################################################# DOMAIN FUNCTIONS #################################################################
 
-"""--------------------------------
-     READ THE ENZYMES (start-up) 
------------------------------------ 
-This function allows to read the enzyme restriction file, enzymes.txt (always valid) """
-#load the file and returns a dictionary where the key is the enzyme name:  dict[str, Enzyme]
-# - Arguments: 
-       #- file: the name of the file
-       #- data_folder: the folder where the file is contained
+"""--------------------------------------------------------
+                READ THE ENZYMES (start-up)  
+-----------------------------------------------------------"""
 
-def read_Enzyme_File (file: str, data_folder: str)-> dict[str, Enzyme]:
+def read_enzyme_file (file: str, data_folder: str)-> dict[str, Enzyme]:
+    """
+    This function allows to read the enzyme restriction file, enzymes.txt (always valid) 
+    load the file and returns a dictionary where the key is the enzyme name:  dict[str, Enzyme]
+            Arguments: 
+            - file: the name of the file
+            - data_folder: the folder where the file is contained
+    """
     enzymes: dict[str,Enzyme] = {}
         
     #The file_path variable holds the path that we provide to the open function
@@ -126,16 +127,20 @@ def read_Enzyme_File (file: str, data_folder: str)-> dict[str, Enzyme]:
 """--------------------------------------------------------
                       READ FASTA FILE 
      STEP(4.2) LOADING SEQUENCE (VERIFYING A FASTA FILE) 
------------------------------------------------------------
-The program going to read and add the sequences from a FASTA file to a list[] in the order they appear. """
-# Return: list[Sequence]
-## AI-assited function: In this case, we ask for some minor corrections in the code structure 
-# Arguments:
-     #- file: the name of the file
-     #- data_folder: the folder where the file is contained
-     #- prefix: helps to identify the fasta file
+-----------------------------------------------------------"""
  
 def read_Fasta_File(file:str, data_folder: str, prefix: str)-> list[Sequence]:
+    """
+    The program going to read and add the sequences from a FASTA file to a list[] in the order they appear.
+        
+        AI-assited function: In this case, we ask for some minor corrections in the code structure 
+        Return: list[Sequence] 
+        Arguments:
+        - file: the name of the file
+        - data_folder: the folder where the file is contained
+        - prefix: helps to identify the fasta file
+
+    """
     sequences: list[Sequence] = []
     file_path = os.path.join(data_folder, file)
 
@@ -164,15 +169,10 @@ def read_Fasta_File(file:str, data_folder: str, prefix: str)-> list[Sequence]:
     return sequences
 
 
-"""
-readString return a String from the input() function
 
-    Arguments: - message: A string message used for the input function
-"""
-def readString(message: str)-> str:
-    return input(message)
-"""
-Identifies if there is a sequence from the fasta file that contains invalid nucleotides
+def nucleotideVerification (sequences: list[Sequence], nucleotides: set[str])-> str:
+    """
+    Identifies if there is a sequence from the fasta file that contains invalid nucleotides
 
         Return: str (name of the sequence). If empty, there is no sequence that has invalid nuclotides
 
@@ -180,8 +180,6 @@ Identifies if there is a sequence from the fasta file that contains invalid nucl
         - sequences: the list of sequences obtained from a fasta file
         - nucleotides: the verified nucleotides that we can used for our verification
 """
-
-def nucleotideVerification (sequences: list[Sequence], nucleotides: set[str])-> str:
     sequence_id: str = ""
     for sequence in sequences:
         for base in sequence.bases:
@@ -191,8 +189,26 @@ def nucleotideVerification (sequences: list[Sequence], nucleotides: set[str])-> 
 
     return sequence_id
 
+
+# This function is already implemented as nucleotideverification
+
+def findInvalidSequence(sequences: list[Sequence]) -> str:
+    """
+    This function is already done in the nucleotideverification for 4.21. Returns the ID of 
+    the first sequence with invalid nucleotides, or "" if all are valid.
+     AI-assisted function.
+        Argument: sequences list with objects type Sequence (list[Sequence])
 """
-Identifies if there is a sequence from the fasta file that is already in our loaded sequences
+    for sequence in sequences:
+        for base in sequence.bases:
+            if base not in NUCLEOTIDES:
+                return sequence.seq_id
+    return ""
+
+
+def sequenceRepeated (sequences: list[Sequence], loaded_sequences: dict[str,Sequence]):
+    """
+    Identifies if there is a sequence from the fasta file that is already in our loaded sequences
 
         Return: str (name of the sequence). If empty, there is no sequence that is repeated
 
@@ -200,8 +216,6 @@ Identifies if there is a sequence from the fasta file that is already in our loa
         - sequences: the list of sequences obtained from a fasta file
         - loaded_sequences: we have to see if they already uploaded
 """
-
-def sequenceRepeated (sequences: list[Sequence], loaded_sequences: dict[str,Sequence]):
     sequence_id: str = ""
     for sequence in sequences:
         if(sequence.seq_id in loaded_sequences): #We are comparing the keys, which is the name/id of the sequences
@@ -210,8 +224,9 @@ def sequenceRepeated (sequences: list[Sequence], loaded_sequences: dict[str,Sequ
     
     return sequence_id
 
-"""
-Add the valid sequences from a fasta file to the dictionary  
+def addSequencesToDic (sequences: list[Sequence], loaded_sequences: dict[str,Sequence])-> dict[str,Sequence]:
+    """
+    Add the valid sequences from a fasta file to the dictionary  
 
         Return: dict[str,Sequence]
 
@@ -219,43 +234,25 @@ Add the valid sequences from a fasta file to the dictionary
         - sequences: the list of sequences obtained from a fasta file
         - loaded_sequences: we have to upload the new sequences to the dictionary
 """
-
-def addSequencesToDic (sequences: list[Sequence], loaded_sequences: dict[str,Sequence])-> dict[str,Sequence]:
     for sequence in sequences:
         loaded_sequences[sequence.seq_id] = sequence
 
     return loaded_sequences
 
 
+"""--------------------------------------------------------
+    STEP (4.3) LIST ALL LOADED SEQUENCES (inspect) 
+-----------------------------------------------------------"""
 
-###################################  STEP (4.3) LIST ALL LOADED SEQUENCES (inspect) #################################################
-
-# LIST_SEQUENCES COMMAND 
-
-"""This function is already done in the nucleotideverification for 4.2"""
-
-"""1. Returns the ID of the first sequence with invalid nucleotides, or "" if all are valid."""
-# Argument: sequences list with objects type Sequence (list[Sequence])
-
-def findInvalidSequence(sequences: list[Sequence]) -> str:
-    #AI-assisted function. 
-    for sequence in sequences:
-        for base in sequence.bases:
-            if base not in NUCLEOTIDES:
-                return sequence.seq_id
-    return ""
-
-
-# 1. list all currently loaded sequences, sorted alphabetically by ID, in ascending order using function "sorted()"
-# 2. prints the number of total sequences loaded 
-# 3. prints each sequence ordered by bases pairs lenght
-
-# Arguments: 
-#      - sequences: the sequences that will be ordered and printed later
-#      - the dictionary key is the seq_id
 
 def list_Sequences(sequences: dict[str, Sequence])-> None:
-  # ensure it is created as a dict, not as a list
+  """
+    List all currently loaded sequences, sorted alphabetically by ID, in ascending order using function "sorted()"
+        Arguments: 
+            - sequences: the sequences that will be ordered and printed later
+            - the dictionary key is the seq_id
+  """
+  # ensure it is created as a dict after sorting, not as a list
   sequences = dict(sorted(sequences.items()))
   
   print(f"Number of sequences loaded: {len(sequences)}")      #2. 
@@ -264,23 +261,15 @@ def list_Sequences(sequences: dict[str, Sequence])-> None:
     print(f" {sequence.seq_id} ({len(sequence.bases)} bp)")
 
 
+"""----------------------------------- 
+STEP (4.4) SEQUENCE INFORMATION (inspect)
+--------------------------------------"""
 
-# LOADED SEQUENCES (with 3 validation rules)
-#This function will execute the LIST_SEQUENCES command, displaying the sequences in the terminal
-# 1. Count number of sequences loaded
-        #if count_number_of_sequence_loaded = 0 : 
-                #print("No loaded sequences.")
-        
-
-###################################  STEP (4.4) SEQUENCE INFORMATION (inspect) #####################################################
-
-"""----------------------------
-          GC PERCENTAGE
--------------------------------
-Returns the percentage of G and C in the sequence, rounded to 2 decimal places."""
-#Precondition: the sequence has at least one base."""
-
-def gc_content(sequence: Sequence) -> str: 
+def gc_content(sequence: Sequence) -> str:
+    """
+    Returns the percentage of G and C in the sequence, rounded to 2 decimal places.
+    #Precondition: the sequence has at least one base.
+    """ 
     count_gc = sequence.bases.count("G") + sequence.bases.count("C")
     porcentage= (count_gc / len(sequence.bases)) * 100
     
@@ -288,41 +277,26 @@ def gc_content(sequence: Sequence) -> str:
     return f"{porcentage:.2f}"
 
 
-"""----------------------------
-          FRAGMENT LENGTH
--------------------------------
-Returns the length (in bp) of a DNA fragment of a fragment."""
-#Preconditions: 1 <= start <= end (length of the original sequence).
-# Argument: fragment; 
-# Classe (type hint): Fragment
-# Return: integer number
-
-"""
-Should be a Sequence lenght, not with Fragment objects, 
-"""
-
-def fragment_length(fragment: Fragment) -> int:
-  return fragment.end - fragment.start + 1 
-
-# If a fragment begins at position 1 and ends at position 3, it contains 3 bases (bases 1, 2, and 3). By adding 1 (3 - 1 + 1 = 3), 
-# we ensure that the initial base is also included in the total count.
-
-
-###################################  STEP (4.5) FINDING RECOGNITIONM SITES (analyse) ###############################################
-
-#FIND_SITES COMMAND 
 """--------------------------------------
-          FINDING TE SITE POSITION 
+    STEP (4.5) FINDING TE SITE POSITION 
 -----------------------------------------
-The function will return a list containing the position numbers where the enzyme recognition site was found."""
+"""
+
 #IMPORTANT: In biology, positions are counted starting from 1 (the first base is position 1). Since lists in Python 
 #           begin at index 0, so we added 1 (positions.append(i + 1)) to convert the Python index into the correct biological position.
 
-#Arguments:
-# - sequence: Sequence(dataclass) which contains the DNA strand where we will perform the operations
-# - enzyme: Enzyme (dataclass) which contains information about the enzyme, specifically its recognition site (enzyme.site)
+#NOTE: A linear sequence with n distinct cuts is thus split into n + 1 fragments
+#     the lengths of the fragments always add up to the length of the sequence.
+#In the end, if we have time, we can use the NEBcutter online tool to find out exactly what the actual digestion results would be.
 
 def find_site_positions(sequence: Sequence, enzyme: Enzyme) -> list[int]:
+    """
+    The function will return a list containing the position numbers where the enzyme recognition site was found.
+            Arguments:
+            - sequence: Sequence(dataclass) which contains the DNA strand where we will perform the operations
+            - enzyme: Enzyme (dataclass) which contains information about the enzyme, specifically its recognition site (enzyme.site)
+
+    """
     positions: list[int] = []
     size = len(enzyme.site)
 
@@ -332,25 +306,22 @@ def find_site_positions(sequence: Sequence, enzyme: Enzyme) -> list[int]:
             positions.append(i + 1)                                           # i starts at 0 but the positions start at 1
     return positions
 
-#NOTE: A linear sequence with n distinct cuts is thus split into n + 1 fragments
-#     the lengths of the fragments always add up to the length of the sequence.
-#In the end, if we have time, we can use the NEBcutter online tool to find out exactly what the actual digestion results would be.
 
-
-######################################  STEP (4.6) SIMULATING A DIGEST  ##################################################
+"""--------------------------------------
+       STEP (4.6) SEQUENCE DIGEST
+-----------------------------------------
+"""
 # The command "DIGEST" lists the The command DIGEST fragments in this same order, from the top to the bottom of the gel
 #DIGEST COMMAND (We must pay special attention to the custom sorting logic in case of a tie)
 
-# PIENSO QUE TENEMOS QUE DEFINIR ALGUNA FUNCTION DE GEL
-"""--------------------------------------
-          SEQUENCE DIGEST
------------------------------------------
-This function will return the fragments of the digest, in order that they appear in the gel or an empty list if there are no cuts."""
-#Arguments: 
-# - sequence: Sequence (dataclass) contains the linear DNA sequence that will be digested.
-# - enzymes_used: objetcs list within Enzyme (list[Enzyme]), contains the restriction enzymes selected by the user to perform cuts in the sequence
-
 def digest_Sequence(sequence: Sequence, enzymes_used: list[Enzyme]) -> list[Fragment]:
+    """
+    This function will return the fragments of the digest, in order that they appear in the gel or an empty list if there are no cuts.
+        Arguments: 
+            - sequence: Sequence (dataclass) contains the linear DNA sequence that will be digested.
+            - enzymes_used: objetcs list within Enzyme (list[Enzyme]), contains the restriction enzymes selected by the user to perform cuts in the sequence
+
+    """
     cuts: list[int] = []
     for enzyme in enzymes_used:
         for position in find_site_positions(sequence, enzyme):
@@ -372,26 +343,81 @@ def digest_Sequence(sequence: Sequence, enzymes_used: list[Enzyme]) -> list[Frag
         start = cut + 1                                                                                                          # Updated step
         # When the cycle ends, the final piece of DNA—the segment between the last cut and the absolute end of the sequence—still needs to be 
         # processed. This line ensures that this last fragment, which extends to the full length of the sequence (len(sequence.bases)), is also saved.
-        fragments.append(Fragment(start, len(sequence.bases)))                                                                      # last fragment
+    fragments.append(Fragment(start, len(sequence.bases)))                                                                      # last fragment
     
-    return sorted(fragments)  # TENGO DUDAS AQUÍ
+    return fragments
+
+
+def fragment_length(fragment: Fragment) -> int:
+  """
+    Returns the length (in bp) of a DNA fragment of a fragment.
+    Preconditions: 1 <= start <= end (length of the original sequence).
+        Argument: fragment; 
+        Classe (type hint): Fragment
+        Return: integer number
+  """
+  return fragment.end - fragment.start + 1 
+
+# If a fragment begins at position 1 and ends at position 3, it contains 3 bases (bases 1, 2, and 3). By adding 1 (3 - 1 + 1 = 3), 
+# we ensure that the initial base is also included in the total count.
+
+
+def organize_fragments_in_gel(fragments: list[Fragment])->list [tuple[int, Fragment]]:
+    """
+    Creates a list of tuples that are sorted according to the bp
+        return: list [tuple[int, Fragment]]
+        Arguments:
+            - fragments: the previous fragments we created with the sequence_digest
+    """
+    organized_fragments : list[tuple[int, Fragment]] = []
+    for fragment in fragments:
+        organized_fragments.append((fragment_length(fragment), fragment))
+
+    organized_fragments = sorted((organized_fragments), reverse = True)
+
+    return organized_fragments
+
+
+def print_fragments_in_gel (fragments: list[tuple[int, Fragment]])-> None:
+    """
+    prints the ordered fragments (from higher to lower bp) from the requested digest command
+        Arguments:
+            - fragments: a list of tupples, includes the lenght of the fragment and the fragment itself
+    """
+
+    for length_fragment in fragments:
+        length, fragment = length_fragment
+        print(f"- {length} bp (positions {fragment.start}-{fragment.end})")
+
+
+
+######################### INPUT/OUTPUT FUNCTIONS (DOES NOT INCLUDE FILE READING FUNCTIONS) ###########################################
+    
+def readString(message: str)-> str:
+    """
+    readString return a String from the input() function
+
+        Arguments: 
+            - message: A string message used for the input function
+"""
+    return input(message)
 
 
 
 
-##############################################   MAIN Function  ##########################################################
+################################   MAIN Function  #############################################
 # Main function that acts as a command interpreter.
-        #Features are organized in 3 groups:
-          #1. Load - read FASTA files (LOAD_SEQUENCES)
-          #2. Inspect - list the loaded file and show information about each one (LIST_SEQUENCES, SEQUENCE_INFO)
-          #3. Analyse - use enzyme to recognition sites and simulate digests (FIND_SITES, DIGEST)
+    #Features are organized in 3 groups:
+        #1. Load - read FASTA files (LOAD_SEQUENCES)
+        #2. Inspect - list the loaded file and show information about each one (LIST_SEQUENCES, SEQUENCE_INFO)
+        #3. Analyse - use enzyme to recognition sites and simulate digests (FIND_SITES, DIGEST)
 
 
 def main() -> None:        
         
     #STEP 1. Program reads the enzymes files. 
     # if ENZIME not in ENZIME_NAME:  -print (f"The enzyme {ENZIME_NAME} is not available.")
-    enzymes: dict[str, Enzyme] = read_Enzyme_File(ENZYMES_FILE, DATA_FOLDER)  #Checked
+    enzymes: dict[str, Enzyme] = read_enzyme_file(ENZYMES_FILE, DATA_FOLDER)  #Checked
         
     loaded_fasta_files: set [str] = set()
     sequences: dict [str, Sequence] = {}
@@ -477,10 +503,10 @@ def main() -> None:
         elif command_name == "DIGEST":
             if len(command_parts[2:]) < 3: 
                 print("Error: The DIGEST command requires a sequence ID and at least one enzyme.")        
-                print("Function complete")
+            
+            print("Function complete")
+
                 #print(f"Digestion of the sequence {sequence.ID?} with {enzime_used} produced the following fragments: {DIGEST}") 
-                #- WE NEED TO DEFINE sequence.ID
-                #- We need to define the enzime_used
         else:
             #The command EXIT terminates the execution saying "Goodbye".
             print("Goodbye!")                                          
