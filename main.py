@@ -26,7 +26,7 @@ with one or more enzymes, ordered as they would appear on an agarose gel (Wester
 @author: Beatriz Fernansdes and Raquel Hernanz 
 
 """
-############################################# IMPORTS ###################################################################
+############################################# IMPORTS #####################################################
 
 import os
 #To avoid problems with files across different Operating Systems (Windows, MacOS, Linux), we use the os.path.join function to create
@@ -39,7 +39,7 @@ import os
 
 from dataclasses import dataclass
 
-#################################################  CONSTANTS  #############################################
+##############################################  CONSTANTS  #############################################
 #CONSTANTS 
 DATA_FOLDER: str = "data"
 ENZYMES_FILE: str = "enzymes.txt"
@@ -47,14 +47,11 @@ PROMPT: str = "Command to execute: "
 FASTA_HEADER_PREFIX: str = ">"
 NUCLEOTIDES: set[str] = {'A','C','G','T'}
 
-#não entendi 
-REPEATED_FASTA: str = ""
-
 # List of valid commands in the system (Case-Sensitive)
-VALID_COMMANDS: lits[str]= ["LOAD_SEQUENCES", "LIST_SEQUENCES", "SEQUENCE_INFO", "FIND_SITES", "DIGEST", "EXIT"]
+VALID_COMMANDS: list[str]= ["LOAD_SEQUENCES", "LIST_SEQUENCES", "SEQUENCE_INFO", "FIND_SITES", "DIGEST", "EXIT"]
 
 
-######################################### DATACLASSES AND THEIR METHODS ################################################################
+##################################### DATACLASSES AND THEIR METHODS ############################################
 
 #A @dataclass is a simplified and automated way to create classes in Python focused exclusively on storing 
 #data, allowing you to save information for a specific field.In this project, we have 3 fields:
@@ -132,13 +129,13 @@ def read_Enzyme_File (file: str, data_folder: str)-> dict[str, Enzyme]:
 -----------------------------------------------------------
 The program going to read and add the sequences from a FASTA file to a list[] in the order they appear. """
 # Return: list[Sequence]
+## AI-assited function: In this case, we ask for some minor corrections in the code structure 
 # Arguments:
      #- file: the name of the file
      #- data_folder: the folder where the file is contained
      #- prefix: helps to identify the fasta file
  
 def read_Fasta_File(file:str, data_folder: str, prefix: str)-> list[Sequence]:
-  # AI-assited function: In this case, we ask for some minor corrections structure
     sequences: list[Sequence] = []
     file_path = os.path.join(data_folder, file)
 
@@ -187,10 +184,10 @@ Identifies if there is a sequence from the fasta file that contains invalid nucl
 def nucleotideVerification (sequences: list[Sequence], nucleotides: set[str])-> str:
     sequence_id: str = ""
     for sequence in sequences:
-        for i in range(len(sequence.bases)):
-            if (sequence.bases[i] not in nucleotides):
+        for base in sequence.bases:
+            if (base not in nucleotides):
                 sequence_id = sequence.seq_id
-                break
+                return sequence_id
 
     return sequence_id
 
@@ -207,9 +204,9 @@ Identifies if there is a sequence from the fasta file that is already in our loa
 def sequenceRepeated (sequences: list[Sequence], loaded_sequences: dict[str,Sequence]):
     sequence_id: str = ""
     for sequence in sequences:
-            if(sequence.seq_id in loaded_sequences): #We are comparing the keys, which is the name/id of the sequences
-                sequence_id = sequence.seq_id
-                break
+        if(sequence.seq_id in loaded_sequences): #We are comparing the keys, which is the name/id of the sequences
+            sequence_id = sequence.seq_id
+            break
     
     return sequence_id
 
@@ -235,6 +232,8 @@ def addSequencesToDic (sequences: list[Sequence], loaded_sequences: dict[str,Seq
 
 # LIST_SEQUENCES COMMAND 
 
+"""This function is already done in the nucleotideverification for 4.2"""
+
 """1. Returns the ID of the first sequence with invalid nucleotides, or "" if all are valid."""
 # Argument: sequences list with objects type Sequence (list[Sequence])
 
@@ -259,7 +258,7 @@ def list_Sequences(sequences: dict[str, Sequence])-> None:
   # ensure it is created as a dict, not as a list
   sequences = dict(sorted(sequences.items()))
   
-  print (f"Number of sequences loaded: {len(sequences)}")      #2. 
+  print(f"Number of sequences loaded: {len(sequences)}")      #2. 
   
   for sequence in sequences.values():                          #3. 
     print(f" {sequence.seq_id} ({len(sequence.bases)} bp)")
@@ -286,7 +285,7 @@ def gc_content(sequence: Sequence) -> str:
     porcentage= (count_gc / len(sequence.bases)) * 100
     
     # Retorna uma string formatada
-    return f"{porcentagem:.2f}"
+    return f"{porcentage:.2f}"
 
 
 """----------------------------
@@ -297,6 +296,10 @@ Returns the length (in bp) of a DNA fragment of a fragment."""
 # Argument: fragment; 
 # Classe (type hint): Fragment
 # Return: integer number
+
+"""
+Should be a Sequence lenght, not with Fragment objects, 
+"""
 
 def fragment_length(fragment: Fragment) -> int:
   return fragment.end - fragment.start + 1 
@@ -322,8 +325,9 @@ The function will return a list containing the position numbers where the enzyme
 def find_site_positions(sequence: Sequence, enzyme: Enzyme) -> list[int]:
     positions: list[int] = []
     size = len(enzyme.site)
-  
-    for i in range(len(sequence.bases) - size + 1):
+
+    # Take into account that we are searching from i to i + size positions
+    for i in range(len(sequence.bases) - size + 1): 
         if sequence.bases[i: i + size] == enzyme.site:
             positions.append(i + 1)                                           # i starts at 0 but the positions start at 1
     return positions
@@ -369,7 +373,8 @@ def digest_Sequence(sequence: Sequence, enzymes_used: list[Enzyme]) -> list[Frag
         # When the cycle ends, the final piece of DNA—the segment between the last cut and the absolute end of the sequence—still needs to be 
         # processed. This line ensures that this last fragment, which extends to the full length of the sequence (len(sequence.bases)), is also saved.
         fragments.append(Fragment(start, len(sequence.bases)))                                                                      # last fragment
-        return sorted fragments  # TENGO DUDAS AQUÍ
+    
+    return sorted(fragments)  # TENGO DUDAS AQUÍ
 
 
 
@@ -386,7 +391,7 @@ def main() -> None:
         
     #STEP 1. Program reads the enzymes files. 
     # if ENZIME not in ENZIME_NAME:  -print (f"The enzyme {ENZIME_NAME} is not available.")
-    enzymes: dict[str, Enzyme] = readEnzymeFile(ENZYMES_FILE, DATA_FOLDER)  #Checked
+    enzymes: dict[str, Enzyme] = read_Enzyme_File(ENZYMES_FILE, DATA_FOLDER)  #Checked
         
     loaded_fasta_files: set [str] = set()
     sequences: dict [str, Sequence] = {}
@@ -433,7 +438,7 @@ def main() -> None:
             if (file not in loaded_fasta_files):
 
                 #Read all of the sequences in the file
-                sequences_in_fasta: list[Sequence] = readFastaFile(file, DATA_FOLDER, FASTA_HEADER_PREFIX)
+                sequences_in_fasta: list[Sequence] = read_Fasta_File(file, DATA_FOLDER, FASTA_HEADER_PREFIX)
 
                 #Verify if the nuclotides in the sequences are correct
                 if(nucleotideVerification(sequences_in_fasta, NUCLEOTIDES) != ""):
