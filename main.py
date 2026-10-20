@@ -37,6 +37,7 @@ import os
 
 from dataclasses import dataclass
 
+
 ##############################################  CONSTANTS  #############################################
 #CONSTANTS 
 DATA_FOLDER: str = "data"
@@ -129,7 +130,7 @@ def read_enzyme_file (file: str, data_folder: str)-> dict[str, Enzyme]:
      STEP(4.2) LOADING SEQUENCE (VERIFYING A FASTA FILE) 
 -----------------------------------------------------------"""
  
-def read_Fasta_File(file:str, data_folder: str, prefix: str)-> list[Sequence]:
+def read_fasta_file(file:str, data_folder: str, prefix: str)-> list[Sequence]:
     """
     The program going to read and add the sequences from a FASTA file to a list[] in the order they appear.
         
@@ -170,7 +171,7 @@ def read_Fasta_File(file:str, data_folder: str, prefix: str)-> list[Sequence]:
 
 
 
-def nucleotideVerification (sequences: list[Sequence], nucleotides: set[str])-> str:
+def nucleotide_verification (sequences: list[Sequence], nucleotides: set[str])-> str:
     """
     Identifies if there is a sequence from the fasta file that contains invalid nucleotides
 
@@ -192,7 +193,7 @@ def nucleotideVerification (sequences: list[Sequence], nucleotides: set[str])-> 
 
 # This function is already implemented as nucleotideverification
 
-def findInvalidSequence(sequences: list[Sequence]) -> str:
+def find_invalid_sequence(sequences: list[Sequence]) -> str:
     """
     This function is already done in the nucleotideverification for 4.21. Returns the ID of 
     the first sequence with invalid nucleotides, or "" if all are valid.
@@ -206,7 +207,7 @@ def findInvalidSequence(sequences: list[Sequence]) -> str:
     return ""
 
 
-def sequenceRepeated (sequences: list[Sequence], loaded_sequences: dict[str,Sequence]):
+def sequence_repeated (sequences: list[Sequence], loaded_sequences: dict[str,Sequence]):
     """
     Identifies if there is a sequence from the fasta file that is already in our loaded sequences
 
@@ -224,7 +225,7 @@ def sequenceRepeated (sequences: list[Sequence], loaded_sequences: dict[str,Sequ
     
     return sequence_id
 
-def addSequencesToDic (sequences: list[Sequence], loaded_sequences: dict[str,Sequence])-> dict[str,Sequence]:
+def add_sequences_to_dic (sequences: list[Sequence], loaded_sequences: dict[str,Sequence])-> dict[str,Sequence]:
     """
     Add the valid sequences from a fasta file to the dictionary  
 
@@ -245,7 +246,7 @@ def addSequencesToDic (sequences: list[Sequence], loaded_sequences: dict[str,Seq
 -----------------------------------------------------------"""
 
 
-def list_Sequences(sequences: dict[str, Sequence])-> None:
+def list_sequences(sequences: dict[str, Sequence])-> None:
   """
     List all currently loaded sequences, sorted alphabetically by ID, in ascending order using function "sorted()"
         Arguments: 
@@ -265,16 +266,24 @@ def list_Sequences(sequences: dict[str, Sequence])-> None:
 STEP (4.4) SEQUENCE INFORMATION (inspect)
 --------------------------------------"""
 
-def gc_content(sequence: Sequence) -> str:
-    """
-    Returns the percentage of G and C in the sequence, rounded to 2 decimal places.
-    #Precondition: the sequence has at least one base.
-    """ 
+"""GC CONTENT"""
+#percentage of G and C in the sequence, rounded to 2 decimal places.
+#Precondition: the sequence has at least one base.
+
+def gc_content(sequence: Sequence) -> float:
     count_gc = sequence.bases.count("G") + sequence.bases.count("C")
-    porcentage= (count_gc / len(sequence.bases)) * 100
+    percentage= (count_gc / len(sequence.bases)) * 100
     
     # Retorna uma string formatada
-    return f"{porcentage:.2f}"
+    return f"{percentage:.2f}"
+
+
+"""NUMBER OF OCCURENCES OF EACH BASE"""
+
+count_a = sequence.bases.count("A")
+count_c = sequence.bases.count("C")
+count_g = sequence.bases.count("G")
+count_t = sequence.bases.count("T")
 
 
 """--------------------------------------
@@ -314,7 +323,7 @@ def find_site_positions(sequence: Sequence, enzyme: Enzyme) -> list[int]:
 # The command "DIGEST" lists the The command DIGEST fragments in this same order, from the top to the bottom of the gel
 #DIGEST COMMAND (We must pay special attention to the custom sorting logic in case of a tie)
 
-def digest_Sequence(sequence: Sequence, enzymes_used: list[Enzyme]) -> list[Fragment]:
+def digest_sequence(sequence: Sequence, enzymes_used: list[Enzyme]) -> list[Fragment]:
     """
     This function will return the fragments of the digest, in order that they appear in the gel or an empty list if there are no cuts.
         Arguments: 
@@ -362,13 +371,14 @@ def fragment_length(fragment: Fragment) -> int:
 # we ensure that the initial base is also included in the total count.
 
 
+""" ORGANIZE FRAGMENTS IN GEL"""
+# Creates a list of tuples that are sorted according to the bp
+# - return: list [tuple[int, Fragment]]
+# Arguments:
+#      - fragments: the previous fragments we created with the sequence_digest
+
 def organize_fragments_in_gel(fragments: list[Fragment])->list [tuple[int, Fragment]]:
-    """
-    Creates a list of tuples that are sorted according to the bp
-        return: list [tuple[int, Fragment]]
-        Arguments:
-            - fragments: the previous fragments we created with the sequence_digest
-    """
+   
     organized_fragments : list[tuple[int, Fragment]] = []
     for fragment in fragments:
         organized_fragments.append((fragment_length(fragment), fragment))
@@ -378,22 +388,21 @@ def organize_fragments_in_gel(fragments: list[Fragment])->list [tuple[int, Fragm
     return organized_fragments
 
 
+""" PRINT FRAGMENTS IN GEL"""
+#prints the ordered fragments (from higher to lower bp) from the requested digest command
+#Arguments:
+#  - fragments: a list of tupples, includes the lenght of the fragment and the fragment itself
+    
 def print_fragments_in_gel (fragments: list[tuple[int, Fragment]])-> None:
-    """
-    prints the ordered fragments (from higher to lower bp) from the requested digest command
-        Arguments:
-            - fragments: a list of tupples, includes the lenght of the fragment and the fragment itself
-    """
 
     for length_fragment in fragments:
         length, fragment = length_fragment
         print(f"- {length} bp (positions {fragment.start}-{fragment.end})")
 
 
-
-######################### INPUT/OUTPUT FUNCTIONS (DOES NOT INCLUDE FILE READING FUNCTIONS) ###########################################
+######################### _IO FUNCTIONS (DOES NOT INCLUDE FILE READING FUNCTIONS) ###########################################
     
-def readString(message: str)-> str:
+def read_string(message: str)-> str:
     """
     readString return a String from the input() function
 
@@ -424,24 +433,23 @@ def main() -> None:
         
     #Loop control variable used to determine whether the loop should continue executing or stop
     command_name: str = ""
-    command_parts: list[str]
+
 
     #STEP2. repeatedly asks the user for a command (using while), executes it, and prints the corresponding messages, until the user types EXIT
     # - WE SHOULD PROVIDE INFORMATION- command EXIT terminates the execution
 
                 
     while command_name != "EXIT":
-
     #The commands entered by the user do not come alone, they bring additional arguments. 
     # - eg. If the user wants to upload a FASTA file:  LOAD_SEQUENCES demo.fasta ; SEQUENCE_INFO demo ; DIGEST pGFP_insert EcoRI HindIII
-                            
+                       
     #1. Read user input and split it by spaces-  We must separate the whole command line into smaller strings by the split()
     # - readString reads all characters received on the serial port and groups them into a single string
     # - The command_parts variable becomes a list with two elements: ["LOAD_SEQUENCES", "demo.fasta"]
     
     #2. stores the first element of the list (the main command) in the command_name variable and check if the user has not entered anything
 
-        command_parts = readString(PROMPT).split()
+        command_parts: list[str] = read_string(PROMPT).split()
 
         if command_parts:
             command_name = command_parts[0]    
