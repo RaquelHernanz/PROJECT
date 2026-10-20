@@ -512,7 +512,7 @@ def main() -> None:
                                                                LIST SEQUENCE COMMAND
          ---------------------------------------------------------------------------------------------------------------------------"""     
         
-        elif command_name == "LIST_SEQUENCES":
+      elif command_name == "LIST_SEQUENCES":
             # It the dictionarry of sequences is empty
             if (len(sequences) == 0):
                 print("No sequences loaded.")
@@ -523,7 +523,7 @@ def main() -> None:
                                                               SEQUENCE INFORMATION COMMAND
          ---------------------------------------------------------------------------------------------------------------------------"""   
       
-        elif command_name == "SEQUENCE_INFO":
+      elif command_name == "SEQUENCE_INFO":
           # This command presents basic information about a loaded sequence: its length, the number of occurrences of each base, and
           # its GC content
             print("Function complete")
@@ -532,14 +532,14 @@ def main() -> None:
        """---------------------------------------------------------------------------------------------------------------------------
                                                                FIND SITES COMMAND
          ---------------------------------------------------------------------------------------------------------------------------"""   
-        elif command_name == "FIND_SITES":
+      elif command_name == "FIND_SITES":
             print("Function complete")
 
        """---------------------------------------------------------------------------------------------------------------------------
                                                                DIGEST COMMAND
          ---------------------------------------------------------------------------------------------------------------------------"""  
 
-        else command_name == "DIGEST":
+      else command_name == "DIGEST":
             if len(command_parts[2:]) < 3: 
                 print("Error: The DIGEST command requires a sequence ID and at least one enzyme.")        
             
