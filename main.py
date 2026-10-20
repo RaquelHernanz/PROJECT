@@ -5,7 +5,7 @@
 
 
 """###################################################### PROJECT ##########################################################"""
-""" PAB Project 2026-2027
+""" PAB Project 2026-2027 | @author: Beatriz Fernansdes and Raquel Hernanz
 
 Purpose of the program: """
 #This program helps the user PLANNING and INTERPRETING restriction digests. 
@@ -21,7 +21,7 @@ Purpose of the program: """
   # 2. supports a set of operations over individual sequences or over the whole collection of loaded sequences; 
   # 3. Find where enzymes cut and simulating a digest.
 
-"""@author: Beatriz Fernansdes and Raquel Hernanz"""
+
 
 """####################################################### IMPORTS #####################################################""""
 
