@@ -46,6 +46,7 @@ PROMPT: str = "Command to execute: "
 FASTA_HEADER_PREFIX: str = ">"
 NUCLEOTIDES: set[str] = {'A','C','G','T'}
 
+
 # List of valid commands in the system (Case-Sensitive)
 VALID_COMMANDS: list[str]= ["LOAD_SEQUENCES", "LIST_SEQUENCES", "SEQUENCE_INFO", "FIND_SITES", "DIGEST", "EXIT"]
 
@@ -170,25 +171,21 @@ def read_fasta_file(file:str, data_folder: str, prefix: str)-> list[Sequence]:
     return sequences
 
 
+"""------------------------------------------------------------------------------------------------------------------------------
+                                                  NUCLEOTIDE VERIFICATION 
+--------------------------------------------------------------------------------------------------------------------------------"""
+# Identifies if there is a sequence from the fasta file that contains invalid nucleotides
+# Return: str (name of the sequence). If empty, there is no sequence that has invalid nuclotides
+#Arguments:
+        #- sequences: the list of sequences obtained from a fasta file
+        #- nucleotides: the verified nucleotides that we can used for our verification
 
 def nucleotide_verification (sequences: list[Sequence], nucleotides: set[str])-> str:
-    """
-    Identifies if there is a sequence from the fasta file that contains invalid nucleotides
-
-        Return: str (name of the sequence). If empty, there is no sequence that has invalid nuclotides
-
-        Arguments:
-        - sequences: the list of sequences obtained from a fasta file
-        - nucleotides: the verified nucleotides that we can used for our verification
-"""
-    sequence_id: str = ""
     for sequence in sequences:
         for base in sequence.bases:
             if (base not in nucleotides):
-                sequence_id = sequence.seq_id
                 return sequence_id
-
-    return sequence_id
+    return ""
 
 
 # This function is already implemented as nucleotideverification
@@ -206,44 +203,47 @@ def find_invalid_sequence(sequences: list[Sequence]) -> str:
                 return sequence.seq_id
     return ""
 
+"""-----------------------------------------------------------------------------------------------------------------------------------------
+                                                     SEQUENCE REPEATED VERIFICATION 
+--------------------------------------------------------------------------------------------------------------------------------------------"""
+# Identifies if there is a sequence from the fasta file that is already in our loaded sequences
+# Return: str (name of the sequence). 
+#Arguments:
+        #- sequences: the list of sequences obtained from a fasta file
+        #- loaded_sequences: we have to see if they already uploaded
 
-def sequence_repeated (sequences: list[Sequence], loaded_sequences: dict[str,Sequence]):
-    """
-    Identifies if there is a sequence from the fasta file that is already in our loaded sequences
-
-        Return: str (name of the sequence). If empty, there is no sequence that is repeated
-
-        Arguments:
-        - sequences: the list of sequences obtained from a fasta file
-        - loaded_sequences: we have to see if they already uploaded
-"""
-    sequence_id: str = ""
+def sequence_repeated (sequences: list[Sequence], loaded_sequences: dict[str,Sequence])-> str: 
+  #create an empty set where we will store the identifiers of the sequences that have already been seen.
+    chek_id: set[str] = set() 
     for sequence in sequences:
-        if(sequence.seq_id in loaded_sequences): #We are comparing the keys, which is the name/id of the sequences
-            sequence_id = sequence.seq_id
-            break
-    
-    return sequence_id
+      #We are comparing the keys, which is the name/id of the sequences
+      if(sequence.seq_id in loaded_sequences or sequence.seq_id in check_id): 
+        return sequence.seq_id
+      check_id.add(sequence.seq_id)
+      
+    #If empty, there is no sequence that is repeated
+    return ""
+
+
+"""-----------------------------------------------------------------------------------------------------------------------------------------
+                                                    ADD SEQUENCES TO A DICTIONARY
+--------------------------------------------------------------------------------------------------------------------------------------------"""
+# Add the valid sequences from a fasta file to the dictionary  
+# Return: dict[str,Sequence]
+#Arguments:
+        #- sequences: the list of sequences obtained from a fasta file
+        #- loaded_sequences: we have to upload the new sequences to the dictionary
 
 def add_sequences_to_dic (sequences: list[Sequence], loaded_sequences: dict[str,Sequence])-> dict[str,Sequence]:
-    """
-    Add the valid sequences from a fasta file to the dictionary  
-
-        Return: dict[str,Sequence]
-
-        Arguments:
-        - sequences: the list of sequences obtained from a fasta file
-        - loaded_sequences: we have to upload the new sequences to the dictionary
-"""
     for sequence in sequences:
         loaded_sequences[sequence.seq_id] = sequence
 
     return loaded_sequences
 
 
-"""--------------------------------------------------------
-    STEP (4.3) LIST ALL LOADED SEQUENCES (inspect) 
------------------------------------------------------------"""
+"""----------------------------------------------------------------------------------------------------------------------------------------
+                                            STEP (4.3) LIST ALL LOADED SEQUENCES (inspect) 
+-------------------------------------------------------------------------------------------------------------------------------------------"""
 
 
 def list_sequences(sequences: dict[str, Sequence])-> None:
@@ -401,20 +401,19 @@ def print_fragments_in_gel (fragments: list[tuple[int, Fragment]])-> None:
 
 
 ######################### _IO FUNCTIONS (DOES NOT INCLUDE FILE READING FUNCTIONS) ###########################################
-    
-def read_string(message: str)-> str:
-    """
-    readString return a String from the input() function
 
-        Arguments: 
-            - message: A string message used for the input function
-"""
+"""READ STRING"""
+#This function going to return a String from the input() function
+#Arguments: 
+# - message: A string message used for the input function    
+
+def read_string(message: str)-> str:
     return input(message)
 
 
 
 
-################################   MAIN Function  #############################################
+"""#########################################################   MAIN FUNCTION  #######################################################"""
 # Main function that acts as a command interpreter.
     #Features are organized in 3 groups:
         #1. Load - read FASTA files (LOAD_SEQUENCES)
@@ -440,59 +439,76 @@ def main() -> None:
 
                 
     while command_name != "EXIT":
-    #The commands entered by the user do not come alone, they bring additional arguments. 
-    # - eg. If the user wants to upload a FASTA file:  LOAD_SEQUENCES demo.fasta ; SEQUENCE_INFO demo ; DIGEST pGFP_insert EcoRI HindIII
+      #The commands entered by the user do not come alone, they bring additional arguments. 
+      # - eg. If the user wants to upload a FASTA file:  LOAD_SEQUENCES demo.fasta ; SEQUENCE_INFO demo ; DIGEST pGFP_insert EcoRI HindIII
                        
-    #1. Read user input and split it by spaces-  We must separate the whole command line into smaller strings by the split()
-    # - readString reads all characters received on the serial port and groups them into a single string
-    # - The command_parts variable becomes a list with two elements: ["LOAD_SEQUENCES", "demo.fasta"]
+      #1. Read user input and split it by spaces-  We must separate the whole command line into smaller strings by the split()
+      # - read_string reads all characters received on the serial port and groups them into a single string
+      # - The command_parts variable becomes a list with two elements: ["LOAD_SEQUENCES", "demo.fasta"]
     
-    #2. stores the first element of the list (the main command) in the command_name variable and check if the user has not entered anything
+      command_parts: list[str] = read_string(PROMPT).split()
 
-        command_parts: list[str] = read_string(PROMPT).split()
+      #2. check whether the user wants to end the program or has entered something invalid
+      #2.1. check whether the user has not entered any command. In that case, return to the beginning of the cycle without executing anything else.
+      if not command_parts:   
+        continue
 
-        if command_parts:
-            command_name = command_parts[0]    
-        else:
-            command_name = "" 
-            continue 
- 
-                                
-        #3. Check if the user provides an unknown command: 
-        if command_name not in VALID_COMMANDS: 
-            print ("Unknown command" )
-            continue 
+      #2.2. stores the first element of the list (the main command) in the command_name variable 
+      command_name = command_parts[0]    
+                            
+      #2.3. Check if the user provides an unknown command: 
+      if command_name not in VALID_COMMANDS: 
+        print ("Unknown command")
+        continue 
 
-        if command_name == "LOAD_SEQUENCES":
+      #2.4.The command EXIT terminates the execution saying "Goodbye".
+      if command_name == "EXIT": 
+        print("Goodbye!") 
+        continue
 
-            #To avoid issuss with command_parts, put the value inside file variable
-            file = command_parts[1]
+      #___________________________________________EXECUTION OF THE COMMANDS REQUESTED BY THE USER __________________________________
+      
+      """---------------------------------------------------------------------------------------------------------------------------
+                                                               LOAD_SEQUENCE COMMAND
+         ---------------------------------------------------------------------------------------------------------------------------"""
+      #This command going to take the name of a FASTA file as input and loads all of its SEQUENCES, by first validating its integrity.
+      
+      if command_name == "LOAD_SEQUENCES":
+        #To avoid issuss with command_parts, put the value inside file variable
+        file: str = command_parts[1]
+        
+        # 3.1 Check if the file was already uploaded previously 
+        if file in loaded_fasta_files:
+         print(f"File {file} already loaded!")
+         continue
 
-            # If the file was already uploaded previously 
-            if (file not in loaded_fasta_files):
+        # 3.2. Check if the nuclotides in the sequences are correct
+        # We call the read_fasta_file function to read the FASTA file, and then we call the nucleotide_verification function 
+        # to validate whether the nucleotides are valid.
+        sequences_in_fasta: list[Sequence] = read_fasta_file(file, DATA_FOLDER, FASTA_HEADER_PREFIX)
+        invalid_sequence: str = nucleotide_verification(sequences_in_fasta, NUCLEOTIDES)
 
-                #Read all of the sequences in the file
-                sequences_in_fasta: list[Sequence] = read_Fasta_File(file, DATA_FOLDER, FASTA_HEADER_PREFIX)
+        #If empty, there is no sequence that has invalid nuclotides
+        if (invalid_sequence != ""):
+          print(f"File {file} could not be loaded. Sequence {invalid_sequence} contains invalid nucleotides.")
+          continue 
 
-                #Verify if the nuclotides in the sequences are correct
-                if(nucleotideVerification(sequences_in_fasta, NUCLEOTIDES) != ""):
-                    invalid_sequence = nucleotideVerification(sequences_in_fasta, NUCLEOTIDES)
-                    print(f"File {file} could not be loaded. Sequence {invalid_sequence} contains invalid nucleotides.")
+        #3.2. Check if the sequence ID is already in use
+        repeated_sequence : str = sequence_repeated(sequences_in_fasta,sequences)
+        if (repeated_sequence != ""):
+          print (f"File {file} could not be loaded. Sequence ID {repeated_sequence} is already in use.")
+          continue 
+          
+        #3.3. Finally, once all the checks have been completed and everything has passed, load the sequence.   
+        add_sequences_to_dic(sequences_in_fasta, sequences)
+        loaded_fasta_files.add(file)        
+        print(f"File {file} validated and loaded!")
 
-                #Also verify if they are repeated sequences   
-                elif (sequenceRepeated(sequences_in_fasta,sequences) != ""):
-                    repeated_sequence = sequenceRepeated(sequences_in_fasta,sequences)
-                    print (f"File {file} could not be loaded. Sequence ID {repeated_sequence} is already in use.")
 
-                #If everything is correct, then we can upload the sequences to the dictionary
-                else:
-                    loaded_fasta_files.add(file)
-                    sequences = addSequencesToDic(sequences_in_fasta,sequences)
-                    print(f"File {file} validated and loaded!")
-
-            else:
-                print(f"File {file} already loaded!")
-                         
+        """---------------------------------------------------------------------------------------------------------------------------
+                                                               LIST SEQUENCE COMMAND
+         ---------------------------------------------------------------------------------------------------------------------------"""     
+        
         elif command_name == "LIST_SEQUENCES":
             # It the dictionarry of sequences is empty
             if (len(sequences) == 0):
@@ -500,24 +516,34 @@ def main() -> None:
             else:
                 list_Sequences(sequences)
 
+       """---------------------------------------------------------------------------------------------------------------------------
+                                                              SEQUENCE INFORMATION COMMAND
+         ---------------------------------------------------------------------------------------------------------------------------"""   
+      
         elif command_name == "SEQUENCE_INFO":
           # This command presents basic information about a loaded sequence: its length, the number of occurrences of each base, and
           # its GC content
             print("Function complete")
-          
+      
+
+       """---------------------------------------------------------------------------------------------------------------------------
+                                                               FIND SITES COMMAND
+         ---------------------------------------------------------------------------------------------------------------------------"""   
         elif command_name == "FIND_SITES":
             print("Function complete")
 
-        elif command_name == "DIGEST":
+       """---------------------------------------------------------------------------------------------------------------------------
+                                                               DIGEST COMMAND
+         ---------------------------------------------------------------------------------------------------------------------------"""  
+
+        else command_name == "DIGEST":
             if len(command_parts[2:]) < 3: 
                 print("Error: The DIGEST command requires a sequence ID and at least one enzyme.")        
             
             print("Function complete")
 
                 #print(f"Digestion of the sequence {sequence.ID?} with {enzime_used} produced the following fragments: {DIGEST}") 
-        else:
-            #The command EXIT terminates the execution saying "Goodbye".
-            print("Goodbye!")                                          
+                                                 
 
 #The rest of the list (command_parts[1:]) contains the arguments that we will need to pass to the functions       
 
