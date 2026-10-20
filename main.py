@@ -1,11 +1,11 @@
-#################################################### INFORMATION ########################################################
+"""#################################################### INFORMATION ########################################################"""
 """
 #What is a restriction digest?
 A restriction digest, consists in cutting a DNA sample with one or more enzymes and then running the resulting fragments 
 on an agarose gel, which separates them by size.
 """
 
-###################################################### PROJECT ##########################################################
+"""###################################################### PROJECT ##########################################################"""
 """ PAB Project 2026-2027
 
 Purpose of the program: 
@@ -26,7 +26,8 @@ with one or more enzymes, ordered as they would appear on an agarose gel (Wester
 @author: Beatriz Fernansdes and Raquel Hernanz 
 
 """
-############################################# IMPORTS #####################################################
+
+"""####################################################### IMPORTS #####################################################""""
 
 import os
 #To avoid problems with files across different Operating Systems (Windows, MacOS, Linux), we use the os.path.join function to create
@@ -38,8 +39,10 @@ import os
 from dataclasses import dataclass
 
 
-##############################################  CONSTANTS  #############################################
-#CONSTANTS 
+"""########################################################  CONSTANTS  ##################################################"""
+
+#CONSTANTS- fixed values ​​that should not be changed during program execution
+
 DATA_FOLDER: str = "data"
 ENZYMES_FILE: str = "enzymes.txt"
 PROMPT: str = "Command to execute: "
@@ -51,59 +54,61 @@ NUCLEOTIDES: set[str] = {'A','C','G','T'}
 VALID_COMMANDS: list[str]= ["LOAD_SEQUENCES", "LIST_SEQUENCES", "SEQUENCE_INFO", "FIND_SITES", "DIGEST", "EXIT"]
 
 
-##################################### DATACLASSES AND THEIR METHODS ############################################
+
+"""############################################### DATACLASSES AND THEIR METHODS ############################################""""
 
 #A @dataclass is a simplified and automated way to create classes in Python focused exclusively on storing 
 #data, allowing you to save information for a specific field.In this project, we have 3 fields:
 
+"""-------------------------------------------------SEQUENCE DATA CLASSE--------------------------------------------------------"""
+#A DNA sequence loaded from a FASTA record (It will be used in step 4.3. LIST ALL LOADED SEQUENCES).
+#Attributes:
+        #- seq_id: Sequence identifier: the text after ">" up to the first space.
+        #- bases: Full sequence, with all FASTA lines joined.
 
 @dataclass
 class Sequence:
-    """
-    A DNA sequence loaded from a FASTA record (It will be used in step 4.3. LIST ALL LOADED SEQUENCES).
-        Attributes:
-        - seq_id: Sequence identifier: the text after ">" up to the first space.
-        - bases: Full sequence, with all FASTA lines joined.
-    """ 
     seq_id: str
     bases: str
 
 
+"""-------------------------------------------------ENZYME DATA CLASSE--------------------------------------------------------"""
+#This dataclass represents restriction enzymes as described in the enzymes file, which function as molecular 'scissors' for the 
+#sequence undergoing digestion
+#Attributes:
+        #- name: Enzyme name (e.g. "EcoRI"); case-sensitive.
+        #- site: Recognition site, as a string over A, C, G, T (e.g. GAATTC);
+        #- cut_offset: Number of bases of the site that come before the cut on the top strand (e.g. 1 for G^AATTC).
+        # Precondition: 0 < cut_offset < len(site).
 @dataclass
 class Enzyme:
-    """
-    This dataclass represents restriction enzymes as described in the enzymes file, which function 
-    as molecular 'scissors' for the sequence undergoing digestion
-    
-    Attributes:
-        - name: Enzyme name (e.g. "EcoRI"); case-sensitive.
-        - site: Recognition site, as a string over A, C, G, T (e.g. GAATTC);
-        - cut_offset: Number of bases of the site that come before the cut on the top strand (e.g. 1 for G^AATTC).
-        - Precondition: 0 < cut_offset < len(site).
-    """
     name: str
     site: str
     cut_offset: int 
 
+"""-------------------------------------------------FRAGMENT DATA CLASSE--------------------------------------------------------"""
+# A fragment produced by a digested Sequence.
+# Attributes:
+        #- start: First position of the fragment (1-based, inclusive).
+        #- end: Last position of the fragment (1-based, inclusive).
+# Preconditions:
+        # 1 <= start <= end (length of the original sequence).
+
 @dataclass
 class Fragment:
-    """A fragment produced by a digested Sequence.
-
-        Attributes:
-            - start: First position of the fragment (1-based, inclusive).
-            - end: Last position of the fragment (1-based, inclusive).
-        Preconditions:
-         1 <= start <= end (length of the original sequence).
-    """
     start: int
     end: int
 
 
-################################################# DOMAIN FUNCTIONS #################################################################
 
-"""--------------------------------------------------------
-                READ THE ENZYMES (start-up)  
------------------------------------------------------------"""
+"""################################################# DOMAIN FUNCTIONS #################################################################"""
+
+# DOMAIN FUCTIONS- Functions that serve strictly to compute logical or mathematical results. 
+# They are responsible for the program's core logic (such as simulating enzyme cuts or calculating DNA sequence statistics).
+
+"""----------------------------------------------------------------------------------------------------------------------------------------
+                                                    READ THE ENZYMES (start-up)  
+-------------------------------------------------------------------------------------------------------------------------------------------"""
 
 def read_enzyme_file (file: str, data_folder: str)-> dict[str, Enzyme]:
     """
@@ -125,11 +130,12 @@ def read_enzyme_file (file: str, data_folder: str)-> dict[str, Enzyme]:
             enzymes[name] = Enzyme(name,site,int(cutoff_site))
 
     return enzymes
+  
 
-"""--------------------------------------------------------
-                      READ FASTA FILE 
-     STEP(4.2) LOADING SEQUENCE (VERIFYING A FASTA FILE) 
------------------------------------------------------------"""
+"""----------------------------------------------------------------------------------------------------------------------------------------
+                                                               READ FASTA FILE 
+                                             STEP(4.2) LOADING SEQUENCE (VERIFYING A FASTA FILE) 
+-------------------------------------------------------------------------------------------------------------------------------------------"""
  
 def read_fasta_file(file:str, data_folder: str, prefix: str)-> list[Sequence]:
     """
@@ -262,9 +268,9 @@ def list_sequences(sequences: dict[str, Sequence])-> None:
     print(f" {sequence.seq_id} ({len(sequence.bases)} bp)")
 
 
-"""----------------------------------- 
-STEP (4.4) SEQUENCE INFORMATION (inspect)
---------------------------------------"""
+"""----------------------------------------------------------------------------------------------------------------------------------------
+                                                 STEP (4.4) SEQUENCE INFORMATION (inspect)
+-------------------------------------------------------------------------------------------------------------------------------------------"""
 
 """GC CONTENT"""
 #percentage of G and C in the sequence, rounded to 2 decimal places.
@@ -286,10 +292,9 @@ count_g = sequence.bases.count("G")
 count_t = sequence.bases.count("T")
 
 
-"""--------------------------------------
-    STEP (4.5) FINDING TE SITE POSITION 
------------------------------------------
-"""
+"""----------------------------------------------------------------------------------------------------------------------------------------
+                                                   STEP (4.5) FINDING TE SITE POSITION 
+-------------------------------------------------------------------------------------------------------------------------------------------"""
 
 #IMPORTANT: In biology, positions are counted starting from 1 (the first base is position 1). Since lists in Python 
 #           begin at index 0, so we added 1 (positions.append(i + 1)) to convert the Python index into the correct biological position.
@@ -316,21 +321,20 @@ def find_site_positions(sequence: Sequence, enzyme: Enzyme) -> list[int]:
     return positions
 
 
-"""--------------------------------------
-       STEP (4.6) SEQUENCE DIGEST
------------------------------------------
-"""
+"""----------------------------------------------------------------------------------------------------------------------------------------
+                                                        STEP (4.6) SEQUENCE DIGEST
+-------------------------------------------------------------------------------------------------------------------------------------------"""
 # The command "DIGEST" lists the The command DIGEST fragments in this same order, from the top to the bottom of the gel
 #DIGEST COMMAND (We must pay special attention to the custom sorting logic in case of a tie)
 
-def digest_sequence(sequence: Sequence, enzymes_used: list[Enzyme]) -> list[Fragment]:
-    """
-    This function will return the fragments of the digest, in order that they appear in the gel or an empty list if there are no cuts.
-        Arguments: 
-            - sequence: Sequence (dataclass) contains the linear DNA sequence that will be digested.
-            - enzymes_used: objetcs list within Enzyme (list[Enzyme]), contains the restriction enzymes selected by the user to perform cuts in the sequence
 
-    """
+""" DIGEST SEQUENCE """
+#This function will return the fragments of the digest, in order that they appear in the gel or an empty list if there are no cuts.
+#Arguments: 
+    #- sequence: Sequence (dataclass) contains the linear DNA sequence that will be digested.
+    #- enzymes_used: objetcs list within Enzyme (list[Enzyme]), contains the restriction enzymes selected by the user to perform cuts in the sequence
+
+def digest_sequence(sequence: Sequence, enzymes_used: list[Enzyme]) -> list[Fragment]:
     cuts: list[int] = []
     for enzyme in enzymes_used:
         for position in find_site_positions(sequence, enzyme):
@@ -357,14 +361,14 @@ def digest_sequence(sequence: Sequence, enzymes_used: list[Enzyme]) -> list[Frag
     return fragments
 
 
+"""" FRAGMENT LENGTH """
+# Returns the length (in bp) of a DNA fragment of a fragment.
+# Preconditions: 1 <= start <= end (length of the original sequence).
+# Argument: fragment; 
+        #- Classe (type hint): Fragment
+# Return: integer number
+
 def fragment_length(fragment: Fragment) -> int:
-  """
-    Returns the length (in bp) of a DNA fragment of a fragment.
-    Preconditions: 1 <= start <= end (length of the original sequence).
-        Argument: fragment; 
-        Classe (type hint): Fragment
-        Return: integer number
-  """
   return fragment.end - fragment.start + 1 
 
 # If a fragment begins at position 1 and ends at position 3, it contains 3 bases (bases 1, 2, and 3). By adding 1 (3 - 1 + 1 = 3), 
@@ -400,7 +404,7 @@ def print_fragments_in_gel (fragments: list[tuple[int, Fragment]])-> None:
         print(f"- {length} bp (positions {fragment.start}-{fragment.end})")
 
 
-######################### _IO FUNCTIONS (DOES NOT INCLUDE FILE READING FUNCTIONS) ###########################################
+"""################################ _IO FUNCTIONS (DOES NOT INCLUDE FILE READING FUNCTIONS) ###########################################"""
 
 """READ STRING"""
 #This function going to return a String from the input() function
@@ -409,7 +413,6 @@ def print_fragments_in_gel (fragments: list[tuple[int, Fragment]])-> None:
 
 def read_string(message: str)-> str:
     return input(message)
-
 
 
 
