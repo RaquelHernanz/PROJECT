@@ -1,31 +1,27 @@
 """#################################################### INFORMATION ########################################################"""
-"""
-#What is a restriction digest?
-A restriction digest, consists in cutting a DNA sample with one or more enzymes and then running the resulting fragments 
-on an agarose gel, which separates them by size.
-"""
+"""#What is a restriction digest?"""
+#A restriction digest, consists in cutting a DNA sample with one or more enzymes and then running the resulting fragments 
+#on an agarose gel, which separates them by size.
+
 
 """###################################################### PROJECT ##########################################################"""
 """ PAB Project 2026-2027
 
-Purpose of the program: 
-This program helps the user PLANNING and INTERPRETING restriction digests. 
+Purpose of the program: """
+#This program helps the user PLANNING and INTERPRETING restriction digests. 
 
-Programme description: 
-A command-line program that simulates restriction enzyme digests in silico. 
-It loads and validates DNA sequences from FASTA files, reports basic statistics (length, base counts, GC content),  
-finds enzyme recognition sites (including overlapping ones) and lists the fragments produced by digesting a sequence 
-with one or more enzymes, ordered as they would appear on an agarose gel (Western Blot).
+"""Programme description:"""
+#A command-line program that simulates restriction enzyme digests in silico. 
+#It loads and validates DNA sequences from FASTA files, reports basic statistics (length, base counts, GC content),  
+#finds enzyme recognition sites (including overlapping ones) and lists the fragments produced by digesting a sequence 
+#with one or more enzymes, ordered as they would appear on an agarose gel (Western Blot).
 
-# How does it work?
-  1. loads DNA sequences from files; 
-  2. supports a set of operations over individual sequences or over the whole collection of loaded sequences; 
-  3. Find where enzymes cut and simulating a digest.
+"""How does it work?"""
+  # 1. loads DNA sequences from files; 
+  # 2. supports a set of operations over individual sequences or over the whole collection of loaded sequences; 
+  # 3. Find where enzymes cut and simulating a digest.
 
-
-@author: Beatriz Fernansdes and Raquel Hernanz 
-
-"""
+"""@author: Beatriz Fernansdes and Raquel Hernanz"""
 
 """####################################################### IMPORTS #####################################################""""
 
