@@ -102,18 +102,17 @@ class Fragment:
 # DOMAIN FUCTIONS- Functions that serve strictly to compute logical or mathematical results. 
 # They are responsible for the program's core logic (such as simulating enzyme cuts or calculating DNA sequence statistics).
 
+
 """----------------------------------------------------------------------------------------------------------------------------------------
                                                     READ THE ENZYMES (start-up)  
 -------------------------------------------------------------------------------------------------------------------------------------------"""
+# This function allows to read the enzyme restriction file, enzymes.txt (always valid) load the file and returns a dictionary where the 
+# key is the enzyme name:  dict[str, Enzyme]
+# Arguments: 
+            #- file: the name of the file
+            #- data_folder: the folder where the file is contained
 
 def read_enzyme_file (file: str, data_folder: str)-> dict[str, Enzyme]:
-    """
-    This function allows to read the enzyme restriction file, enzymes.txt (always valid) 
-    load the file and returns a dictionary where the key is the enzyme name:  dict[str, Enzyme]
-            Arguments: 
-            - file: the name of the file
-            - data_folder: the folder where the file is contained
-    """
     enzymes: dict[str,Enzyme] = {}
         
     #The file_path variable holds the path that we provide to the open function
@@ -132,45 +131,48 @@ def read_enzyme_file (file: str, data_folder: str)-> dict[str, Enzyme]:
                                                                READ FASTA FILE 
                                              STEP(4.2) LOADING SEQUENCE (VERIFYING A FASTA FILE) 
 -------------------------------------------------------------------------------------------------------------------------------------------"""
- 
+# The program going to read and add the sequences from a FASTA file to a list[] in the order they appear.
+# Return: list[Sequence] 
+# Arguments:
+        # - file: the name of the file
+        # - data_folder: the folder where the file is contained
+        # - prefix: helps to identify the fasta file
+
 def read_fasta_file(file:str, data_folder: str, prefix: str)-> list[Sequence]:
-    """
-    The program going to read and add the sequences from a FASTA file to a list[] in the order they appear.
+  # AI-assited function: In this case, we ask for some minor corrections in the code structure 
+  sequences: list[Sequence] = []
+  file_path = os.path.join(data_folder, file)
+
+  with open(file_path) as fasta:
+    for line in fasta:
+      complete_line = line.strip()
+      
+      #If there is no words in that line
+      if (complete_line == ""):
+        continue                                                       
+      
+      #If we have a new sequence
+      if (complete_line[0] == prefix): 
+        #If equal to > we can use the scling to remove the ">"
+        complete_line = complete_line[1:]  
         
-        AI-assited function: In this case, we ask for some minor corrections in the code structure 
-        Return: list[Sequence] 
-        Arguments:
-        - file: the name of the file
-        - data_folder: the folder where the file is contained
-        - prefix: helps to identify the fasta file
+        #We are separating the words from each line
+        words = complete_line.split()          
+        #The name/id of the sequence
+        seq_id = words[0]      
+        #Add to the list the new sequence
+        sequences.append(Sequence(seq_id, ""))                     
 
-    """
-    sequences: list[Sequence] = []
-    file_path = os.path.join(data_folder, file)
-
-    with open(file_path) as fasta:
-        for line in fasta:
-            complete_line = line.strip()
-
-            #If there is no words in that line
-            if (complete_line == ""):
-                continue                                                       #In this case we use continue 
-              
-            #If we have a new sequence
-            if (complete_line[0] == prefix):                                                  #If equal to >
-                complete_line = complete_line[1:]                   #We can use the scling to remove the ">"
-                words = complete_line.split()                    #We are separating the words from each line
-                seq_id = words[0]                                               #The name/id of the sequence
-                sequences.append(Sequence(seq_id, ""))                     #Add to the list the new sequence
-
-            #If we have bases from a sequence
-            else:
-                #We are using the last sequence added to the list
-                current_sequence = sequences[-1]
-                # And we modify the bases from that sequence
-                current_sequence.bases = current_sequence.bases + complete_line
+      #If we have bases from a sequence
+       else:
+         #We are using the last sequence added to the list
+         current_sequence = sequences[-1]
+         
+         # And we modify the bases from that sequence
+         current_sequence.bases = current_sequence.bases + complete_line
     
     return sequences
+
 
 
 """------------------------------------------------------------------------------------------------------------------------------
@@ -190,20 +192,22 @@ def nucleotide_verification (sequences: list[Sequence], nucleotides: set[str])->
     return ""
 
 
-# This function is already implemented as nucleotideverification
+
+"""------------------------------------------------------------------------------------------------------------------------------
+                                                  FIND INVALID SEQUENCES
+--------------------------------------------------------------------------------------------------------------------------------"""
+# This function is already done in the nucleotideverification for 4.21. Returns the ID of the first sequence with invalid nucleotides, 
+# or "" if all are valid.
+# Argument: sequences list with objects type Sequence (list[Sequence])
 
 def find_invalid_sequence(sequences: list[Sequence]) -> str:
-    """
-    This function is already done in the nucleotideverification for 4.21. Returns the ID of 
-    the first sequence with invalid nucleotides, or "" if all are valid.
-     AI-assisted function.
-        Argument: sequences list with objects type Sequence (list[Sequence])
-"""
+#AI-assisted function.
     for sequence in sequences:
         for base in sequence.bases:
             if base not in NUCLEOTIDES:
                 return sequence.seq_id
     return ""
+
 
 """-----------------------------------------------------------------------------------------------------------------------------------------
                                                      SEQUENCE REPEATED VERIFICATION 
