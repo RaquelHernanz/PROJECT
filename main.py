@@ -289,14 +289,10 @@ def count_bases(sequence: Sequence) -> dict[str, int]:
 #Precondition: the sequence has at least one base.
 
 def gc_content(sequence: Sequence) -> float:
-    count_gc = sequence.bases.count("G") + sequence.bases.count("C")
-    percentage= (count_gc / len(sequence.bases)) * 100
+    count_gc: int = sequence.bases.count("G") + sequence.bases.count("C")
+    percentage: float = (count_gc / len(sequence.bases)) * 100
     
-    # Retorna uma string formatada
-    return f"{percentage:.2f}"
-
-
-
+    return f"{percentage:.2f}" 
       
 
 
@@ -528,6 +524,7 @@ def main() -> None:
             else:
                 list_Sequences(sequences)
 
+      
        """---------------------------------------------------------------------------------------------------------------------------
                                                               SEQUENCE INFORMATION COMMAND
          ---------------------------------------------------------------------------------------------------------------------------"""   
@@ -546,18 +543,30 @@ def main() -> None:
 
             # 2. If the condition above was not met, we will retrieve a specific sequence from the sequences dictionary and store 
             # it in the sequence variable.
-            sequence: Sequence = sequences[sequen_id]
+            sequence: Sequence = sequences[sequence_id]
+
+            #3. we call the function count_bases and store the result in the variable 'count' as a dictionary
+            counts: dict[str, int] = count_bases(sequence) 
+      
+            print(f"Information about the sequence {sequence_id}:") 
+      
+            #4. Its length
+            print(f"- Length: {len(sequence.bases)} bp.") 
             
-           
-      
-      
-      
+            # The number of occurences of each base
+            print(f"- Base counts: A={counts['A']}, C={counts['C']}, G={counts['G']}, T={counts['T']}.")
+
+           #GC content
+           print(f"- GC content: {gc_content(sequence)}%.")
+
+  
 
        """---------------------------------------------------------------------------------------------------------------------------
                                                                FIND SITES COMMAND
          ---------------------------------------------------------------------------------------------------------------------------"""   
       elif command_name == "FIND_SITES":
             print("Function complete")
+      
 
        """---------------------------------------------------------------------------------------------------------------------------
                                                                DIGEST COMMAND
