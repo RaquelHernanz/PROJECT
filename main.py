@@ -267,6 +267,19 @@ def list_sequences(sequences: dict[str, Sequence])-> None:
                                                  STEP (4.4) SEQUENCE INFORMATION (inspect)
 -------------------------------------------------------------------------------------------------------------------------------------------"""
 
+"""  NUMBER OF OCCURENCES OF EACH BASE  """"
+# In this part the count_bases going to count how many base occurances are in the sequence loaded. 
+
+def count_bases(sequence: Sequence) -> dict[str, int]:
+    counts: dict[str, int] = {"A": sequence.bases.count("A"),
+                              "C": sequence.bases.count("C"),
+                              "G": sequence.bases.count("G"),
+                              "T": sequence.bases.count("T")
+                             }
+    return counts
+
+
+
 """GC CONTENT"""
 #percentage of G and C in the sequence, rounded to 2 decimal places.
 #Precondition: the sequence has at least one base.
@@ -279,12 +292,8 @@ def gc_content(sequence: Sequence) -> float:
     return f"{percentage:.2f}"
 
 
-"""NUMBER OF OCCURENCES OF EACH BASE"""
 
-count_a = sequence.bases.count("A")
-count_c = sequence.bases.count("C")
-count_g = sequence.bases.count("G")
-count_t = sequence.bases.count("T")
+      
 
 
 """----------------------------------------------------------------------------------------------------------------------------------------
@@ -518,11 +527,26 @@ def main() -> None:
        """---------------------------------------------------------------------------------------------------------------------------
                                                               SEQUENCE INFORMATION COMMAND
          ---------------------------------------------------------------------------------------------------------------------------"""   
+      # This command presents basic information about a loaded sequence: its length, the number of occurrences of each base, and
+      # its GC content
       
       elif command_name == "SEQUENCE_INFO":
-          # This command presents basic information about a loaded sequence: its length, the number of occurrences of each base, and
-          # its GC content
-            print("Function complete")
+            sequence_id: str = command_parts[1]
+
+            # 1. We check whether the sequence has been loaded
+            if sequence_id not in sequences: 
+              print(f"The sequence {sequence_id} is not loaded.")
+              # The 'continue' command terminates this command because this condition was true
+              continue
+
+
+            # 2. If the condition above was not met, we will retrieve a specific sequence from the sequences dictionary and store 
+            # it in the sequence variable.
+            sequence: Sequence = sequences[sequen_id]
+            
+           
+      
+      
       
 
        """---------------------------------------------------------------------------------------------------------------------------
