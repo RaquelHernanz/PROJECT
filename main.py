@@ -246,22 +246,21 @@ def add_sequences_to_dic (sequences: list[Sequence], loaded_sequences: dict[str,
 """----------------------------------------------------------------------------------------------------------------------------------------
                                             STEP (4.3) LIST ALL LOADED SEQUENCES (inspect) 
 -------------------------------------------------------------------------------------------------------------------------------------------"""
-
+# List all currently loaded sequences, sorted alphabetically by ID, in ascending order using function "sorted()
+# Arguments: 
+            #- sequences: the sequences that will be ordered and printed later
+            #- the dictionary key is the seq_id
 
 def list_sequences(sequences: dict[str, Sequence])-> None:
-  """
-    List all currently loaded sequences, sorted alphabetically by ID, in ascending order using function "sorted()"
-        Arguments: 
-            - sequences: the sequences that will be ordered and printed later
-            - the dictionary key is the seq_id
-  """
-  # ensure it is created as a dict after sorting, not as a list
-  sequences = dict(sorted(sequences.items()))
-  
-  print(f"Number of sequences loaded: {len(sequences)}")      #2. 
-  
-  for sequence in sequences.values():                          #3. 
-    print(f" {sequence.seq_id} ({len(sequence.bases)} bp)")
+
+  # 1. This function is invoked by the 'main' function, which calls it whenever at least one sequence has been loaded.
+  print(f"Number of sequences loaded: {len(sequences)}")   
+
+  #2. We use 'sorted()' function to sorted alphabetically by ID
+  for sequence in sorted(sequences):  
+    #3. We create a dictionary where the key is the ID
+    sequence: Sequence = sequences[seq_id]
+    print(f" - {sequence.seq_id} ({len(sequence.bases)} bp)")
 
 
 """----------------------------------------------------------------------------------------------------------------------------------------
@@ -507,7 +506,8 @@ def main() -> None:
         """---------------------------------------------------------------------------------------------------------------------------
                                                                LIST SEQUENCE COMMAND
          ---------------------------------------------------------------------------------------------------------------------------"""     
-        
+      #This command lists all currently loaded sequences, sorted alphabetically by ID, in ascending order. 
+      
       elif command_name == "LIST_SEQUENCES":
             # It the dictionarry of sequences is empty
             if (len(sequences) == 0):
