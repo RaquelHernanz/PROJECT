@@ -234,6 +234,29 @@ def add_sequences_to_dic (sequences: list[Sequence], loaded_sequences: dict[str,
 
 
 
+############## LIST ALL LOADED SEQUENCES STEP (4.3) ##############
+
+def list_sequences_io(sequences: dict[str, Sequence])-> None:
+    """
+     Prints the number of loeaded sequences and list them. The list is sorted alphabetically by ID, in ascending order using function "sorted()
+        Arguments: 
+        - sequences: the sequences that will be ordered and printed later
+        - the dictionary key is the seq_id
+    """
+
+    sequence: Sequence
+
+    print(f"Number of sequences loaded: {len(sequences)}")    
+    
+    #We use 'sorted()' function to sorted alphabetically by ID, keep in mind we need to use dict()
+    # because sorted() returns by default a list, not a dictionary
+    
+    for id_key in dict(sorted(sequences)):  
+        sequence = sequences[id_key]
+        print(f" - {sequence.seq_id} ({len(sequence.bases)} bp)")
+      
+
+
 ############## SEQUENCE INFORMATION (inspect) STEP (4.4) ##############
 
 def count_bases(sequence: Sequence) -> dict[str, int]:
@@ -263,7 +286,8 @@ def gc_content(sequence: Sequence) -> str:
     percentage: float = (count_gc / len(sequence.bases)) * 100
     
     return f"{percentage:.2f}" 
-      
+
+  
 ############## FINDING TE SITE POSITION STEP (4.5)  ##############
 
 """
@@ -363,6 +387,7 @@ def fragment_length(fragment: Fragment) -> int:
 # we ensure that the initial base is also included in the total count.
 
 
+
 """ ORGANIZE FRAGMENTS IN GEL
     Creates a list of tuples that are sorted according to the bp
         return: list [tuple[int, Fragment]]
@@ -383,6 +408,19 @@ def organize_fragments_in_gel(fragments: list[Fragment])->list [tuple[int, Fragm
     organized_fragments = sorted((organized_fragments), reverse = True)
 
     return organized_fragments
+
+
+
+def print_fragments_in_gel (fragments: list[tuple[int, Fragment]])-> None:
+    """
+    prints the ordered fragments (from higher to lower bp) from the requested digest command
+            Arguments:
+            - fragments: a list of tupples, includes the lenght of the fragment and the fragment itself
+    """
+    for length_fragment in fragments:
+        length, fragment = length_fragment
+        print(f"- {length} bp (positions {fragment.start}-{fragment.end})")
+
 
 
 
@@ -409,48 +447,6 @@ def print_message(message: str)-> None:
         - message: string printed
     """
     print(message)
-
-############## LOADING SEQUENCE STEP (4.2) ##############
-
-
-############## LIST ALL LOADED SEQUENCES STEP (4.3) ##############
-
-def list_sequences_io(sequences: dict[str, Sequence])-> None:
-    """
-     Prints the number of loeaded sequences and list them. The list is sorted alphabetically by ID, in ascending order using function "sorted()
-        Arguments: 
-        - sequences: the sequences that will be ordered and printed later
-        - the dictionary key is the seq_id
-    """
-
-    sequence: Sequence
-
-    print(f"Number of sequences loaded: {len(sequences)}")    
-    
-    #We use 'sorted()' function to sorted alphabetically by ID, keep in mind we need to use dict()
-    # because sorted() returns by default a list, not a dictionary
-    
-    for id_key in dict(sorted(sequences)):  
-        sequence = sequences[id_key]
-        print(f" - {sequence.seq_id} ({len(sequence.bases)} bp)")
-
-
-
-############## SEQUENCE INFORMATION (inspect) STEP (4.4) ##############
-
-############## FINDING TE SITE POSITION STEP (4.5)  ##############
-
-############## SEQUENCE DIGEST STEP (4.6) ##############
-
-def print_fragments_in_gel (fragments: list[tuple[int, Fragment]])-> None:
-    """
-    prints the ordered fragments (from higher to lower bp) from the requested digest command
-            Arguments:
-            - fragments: a list of tupples, includes the lenght of the fragment and the fragment itself
-    """
-    for length_fragment in fragments:
-        length, fragment = length_fragment
-        print(f"- {length} bp (positions {fragment.start}-{fragment.end})")
 
 
 
@@ -577,17 +573,72 @@ def main() -> None:
         #GC content
         print(f"- GC content: {gc_content(sequence)}%.")
 
-    
-    else:
-        if len(command_parts[2:]) < 3: 
-            print("Error: The DIGEST command requires a sequence ID and at least one enzyme.")        
-            
-        print("Function complete")
 
-                #print(f"Digestion of the sequence {sequence.ID?} with {enzime_used} produced the following fragments: {DIGEST}") 
-                                                 
 
-#The rest of the list (command_parts[1:]) contains the arguments that we will need to pass to the functions       
+      elif command_name == "FIND_SITES":
+        sequence_id = command_parts[1] 
+        enzyme_name: str = command_parts[2] 
+
+        #The command fails in 3 situations: 
+        #1. The sequence is not loaded
+        if sequence_id not in sequences: 
+          print(f"The sequence{sequence_id} is not loaded.")
+          continue 
+       
+        #2. the enzyme is not available 
+        if enzyme_name not in enzymes: 
+          print(f"The enzyme {enzyme_name} is not available.") 
+          continue
+
+        #3. the enzyme has no recognition site in sequence
+        enzyme: Enzyme = enzyme[enzyme_name] 
+        position: list[int] = find_site_positions(sequences[sequence_id], enzyme)
+
+        if not positions: 
+          print(f"The enzyme {enzyme_name} does not cut the sequence {sequence_id}.")
+          continue 
+
+
+        # If all the checks above have been passed, this command will find all the recognition sites of
+        # a given enzyme in a given sequence. 
+        positions_output: str = ", ".join(map(str, positions))
+        # AI assistent function in this part: map(str, positions) converts each position into text, and join() combines them with commas.
+        print(f"Recognition sites of {enzyme_name} ({enzyme.site}) in the sequence {sequence_id}:") 
+        print (f"- Number of sites: {len(positions)}.")
+        print(f"- Positions: {positions_text}.")
+
+
+      elif command_name == "DIGEST":
+         sequence_id = command_parts[1]
+         #reads from position 2 up to an undefined final position (can be 1 or more enzymes)
+         enzyme_names: list[str] = command_parts[2:]
+
+         #The command fails in 3 situations: 
+         #1. The sequence is not loaded:
+         if sequence_id not in sequences:
+                print(f"The sequence {sequence_id} is not loaded.")
+                continue
+
+         #2. one of the enzymes is not available 
+         for enzyme_name in enzyme_names:
+           if enzyme_name not in enzymes:
+             print(f"The enzyme {enzyme} is not available.")
+             break
+             
+         #3. none of the enzymes cuts the sequence 
+
+         #TENEMOS DE VER ESTA PARTE BIEN 
+          if not fragments:
+            print(f"The sequence {sequence_id} is not cut by the ""provided enzymes.")
+            continue
+        
+        
+        enzymes_output: str = "," ".join(enzyme_names) 
+        print(f"Digestion of the sequence {sequence_id} with {enzyme_output} produced the following fragments:") 
+
+        #TENEMOS DE VER ESTA PARTE 
+        print_fragments_in_gel
+
 
 if __name__ == "__main__":
     main()
