@@ -47,11 +47,6 @@ FASTA_HEADER_PREFIX: str = ">"
 NUCLEOTIDES: set[str] = {'A','C','G','T'}
 
 
-# List of valid commands in the system (Case-Sensitive)
-VALID_COMMANDS: list[str]= ["LOAD_SEQUENCES", "LIST_SEQUENCES", "SEQUENCE_INFO", "FIND_SITES", "DIGEST", "EXIT"]
-
-
-
 ############################################### DATACLASSES AND THEIR METHODS ############################################
 
 #A @dataclass is a simplified and automated way to create classes in Python focused exclusively on storing 
@@ -448,6 +443,39 @@ def print_message(message: str)-> None:
     """
     print(message)
 
+######################################################### _IO FUNCTIONS #######################################################
+
+""" LOAD SEQUECES -IO FUNCTION """
+def load_sequences_io(command_name)-> None: 
+  #To avoid issuss with command_parts, put the value inside file variable file: str = command_parts[1]
+  # 3.1 Check if the file was already uploaded previously 
+ 
+  if file in loaded_fasta_files:
+    print(f"File {file} already loaded!")
+    continue
+    
+  # 3.2. Check if the nuclotides in the sequences are correct
+  # We call the read_fasta_file function to read the FASTA file, and then we call the nucleotide_verification function 
+  # to validate whether the nucleotides are valid.
+  sequences_in_fasta: list[Sequence] = read_fasta_file(file, DATA_FOLDER, FASTA_HEADER_PREFIX)
+  
+  #If empty, there is no sequence that has invalid nuclotides
+  invalid_sequence: str = nucleotide_verification(sequences_in_fasta, NUCLEOTIDES)
+  if (invalid_sequence != ""):
+    print(f"File {file} could not be loaded. Sequence {invalid_sequence} contains invalid nucleotides.")
+    continue 
+
+   #3.2. Check if the sequence ID is already in use
+   repeated_sequence : str = sequence_repeated(sequences_in_fasta,sequences)
+  if (repeated_sequence != ""):
+    print (f"File {file} could not be loaded. Sequence ID {repeated_sequence} is already in use.")
+    continue 
+          
+    #3.3. Finally, once all the checks have been completed and everything has passed, load the sequence.   
+  add_sequences_to_dic(sequences_in_fasta, sequences)
+  loaded_fasta_files.add(file)        
+  print(f"File {file} validated and loaded!")
+
 
 
 #########################################################   MAIN FUNCTION  #######################################################
@@ -468,7 +496,7 @@ def main() -> None:
     sequences: dict [str, Sequence] = {}
         
     #Loop control variable used to determine whether the loop should continue executing or stop
-    command_name: str = ""
+    command_name: str = input()
 
 
     #STEP2. repeatedly asks the user for a command (using while), executes it, and prints the corresponding messages, until the user types EXIT
@@ -478,7 +506,6 @@ def main() -> None:
     while command_name != "EXIT":
       #The commands entered by the user do not come alone, they bring additional arguments. 
       # - eg. If the user wants to upload a FASTA file:  LOAD_SEQUENCES demo.fasta ; SEQUENCE_INFO demo ; DIGEST pGFP_insert EcoRI HindIII
-                       
       #1. Read user input and split it by spaces-  We must separate the whole command line into smaller strings by the split()
       # - read_string reads all characters received on the serial port and groups them into a single string
       # - The command_parts variable becomes a list with two elements: ["LOAD_SEQUENCES", "demo.fasta"]
@@ -492,46 +519,11 @@ def main() -> None:
 
       #2.2. stores the first element of the list (the main command) in the command_name variable 
       command_name = command_parts[0]    
-                            
-      #2.3. Check if the user provides an unknown command: 
-      if command_name not in VALID_COMMANDS: 
-        print ("Unknown command")
-        continue 
-
-      #2.4.The command EXIT terminates the execution saying "Goodbye".
-      elif command_name == "EXIT": 
-        print("Goodbye!") 
-      
-      elif command_name == "LOAD_SEQUENCES":
-        #To avoid issuss with command_parts, put the value inside file variable
-        file: str = command_parts[1]
-        
-        # 3.1 Check if the file was already uploaded previously 
-        if file in loaded_fasta_files:
-            print(f"File {file} already loaded!")
-            continue
-
-        # 3.2. Check if the nuclotides in the sequences are correct
-        # We call the read_fasta_file function to read the FASTA file, and then we call the nucleotide_verification function 
-        # to validate whether the nucleotides are valid.
-        sequences_in_fasta: list[Sequence] = read_fasta_file(file, DATA_FOLDER, FASTA_HEADER_PREFIX)
-
-        #If empty, there is no sequence that has invalid nuclotides
-        invalid_sequence: str = nucleotide_verification(sequences_in_fasta, NUCLEOTIDES)
-        if (invalid_sequence != ""):
-          print(f"File {file} could not be loaded. Sequence {invalid_sequence} contains invalid nucleotides.")
-          continue 
-
-        #3.2. Check if the sequence ID is already in use
-        repeated_sequence : str = sequence_repeated(sequences_in_fasta,sequences)
-        if (repeated_sequence != ""):
-          print (f"File {file} could not be loaded. Sequence ID {repeated_sequence} is already in use.")
-          continue 
-          
-        #3.3. Finally, once all the checks have been completed and everything has passed, load the sequence.   
-        add_sequences_to_dic(sequences_in_fasta, sequences)
-        loaded_fasta_files.add(file)        
-        print(f"File {file} validated and loaded!")
+                                
+    
+      -------------------------
+      if command_name == "LOAD_SEQUENCES":
+        load_sequences_io(command_name)
 
 
       
@@ -638,7 +630,9 @@ def main() -> None:
 
         #TENEMOS DE VER ESTA PARTE 
         print_fragments_in_gel
-
+      
+  # If command == "EXIT" terminates the execution saying "Goodbye".
+  print("Goodbye!") 
 
 if __name__ == "__main__":
     main()
